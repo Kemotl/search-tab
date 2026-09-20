@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- السطر ده هو السحر اللي بيخلي الموقع متوافق مع الموبايل -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kemo_otak Command Center</title>
   <style>
@@ -33,10 +32,9 @@
       transition: opacity 0.5s ease;
     }
     
+    /* Default Gaming Setup Image for Static Background */
     #static-bg {
-      background: linear-gradient(45deg, #1a0b2e, #001f3f);
-      background-size: cover;
-      background-position: center;
+      background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
     }
 
     .bg-overlay {
@@ -137,7 +135,7 @@
       font-size: 16px;
       outline: none;
       transition: 0.3s;
-      min-width: 0; /* Prevents overflow on tiny screens */
+      min-width: 0;
     }
 
     .search-form input:focus {
@@ -209,7 +207,7 @@
     /* --- MOBILE RESPONSIVE TWEAKS --- */
     @media (max-width: 600px) {
       .controls-container {
-        flex-direction: column; /* زراير الخلفية تحت بعض عشان متزحمش الشاشة */
+        flex-direction: column; 
         gap: 8px;
         top: 10px;
         left: 10px;
@@ -250,8 +248,8 @@
 </head>
 <body>
 
-  <!-- BACKGROUNDS -->
-  <video id="live-bg" src="https://assets.mixkit.co/videos/preview/mixkit-hud-interface-with-neon-lines-and-numbers-3136-large.mp4" autoplay loop muted playsinline></video>
+  <!-- BACKGROUNDS (Default Gaming Live Video & Static Image) -->
+  <video id="live-bg" src="https://assets.mixkit.co/videos/preview/mixkit-red-neon-tunnel-moving-forward-in-a-loop-3144-large.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg" style="display: none;"></div>
   <div class="bg-overlay"></div>
 
