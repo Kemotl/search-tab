@@ -32,7 +32,6 @@
       transition: opacity 0.5s ease;
     }
     
-    /* Default Gaming Setup Image for Static Background */
     #static-bg {
       background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
     }
@@ -76,7 +75,6 @@
       box-shadow: 0 0 10px #00ffcc;
     }
 
-    /* Secret Button linking exactly to your main portfolio deployment */
     .secret-btn {
       position: absolute;
       top: 15px;
@@ -224,32 +222,22 @@
         width: 90px;
         height: 90px;
       }
-      .search-form input {
+      .search-form input, .search-form button {
         padding: 12px 15px;
         font-size: 14px;
-      }
-      .search-form button {
-        padding: 12px 15px;
-        font-size: 14px;
-      }
-      .quick-links {
-        gap: 15px;
       }
       .shortcut-icon {
         width: 45px;
         height: 45px;
         font-size: 18px;
       }
-      span {
-        font-size: 12px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUNDS (Default Gaming Live Video & Static Image) -->
-  <video id="live-bg" src="https://assets.mixkit.co/videos/preview/mixkit-red-neon-tunnel-moving-forward-in-a-loop-3144-large.mp4" autoplay loop muted playsinline></video>
+  <!-- BACKGROUNDS -->
+  <video id="live-bg" src="https://cdn.pixabay.com/video/2020/05/25/40149-425251608_large.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg" style="display: none;"></div>
   <div class="bg-overlay"></div>
 
@@ -260,13 +248,10 @@
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
   </div>
 
-  <!-- SECRET PORTFOLIO LINK -->
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <!-- PROFILE -->
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
-  <!-- SEARCH BAR & EASTER EGG -->
   <div class="search-container">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
       <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off">
@@ -274,29 +259,23 @@
     </form>
   </div>
 
-  <!-- QUICK LINKS (RECENT WEBSITES) -->
   <div class="quick-links">
     <a href="https://www.youtube.com" class="shortcut">
-      <div class="shortcut-icon">▶</div>
-      <span>YouTube</span>
+      <div class="shortcut-icon">▶</div><span>YouTube</span>
     </a>
     <a href="https://discord.com/app" class="shortcut">
-      <div class="shortcut-icon">🎮</div>
-      <span>Discord</span>
+      <div class="shortcut-icon">🎮</div><span>Discord</span>
     </a>
     <a href="https://web.whatsapp.com" class="shortcut">
-      <div class="shortcut-icon">💬</div>
-      <span>WhatsApp</span>
+      <div class="shortcut-icon">💬</div><span>WhatsApp</span>
     </a>
     <a href="https://github.com/Kemotl" class="shortcut">
-      <div class="shortcut-icon">💻</div>
-      <span>GitHub</span>
+      <div class="shortcut-icon">💻</div><span>GitHub</span>
     </a>
   </div>
 
-  <!-- JAVASCRIPT FOR BG LOGIC & SEARCH -->
   <script>
-    // Search & Easter Egg Logic
+    // Search Easter Egg
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const query = document.getElementById('search-input').value.toLowerCase().trim();
       if (query === 'the best game ever') {
@@ -306,14 +285,80 @@
       }
     });
 
-    // Background Controls Logic
+    // ----------------------------------------------------
+    // INDEXED-DB SYSTEM: Saves your uploaded background forever!
+    // ----------------------------------------------------
     const liveBg = document.getElementById('live-bg');
     const staticBg = document.getElementById('static-bg');
     const toggleBtn = document.getElementById('toggle-bg-btn');
     const uploadInput = document.getElementById('bg-upload');
     let isLive = true;
 
-    // Toggle between Live and Static
+    const dbName = "KemoBgDB";
+    let db;
+    const request = indexedDB.open(dbName, 1);
+
+    request.onupgradeneeded = function(e) {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains("bgStore")) {
+        db.createObjectStore("bgStore");
+      }
+    };
+
+    request.onsuccess = function(e) {
+      db = e.target.result;
+      loadSavedBg(); // Load background when page opens
+    };
+
+    // Save File to Browser Memory
+    function saveBg(file, type) {
+      const tx = db.transaction("bgStore", "readwrite");
+      const store = tx.objectStore("bgStore");
+      store.put({ file: file, type: type }, "myCustomBg");
+    }
+
+    // Get File from Browser Memory
+    function loadSavedBg() {
+      const tx = db.transaction("bgStore", "readonly");
+      const store = tx.objectStore("bgStore");
+      const req = store.get("myCustomBg");
+
+      req.onsuccess = function() {
+        if (req.result) {
+          const data = req.result;
+          const fileURL = URL.createObjectURL(data.file);
+          applyBg(fileURL, data.type);
+        }
+      };
+    }
+
+    // Apply Background (Video or Image)
+    function applyBg(url, type) {
+      if (type.startsWith('video/')) {
+        liveBg.src = url;
+        liveBg.style.display = 'block';
+        staticBg.style.display = 'none';
+        isLive = true;
+        liveBg.play().catch(e => console.log("Video autoplay blocked", e));
+      } else if (type.startsWith('image/')) {
+        staticBg.style.backgroundImage = `url(${url})`;
+        staticBg.style.display = 'block';
+        liveBg.style.display = 'none';
+        isLive = false;
+        liveBg.pause();
+      }
+    }
+
+    // Handle Upload Button
+    uploadInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        saveBg(file, file.type); // Save it forever!
+        applyBg(URL.createObjectURL(file), file.type);
+      }
+    });
+
+    // Toggle Button
     toggleBtn.addEventListener('click', () => {
       isLive = !isLive;
       if (isLive) {
@@ -323,28 +368,6 @@
       } else {
         liveBg.style.display = 'none';
         staticBg.style.display = 'block';
-        liveBg.pause();
-      }
-    });
-
-    // Handle Uploaded File (Picture or Video)
-    uploadInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const fileURL = URL.createObjectURL(file);
-
-      if (file.type.startsWith('video/')) {
-        liveBg.src = fileURL;
-        liveBg.style.display = 'block';
-        staticBg.style.display = 'none';
-        isLive = true;
-        liveBg.play();
-      } else if (file.type.startsWith('image/')) {
-        staticBg.style.backgroundImage = `url(${fileURL})`;
-        staticBg.style.display = 'block';
-        liveBg.style.display = 'none';
-        isLive = false;
         liveBg.pause();
       }
     });
