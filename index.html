@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | NEON VIBE</title>
+  <title>Kemo_otak Command Center | NEON</title>
   <style>
     body {
       margin: 0;
@@ -32,9 +32,15 @@
       transition: opacity 0.5s ease;
     }
     
-    /* Default Valorant Neon Static Fallback */
+    /* Default Neon/Cyberpunk Image fallback */
     #static-bg {
       background: url('https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+      display: block; /* By default, show the static image */
+    }
+
+    /* Hide the video by default until loaded */
+    #live-bg {
+      display: none;
     }
 
     .bg-overlay {
@@ -43,7 +49,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(3, 11, 20, 0.7); /* Dark blue overlay for Neon vibe */
+      background: rgba(3, 11, 20, 0.7); 
       z-index: -1;
     }
 
@@ -248,9 +254,9 @@
 </head>
 <body>
 
-  <!-- DEFAULT NEON GAMING VIDEO (Fallback) -->
-  <video id="live-bg" src="https://assets.mixkit.co/videos/preview/mixkit-hud-interface-with-neon-lines-and-numbers-3136-large.mp4" autoplay loop muted playsinline></video>
-  <div id="static-bg" style="display: none;"></div>
+  <!-- BACKGROUNDS -->
+  <video id="live-bg" autoplay loop muted playsinline></video>
+  <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
   <!-- BG CONTROLS -->
@@ -298,15 +304,15 @@
     });
 
     // ----------------------------------------------------
-    // SUPER INDEXED-DB SYSTEM: Saves Blob permanently!
+    // INDEXED-DB SYSTEM: Saves File perfectly without corruption
     // ----------------------------------------------------
     const liveBg = document.getElementById('live-bg');
     const staticBg = document.getElementById('static-bg');
     const toggleBtn = document.getElementById('toggle-bg-btn');
     const uploadInput = document.getElementById('bg-upload');
-    let isLive = true;
+    let isLive = false; 
 
-    const dbName = "KemoValorantDB";
+    const dbName = "KemoDB_V2";
     let db;
     const request = indexedDB.open(dbName, 1);
 
@@ -319,25 +325,23 @@
 
     request.onsuccess = function(e) {
       db = e.target.result;
-      loadSavedBg(); // Load background when page opens
+      loadSavedBg(); 
     };
 
-    // Save File to Browser Memory as a strong Blob
-    function saveBg(file, type) {
+    // Save actual File object to avoid corruption
+    function saveBg(file) {
       const tx = db.transaction("bgStore", "readwrite");
       const store = tx.objectStore("bgStore");
-      const blob = new Blob([file], { type: type }); // Forces format retention
-      store.put({ fileData: blob, fileType: type }, "myCustomBg");
+      store.put({ fileData: file, fileType: file.type }, "myCustomBg");
     }
 
-    // Get File from Browser Memory
     function loadSavedBg() {
       const tx = db.transaction("bgStore", "readonly");
       const store = tx.objectStore("bgStore");
       const req = store.get("myCustomBg");
 
       req.onsuccess = function() {
-        if (req.result) {
+        if (req.result && req.result.fileData) {
           const data = req.result;
           const fileURL = URL.createObjectURL(data.fileData);
           applyBg(fileURL, data.fileType);
@@ -345,14 +349,13 @@
       };
     }
 
-    // Apply Background (Video or Image)
     function applyBg(url, type) {
       if (type.startsWith('video/')) {
         liveBg.src = url;
         liveBg.style.display = 'block';
         staticBg.style.display = 'none';
         isLive = true;
-        liveBg.play().catch(e => console.log("Autoplay blocked", e));
+        liveBg.play().catch(e => console.log("Autoplay blocked by browser", e));
       } else if (type.startsWith('image/')) {
         staticBg.style.backgroundImage = `url(${url})`;
         staticBg.style.display = 'block';
@@ -362,19 +365,17 @@
       }
     }
 
-    // Handle Upload Button
     uploadInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
-        saveBg(file, file.type); 
+        saveBg(file); 
         applyBg(URL.createObjectURL(file), file.type);
       }
     });
 
-    // Toggle Button
     toggleBtn.addEventListener('click', () => {
       isLive = !isLive;
-      if (isLive) {
+      if (isLive && liveBg.src) {
         liveBg.style.display = 'block';
         staticBg.style.display = 'none';
         liveBg.play();
