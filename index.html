@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center</title>
+  <title>Kemo_otak Command Center | NEON VIBE</title>
   <style>
     body {
       margin: 0;
       height: 100vh; 
       overflow: hidden; 
-      background-color: #050505;
-      color: #00ffcc;
+      background-color: #030b14;
+      color: #00e5ff;
       font-family: 'Courier New', Courier, monospace;
       display: flex;
       flex-direction: column;
@@ -32,8 +32,9 @@
       transition: opacity 0.5s ease;
     }
     
+    /* Default Valorant Neon Static Fallback */
     #static-bg {
-      background: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      background: url('https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
     }
 
     .bg-overlay {
@@ -42,7 +43,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6); 
+      background: rgba(3, 11, 20, 0.7); /* Dark blue overlay for Neon vibe */
       z-index: -1;
     }
 
@@ -57,9 +58,9 @@
     }
 
     .control-btn {
-      background: rgba(0, 255, 204, 0.1);
-      border: 1px solid #00ffcc;
-      color: #00ffcc;
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid #00e5ff;
+      color: #00e5ff;
       padding: 8px 12px;
       border-radius: 5px;
       cursor: pointer;
@@ -68,11 +69,13 @@
       font-weight: bold;
       backdrop-filter: blur(5px);
       transition: 0.3s;
+      text-transform: uppercase;
     }
 
     .control-btn:hover {
-      background: rgba(0, 255, 204, 0.3);
-      box-shadow: 0 0 10px #00ffcc;
+      background: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 15px #00e5ff;
+      transform: scale(1.05);
     }
 
     .secret-btn {
@@ -90,8 +93,8 @@
 
     .secret-btn:hover {
       opacity: 1;
-      color: #00ffcc;
-      text-shadow: 0 0 8px #00ffcc;
+      color: #00e5ff;
+      text-shadow: 0 0 8px #00e5ff;
     }
 
     /* --- PROFILE --- */
@@ -100,9 +103,15 @@
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #00ffcc;
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+      border: 3px solid #00e5ff;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
       z-index: 1;
+      transition: 0.3s;
+    }
+    
+    .profile-pic:hover {
+      box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
+      border-color: #0055ff;
     }
 
     /* --- SEARCH --- */
@@ -125,9 +134,9 @@
     .search-form input {
       padding: 15px 20px;
       flex: 1;
-      background: rgba(10, 10, 10, 0.7);
+      background: rgba(10, 15, 25, 0.7);
       backdrop-filter: blur(10px);
-      border: 2px solid #333;
+      border: 2px solid #0055ff;
       color: white;
       border-radius: 8px 0 0 8px;
       font-size: 16px;
@@ -137,13 +146,13 @@
     }
 
     .search-form input:focus {
-      border-color: #00ffcc; 
-      box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
+      border-color: #00e5ff; 
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
     }
 
     .search-form button {
       padding: 15px 25px;
-      background-color: #00ffcc;
+      background-color: #00e5ff;
       border: none;
       color: #000;
       font-size: 16px;
@@ -151,10 +160,13 @@
       border-radius: 0 8px 8px 0;
       cursor: pointer;
       transition: 0.3s;
+      text-transform: uppercase;
     }
 
     .search-form button:hover {
-      background-color: #00cca3;
+      background-color: #0055ff;
+      color: white;
+      box-shadow: 0 0 15px #0055ff;
     }
 
     /* --- QUICK LINKS --- */
@@ -172,16 +184,16 @@
       flex-direction: column;
       align-items: center;
       text-decoration: none;
-      color: #ccc;
+      color: #99aab5;
       transition: 0.3s;
     }
 
     .shortcut-icon {
       width: 50px;
       height: 50px;
-      background: rgba(20, 20, 20, 0.6);
+      background: rgba(10, 15, 25, 0.6);
       backdrop-filter: blur(5px);
-      border: 1px solid #444;
+      border: 1px solid #0055ff;
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -192,14 +204,14 @@
     }
 
     .shortcut:hover .shortcut-icon {
-      border-color: #00ffcc;
-      box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+      border-color: #00e5ff;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
       transform: translateY(-5px);
-      color: #00ffcc;
+      color: #00e5ff;
     }
 
     .shortcut:hover {
-      color: #00ffcc;
+      color: #00e5ff;
     }
 
     /* --- MOBILE RESPONSIVE TWEAKS --- */
@@ -236,15 +248,15 @@
 </head>
 <body>
 
-  <!-- BACKGROUNDS -->
-  <video id="live-bg" src="https://cdn.pixabay.com/video/2020/05/25/40149-425251608_large.mp4" autoplay loop muted playsinline></video>
+  <!-- DEFAULT NEON GAMING VIDEO (Fallback) -->
+  <video id="live-bg" src="https://assets.mixkit.co/videos/preview/mixkit-hud-interface-with-neon-lines-and-numbers-3136-large.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg" style="display: none;"></div>
   <div class="bg-overlay"></div>
 
   <!-- BG CONTROLS -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
-    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
+    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD MP4/GIF</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
   </div>
 
@@ -286,7 +298,7 @@
     });
 
     // ----------------------------------------------------
-    // INDEXED-DB SYSTEM: Saves your uploaded background forever!
+    // SUPER INDEXED-DB SYSTEM: Saves Blob permanently!
     // ----------------------------------------------------
     const liveBg = document.getElementById('live-bg');
     const staticBg = document.getElementById('static-bg');
@@ -294,7 +306,7 @@
     const uploadInput = document.getElementById('bg-upload');
     let isLive = true;
 
-    const dbName = "KemoBgDB";
+    const dbName = "KemoValorantDB";
     let db;
     const request = indexedDB.open(dbName, 1);
 
@@ -310,11 +322,12 @@
       loadSavedBg(); // Load background when page opens
     };
 
-    // Save File to Browser Memory
+    // Save File to Browser Memory as a strong Blob
     function saveBg(file, type) {
       const tx = db.transaction("bgStore", "readwrite");
       const store = tx.objectStore("bgStore");
-      store.put({ file: file, type: type }, "myCustomBg");
+      const blob = new Blob([file], { type: type }); // Forces format retention
+      store.put({ fileData: blob, fileType: type }, "myCustomBg");
     }
 
     // Get File from Browser Memory
@@ -326,8 +339,8 @@
       req.onsuccess = function() {
         if (req.result) {
           const data = req.result;
-          const fileURL = URL.createObjectURL(data.file);
-          applyBg(fileURL, data.type);
+          const fileURL = URL.createObjectURL(data.fileData);
+          applyBg(fileURL, data.fileType);
         }
       };
     }
@@ -339,7 +352,7 @@
         liveBg.style.display = 'block';
         staticBg.style.display = 'none';
         isLive = true;
-        liveBg.play().catch(e => console.log("Video autoplay blocked", e));
+        liveBg.play().catch(e => console.log("Autoplay blocked", e));
       } else if (type.startsWith('image/')) {
         staticBg.style.backgroundImage = `url(${url})`;
         staticBg.style.display = 'block';
@@ -353,7 +366,7 @@
     uploadInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (file) {
-        saveBg(file, file.type); // Save it forever!
+        saveBg(file, file.type); 
         applyBg(URL.createObjectURL(file), file.type);
       }
     });
