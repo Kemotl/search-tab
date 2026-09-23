@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | MUSIC</title>
+  <title>Kemo_otak Command Center | ANGHAMI</title>
   <style>
     body {
       margin: 0;
@@ -16,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px; /* قللنا المسافات شوية عشان تكفي الموبايل */
+      gap: 20px;
       position: relative;
     }
 
@@ -211,67 +211,17 @@
       color: #00e5ff;
     }
 
-    /* --- MINI MUSIC PLAYER (تم التعديل عشان يظهر تحت الأيقونات مباشرة) --- */
-    .music-player {
-      position: relative; /* شلنا الـ absolute اللي كانت بتخبيه تحت */
-      margin-top: 10px;
-      width: 85%;
-      max-width: 400px;
-      background: rgba(10, 15, 25, 0.8);
-      backdrop-filter: blur(10px);
-      border: 1px solid #0055ff;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 15px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    /* --- ANGHAMI PLAYER WRAPPER --- */
+    .anghami-wrapper {
+      position: relative;
+      margin-top: 15px;
+      width: 90%;
+      max-width: 450px;
       z-index: 10;
-    }
-
-    .music-controls {
-      display: flex;
-      gap: 10px;
-    }
-
-    .music-btn {
-      background: none;
-      border: none;
-      color: #00e5ff;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .music-btn:hover {
-      color: #0055ff;
-      transform: scale(1.1);
-    }
-
-    .track-info {
-      flex: 1;
-      text-align: center;
-      font-size: 11px;
-      white-space: nowrap;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
       overflow: hidden;
-      text-overflow: ellipsis;
-      margin: 0 10px;
-      color: #99aab5;
-    }
-
-    .upload-music-label {
-      font-size: 11px;
-      cursor: pointer;
-      color: #00e5ff;
-      border: 1px solid #00e5ff;
-      padding: 4px 8px;
-      border-radius: 15px;
-      transition: 0.3s;
-      white-space: nowrap;
-    }
-
-    .upload-music-label:hover {
-      background: rgba(0, 229, 255, 0.2);
+      border: 1px solid #0055ff;
     }
 
     @media (max-width: 600px) {
@@ -288,6 +238,9 @@
       .secret-btn {
         top: 10px;
         right: 10px;
+      }
+      .anghami-wrapper {
+        margin-top: 10px;
       }
     }
   </style>
@@ -306,6 +259,7 @@
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
   </div>
 
+  <!-- SECRET PORTFOLIO LINK -->
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
@@ -334,19 +288,18 @@
     </a>
   </div>
 
-  <!-- MINI MUSIC PLAYER (Now perfectly centered below icons) -->
-  <div class="music-player">
-    <div class="music-controls">
-      <button id="play-pause-btn" class="music-btn">▶</button>
-      <button id="next-btn" class="music-btn">⏭</button>
-    </div>
-    <div class="track-info" id="track-name">No track selected</div>
-    <label for="music-upload" class="upload-music-label">+ Add Songs</label>
-    <input type="file" id="music-upload" accept="audio/*" multiple hidden>
+  <!-- ANGHAMI WIDGET PLAYER -->
+  <div class="anghami-wrapper">
+    <!-- Ektb ID el-playlist bta3tk mkan "YOUR_PLAYLIST_ID" fl link elly t7t -->
+    <!-- Msln lw linkek: play.anghami.com/playlist/1234567 , 7ot 1234567 -->
+    <iframe 
+      src="https://widget.anghami.com/playlist/YOUR_PLAYLIST_ID?theme=dark&layout=horizontal" 
+      width="100%" 
+      height="90" 
+      frameborder="0" 
+      allow="autoplay; encrypted-media; fullscreen; picture-in-picture">
+    </iframe>
   </div>
-
-  <!-- Audio Element -->
-  <audio id="audio-player"></audio>
 
   <script>
     // Search Easter Egg
@@ -360,7 +313,7 @@
     });
 
     // ----------------------------------------------------
-    // INDEXED-DB SYSTEM: Background & Music
+    // INDEXED-DB SYSTEM: Saves Background File
     // ----------------------------------------------------
     const dbName = "KemoCommandDB_Final";
     let db;
@@ -369,13 +322,11 @@
     request.onupgradeneeded = function(e) {
       db = e.target.result;
       if (!db.objectStoreNames.contains("bgStore")) db.createObjectStore("bgStore");
-      if (!db.objectStoreNames.contains("musicStore")) db.createObjectStore("musicStore");
     };
 
     request.onsuccess = function(e) {
       db = e.target.result;
       loadSavedBg(); 
-      loadMusicLibrary();
     };
 
     // --- BACKGROUND LOGIC ---
@@ -435,95 +386,6 @@
         liveBg.pause();
       }
     });
-
-    // --- MUSIC PLAYER LOGIC ---
-    const audioPlayer = document.getElementById('audio-player');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const trackNameDisplay = document.getElementById('track-name');
-    const musicUploadInput = document.getElementById('music-upload');
-    
-    let library = [];
-    let currentTrackIndex = localStorage.getItem('kemo_track_index') ? parseInt(localStorage.getItem('kemo_track_index')) : 0;
-    
-    function loadMusicLibrary() {
-      const tx = db.transaction("musicStore", "readonly");
-      const req = tx.objectStore("musicStore").get("myMusicLib");
-      req.onsuccess = function() {
-        if (req.result && req.result.files) {
-          library = req.result.files;
-          if (library.length > 0) {
-            setupTrack(currentTrackIndex, false); 
-          }
-        }
-      };
-    }
-
-    function saveMusicLibrary(newFiles) {
-      const tx = db.transaction("musicStore", "readwrite");
-      const store = tx.objectStore("musicStore");
-      const req = store.get("myMusicLib");
-      
-      req.onsuccess = function() {
-        let currentLib = (req.result && req.result.files) ? req.result.files : [];
-        for(let f of newFiles) currentLib.push(f);
-        store.put({ files: currentLib }, "myMusicLib");
-        
-        library = currentLib;
-        setupTrack(library.length - newFiles.length, true);
-      };
-    }
-
-    musicUploadInput.addEventListener('change', function(e) {
-      if (e.target.files.length > 0) {
-        saveMusicLibrary(e.target.files);
-      }
-    });
-
-    function setupTrack(index, autoPlay = true) {
-      if (index >= library.length) index = 0;
-      currentTrackIndex = index;
-      localStorage.setItem('kemo_track_index', index);
-      
-      const file = library[index];
-      audioPlayer.src = URL.createObjectURL(file);
-      trackNameDisplay.innerText = file.name.replace('.mp3', '');
-      
-      const savedTime = localStorage.getItem('kemo_track_time');
-      if (savedTime && !autoPlay) {
-        audioPlayer.currentTime = parseFloat(savedTime);
-      }
-
-      if (autoPlay) togglePlay();
-    }
-
-    function togglePlay() {
-      if (library.length === 0) return;
-      if (audioPlayer.paused) {
-        audioPlayer.play();
-        playPauseBtn.innerText = '⏸';
-      } else {
-        audioPlayer.pause();
-        playPauseBtn.innerText = '▶';
-      }
-    }
-
-    playPauseBtn.addEventListener('click', togglePlay);
-
-    nextBtn.addEventListener('click', () => {
-      if (library.length > 0) setupTrack(currentTrackIndex + 1, true);
-    });
-
-    audioPlayer.addEventListener('ended', () => {
-      if (library.length > 0) setupTrack(currentTrackIndex + 1, true);
-    });
-
-    setInterval(() => {
-      if (!audioPlayer.paused) {
-        localStorage.setItem('kemo_track_time', audioPlayer.currentTime);
-      }
-    }, 1000);
-
   </script>
 </body>
 </html>
