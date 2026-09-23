@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | ANGHAMI</title>
+  <title>Kemo_otak Command Center | SMART AUDIO</title>
   <style>
     body {
       margin: 0;
@@ -255,11 +255,13 @@
   <!-- BG CONTROLS -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
-    <label for="bg-upload" class="control-btn" style="cursor: pointer;">UPLOAD BG</label>
+    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
+    
+    <!-- Zrar Set Anghami el-gdeed -->
+    <button id="set-anghami-btn" class="control-btn" style="border-color: #ff00ff; color: #ff00ff;">SET ANGHAMI</button>
   </div>
 
-  <!-- SECRET PORTFOLIO LINK -->
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
@@ -267,7 +269,7 @@
   <!-- SEARCH BAR -->
   <div class="search-container">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off">
+      <input type="text" id="search-input" name="q" placeholder="Search Google, or type 'anghami [playlist]'..." required autocomplete="off">
       <button type="submit">SEARCH</button>
     </form>
   </div>
@@ -290,10 +292,9 @@
 
   <!-- ANGHAMI WIDGET PLAYER -->
   <div class="anghami-wrapper">
-    <!-- Ektb ID el-playlist bta3tk mkan "YOUR_PLAYLIST_ID" fl link elly t7t -->
-    <!-- Msln lw linkek: play.anghami.com/playlist/1234567 , 7ot 1234567 -->
     <iframe 
-      src="https://widget.anghami.com/playlist/YOUR_PLAYLIST_ID?theme=dark&layout=horizontal" 
+      id="anghami-widget"
+      src="" 
       width="100%" 
       height="90" 
       frameborder="0" 
@@ -302,15 +303,56 @@
   </div>
 
   <script>
-    // Search Easter Egg
+    // ----------------------------------------------------
+    // SMART SEARCH & EASTER EGG LOGIC
+    // ----------------------------------------------------
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
-      const query = document.getElementById('search-input').value.toLowerCase().trim();
-      if (query === 'the best game ever') {
+      const query = document.getElementById('search-input').value.trim();
+      const queryLower = query.toLowerCase();
+
+      // Easter Egg
+      if (queryLower === 'the best game ever') {
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
         document.getElementById('search-input').value = '';
+        return;
+      }
+
+      // Smart Anghami Search (if it starts with 'anghami')
+      if (queryLower.startsWith('anghami ')) {
+        event.preventDefault();
+        const searchQuery = query.substring(8).trim(); // Remove 'anghami '
+        window.location.href = `https://play.anghami.com/search/${encodeURIComponent(searchQuery)}`;
+        return;
       }
     });
+
+    // ----------------------------------------------------
+    // CUSTOM ANGHAMI PLAYLIST LOGIC
+    // ----------------------------------------------------
+    const anghamiWidget = document.getElementById('anghami-widget');
+    const setAnghamiBtn = document.getElementById('set-anghami-btn');
+    
+    // Default fallback ID (if someone hasn't set theirs yet)
+    let savedAnghamiId = localStorage.getItem('kemo_anghami_id') || '104868205'; 
+    anghamiWidget.src = `https://widget.anghami.com/playlist/${savedAnghamiId}?theme=dark&layout=horizontal`;
+
+    setAnghamiBtn.addEventListener('click', () => {
+      const link = prompt("Paste your Anghami Playlist link here:\n(e.g., https://play.anghami.com/playlist/123456)");
+      if (link) {
+        // Extract the numbers after /playlist/
+        const match = link.match(/playlist\/(\d+)/);
+        if (match && match[1]) {
+          const newId = match[1];
+          localStorage.setItem('kemo_anghami_id', newId);
+          anghamiWidget.src = `https://widget.anghami.com/playlist/${newId}?theme=dark&layout=horizontal`;
+          alert("Playlist saved to your Command Center!");
+        } else {
+          alert("Error: Make sure the link contains '/playlist/' followed by numbers.");
+        }
+      }
+    });
+
 
     // ----------------------------------------------------
     // INDEXED-DB SYSTEM: Saves Background File
@@ -329,7 +371,6 @@
       loadSavedBg(); 
     };
 
-    // --- BACKGROUND LOGIC ---
     const liveBg = document.getElementById('live-bg');
     const staticBg = document.getElementById('static-bg');
     const toggleBtn = document.getElementById('toggle-bg-btn');
