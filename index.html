@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | XemoX</title>
+  <title>Kemo_otak Command Center | XEMOX AUDIO</title>
   <style>
     body {
       margin: 0;
@@ -16,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       position: relative;
     }
 
@@ -47,7 +47,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(3, 11, 20, 0.7); 
+      background: rgba(3, 11, 20, 0.75); 
       z-index: -1;
     }
 
@@ -102,8 +102,8 @@
 
     /* --- PROFILE --- */
     .profile-pic {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #00e5ff;
@@ -165,12 +165,6 @@
       transition: 0.3s;
     }
 
-    .search-form button:hover {
-      background-color: #0055ff;
-      color: white;
-      box-shadow: 0 0 15px #0055ff;
-    }
-
     /* --- QUICK LINKS --- */
     .quick-links {
       display: flex;
@@ -180,68 +174,117 @@
       justify-content: center;
     }
 
-    .shortcut {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-decoration: none;
-      color: #99aab5;
-      transition: 0.3s;
-    }
-
     .shortcut-icon {
-      width: 45px;
-      height: 45px;
+      width: 40px;
+      height: 40px;
       background: rgba(10, 15, 25, 0.6);
-      backdrop-filter: blur(5px);
       border: 1px solid #0055ff;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      margin-bottom: 5px;
+      color: #99aab5;
       transition: 0.3s;
+      text-decoration: none;
     }
 
-    .shortcut:hover .shortcut-icon {
+    .shortcut-icon:hover {
       border-color: #00e5ff;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      color: #00e5ff;
       transform: translateY(-5px);
+    }
+
+    /* --- XEMOX CUSTOM PLAYER --- */
+    .xemox-player {
+      width: 90%;
+      max-width: 450px;
+      background: rgba(5, 10, 20, 0.85);
+      backdrop-filter: blur(15px);
+      border: 2px solid #00e5ff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      overflow: hidden;
+    }
+
+    .xemox-header {
+      background: #00e5ff;
+      color: #000;
+      text-align: center;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .xemox-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+    }
+
+    .xemox-track-info {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0 10px;
+    }
+    .xemox-track-artist {
+      font-size: 10px;
       color: #00e5ff;
     }
 
-    /* --- ANGHAMI PLAYER WRAPPER --- */
-    .anghami-wrapper {
-      position: relative;
-      margin-top: 15px;
-      width: 90%;
-      max-width: 450px;
-      z-index: 10;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      border: 1px solid #0055ff;
+    .x-btn {
+      background: none;
+      border: none;
+      color: #00e5ff;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
+
+    .xemox-playlist {
+      max-height: 120px; /* Scrollable list */
+      overflow-y: auto;
+      padding: 5px 0;
+    }
+
+    /* Custom Scrollbar for playlist */
+    .xemox-playlist::-webkit-scrollbar { width: 5px; }
+    .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
+
+    .playlist-item {
+      padding: 8px 20px;
+      font-size: 12px;
+      color: #99aab5;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      transition: 0.2s;
+    }
+
+    .playlist-item:hover, .playlist-item.active {
+      background: rgba(0, 229, 255, 0.15);
+      color: #fff;
+      border-left: 3px solid #00e5ff;
     }
 
     @media (max-width: 600px) {
-      .controls-container {
-        flex-direction: column; 
-        gap: 8px;
-        top: 10px;
-        left: 10px;
-      }
-      .control-btn {
-        padding: 6px 8px;
-        font-size: 9px;
-      }
-      .secret-btn {
-        top: 10px;
-        right: 10px;
-      }
-      .anghami-wrapper {
-        margin-top: 10px;
-      }
+      .controls-container { flex-direction: column; gap: 8px; top: 10px; left: 10px; }
+      .control-btn { padding: 6px 8px; font-size: 9px; }
+      .xemox-player { max-height: 180px; }
     }
   </style>
 </head>
@@ -257,7 +300,6 @@
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
-    <button id="set-anghami-btn" class="control-btn" style="border-color: #ff00ff; color: #ff00ff;">SET ANGHAMI</button>
   </div>
 
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
@@ -267,81 +309,154 @@
   <!-- SEARCH BAR -->
   <div class="search-container">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <input type="text" id="search-input" name="q" placeholder="Search Google, or type 'anghami [playlist]'..." required autocomplete="off">
+      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off">
       <button type="submit">SEARCH</button>
     </form>
   </div>
 
   <!-- QUICK LINKS -->
   <div class="quick-links">
-    <a href="https://www.youtube.com" class="shortcut">
-      <div class="shortcut-icon">▶</div><span>YouTube</span>
-    </a>
-    <a href="https://discord.com/app" class="shortcut">
-      <div class="shortcut-icon">🎮</div><span>Discord</span>
-    </a>
-    <a href="https://www.messenger.com/" class="shortcut">
-      <div class="shortcut-icon">💬</div><span>Messenger</span>
-    </a>
-    <a href="https://github.com/Kemotl" class="shortcut">
-      <div class="shortcut-icon">💻</div><span>GitHub</span>
-    </a>
+    <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
+    <a href="https://discord.com/app" class="shortcut-icon" title="Discord">🎮</a>
+    <a href="https://www.messenger.com/" class="shortcut-icon" title="Messenger">💬</a>
+    <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
   </div>
 
-  <!-- ANGHAMI WIDGET PLAYER -->
-  <div class="anghami-wrapper">
-    <iframe 
-      id="anghami-widget"
-      src="" 
-      width="100%" 
-      height="90" 
-      frameborder="0" 
-      allow="autoplay; encrypted-media; fullscreen; picture-in-picture">
-    </iframe>
+  <!-- XEMOX CUSTOM MUSIC ENGINE -->
+  <div class="xemox-player">
+    <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
+    
+    <div class="xemox-controls">
+      <button class="x-btn" id="x-prev">⏮</button>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div class="xemox-track-info" id="x-title">Welcome to XemoX</div>
+        <div class="xemox-track-artist" id="x-artist">Select a track</div>
+      </div>
+      <button class="x-btn" id="x-play">▶</button>
+      <button class="x-btn" id="x-next">⏭</button>
+    </div>
+
+    <div class="xemox-playlist" id="x-list">
+      <!-- Tracks will be injected here by JS -->
+    </div>
+    
+    <!-- Hidden Audio element -->
+    <audio id="x-audio"></audio>
   </div>
 
   <script>
+    // Search Easter Egg
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
-      const query = document.getElementById('search-input').value.trim();
-      const queryLower = query.toLowerCase();
-
-      if (queryLower === 'the best game ever') {
+      if (document.getElementById('search-input').value.toLowerCase().trim() === 'the best game ever') {
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
         document.getElementById('search-input').value = '';
-        return;
-      }
-
-      if (queryLower.startsWith('anghami ')) {
-        event.preventDefault();
-        const searchQuery = query.substring(8).trim(); 
-        window.location.href = `https://play.anghami.com/search/${encodeURIComponent(searchQuery)}`;
-        return;
       }
     });
 
-    const anghamiWidget = document.getElementById('anghami-widget');
-    const setAnghamiBtn = document.getElementById('set-anghami-btn');
+    // ----------------------------------------------------
+    // XEMOX™ AUDIO PLAYER LOGIC
+    // ----------------------------------------------------
+    const tracks = [
+      { id: 1, title: "Samir Zamis", artist: "Abyusif" },
+      { id: 2, title: "3azra2eel", artist: "Abyusif" },
+      { id: 3, title: "Intro 2", artist: "Abyusif" },
+      { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif" },
+      { id: 5, title: "Amal 2", artist: "Abyusif" },
+      { id: 6, title: "El 3asefa", artist: "Abyusif" },
+      { id: 7, title: "Kan Fi Sora", artist: "Abyusif & Ismail Nosrat" },
+      { id: 8, title: "Talata Zayaha", artist: "Abyusif" },
+      { id: 9, title: "MA YORAM", artist: "Lil Baba (feat. Abyusif)" },
+      { id: 10, title: "Wtwat", artist: "Abyusif" },
+      { id: 11, title: "Reda", artist: "Lil Baba & Abyusif" },
+      { id: 12, title: "Replica", artist: "Abyusif" },
+      { id: 13, title: "Hal Di Kat Hayatak", artist: "Abyusif" },
+      { id: 14, title: "Khanza2or", artist: "Abyusif" },
+      { id: 15, title: "Fen El Dawa", artist: "Abyusif" },
+      { id: 16, title: "Msh Barodd", artist: "Abyusif" },
+      { id: 17, title: "El Hob Ebn Wes5a", artist: "Abyusif" },
+      { id: 18, title: "300 Marra", artist: "Abyusif" },
+      { id: 19, title: "K 7 M S", artist: "Abyusif & Lil Baba" },
+      { id: 20, title: "Bta3ti", artist: "Lil Baba & Abyusif" },
+      { id: 21, title: "Okay", artist: "Abyusif" },
+      { id: 22, title: "Mo3taz", artist: "Abyusif" },
+      { id: 23, title: "Ya Man Ana", artist: "Abyusif" },
+      { id: 24, title: "7RB", artist: "Abyusif" },
+      { id: 25, title: "SWLGN", artist: "Abyusif" },
+      { id: 26, title: "Gaw Br2", artist: "Abyusif" }
+    ];
+
+    const audioPlayer = document.getElementById('x-audio');
+    const playBtn = document.getElementById('x-play');
+    const prevBtn = document.getElementById('x-prev');
+    const nextBtn = document.getElementById('x-next');
+    const titleDisplay = document.getElementById('x-title');
+    const artistDisplay = document.getElementById('x-artist');
+    const playlistContainer = document.getElementById('x-list');
     
-    // Default fallback ID is now YOUR XemoX Playlist
-    let savedAnghamiId = localStorage.getItem('kemo_anghami_id') || '293228996'; 
-    anghamiWidget.src = `https://widget.anghami.com/playlist/${savedAnghamiId}?theme=dark&layout=horizontal`;
+    let currentIndex = 0;
 
-    setAnghamiBtn.addEventListener('click', () => {
-      const link = prompt("Paste your Anghami Playlist link here:\n(e.g., https://play.anghami.com/playlist/123456)");
-      if (link) {
-        const match = link.match(/playlist\/(\d+)/);
-        if (match && match[1]) {
-          const newId = match[1];
-          localStorage.setItem('kemo_anghami_id', newId);
-          anghamiWidget.src = `https://widget.anghami.com/playlist/${newId}?theme=dark&layout=horizontal`;
-          alert("Playlist saved to your Command Center!");
-        } else {
-          alert("Error: Make sure the link contains '/playlist/' followed by numbers.");
-        }
-      }
+    // Build the visible playlist
+    tracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'playlist-item';
+      item.innerHTML = `<span>${index + 1}. ${track.title}</span> <span style="font-size:9px; color:#555;">${track.artist}</span>`;
+      item.onclick = () => loadTrack(index, true);
+      playlistContainer.appendChild(item);
     });
 
+    function loadTrack(index, playNow = false) {
+      currentIndex = index;
+      const track = tracks[index];
+      
+      // Update UI
+      titleDisplay.innerText = track.title;
+      artistDisplay.innerText = track.artist;
+      
+      // Highlight in list
+      const items = document.querySelectorAll('.playlist-item');
+      items.forEach(i => i.classList.remove('active'));
+      items[index].classList.add('active');
+      items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // Setting Audio Source to local file (e.g., "1.mp3", "2.mp3" uploaded in your github)
+      audioPlayer.src = `${track.id}.mp3`;
+
+      if (playNow) {
+        audioPlayer.play().catch(e => console.log("Missing MP3 file on Github: " + track.id + ".mp3"));
+        playBtn.innerText = '⏸';
+      }
+    }
+
+    playBtn.onclick = () => {
+      if (audioPlayer.paused) {
+        audioPlayer.play().catch(e => alert("Please upload " + tracks[currentIndex].id + ".mp3 to your GitHub to play this track!"));
+        playBtn.innerText = '⏸';
+      } else {
+        audioPlayer.pause();
+        playBtn.innerText = '▶';
+      }
+    };
+
+    nextBtn.onclick = () => {
+      let nextIndex = currentIndex + 1 >= tracks.length ? 0 : currentIndex + 1;
+      loadTrack(nextIndex, true);
+    };
+
+    prevBtn.onclick = () => {
+      let prevIndex = currentIndex - 1 < 0 ? tracks.length - 1 : currentIndex - 1;
+      loadTrack(prevIndex, true);
+    };
+
+    // Auto next track when ended
+    audioPlayer.onended = () => nextBtn.onclick();
+
+    // Init first track
+    loadTrack(0, false);
+
+    // ----------------------------------------------------
+    // BACKGROUND SYSTEM
+    // ----------------------------------------------------
     const dbName = "KemoCommandDB_Final";
     let db;
     const request = indexedDB.open(dbName, 1);
@@ -353,21 +468,6 @@
 
     request.onsuccess = function(e) {
       db = e.target.result;
-      loadSavedBg(); 
-    };
-
-    const liveBg = document.getElementById('live-bg');
-    const staticBg = document.getElementById('static-bg');
-    const toggleBtn = document.getElementById('toggle-bg-btn');
-    const bgUploadInput = document.getElementById('bg-upload');
-    let isLive = false; 
-
-    function saveBg(file) {
-      const tx = db.transaction("bgStore", "readwrite");
-      tx.objectStore("bgStore").put({ fileData: file, fileType: file.type }, "myCustomBg");
-    }
-
-    function loadSavedBg() {
       const tx = db.transaction("bgStore", "readonly");
       const req = tx.objectStore("bgStore").get("myCustomBg");
       req.onsuccess = function() {
@@ -375,7 +475,13 @@
           applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
         }
       };
-    }
+    };
+
+    const liveBg = document.getElementById('live-bg');
+    const staticBg = document.getElementById('static-bg');
+    const toggleBtn = document.getElementById('toggle-bg-btn');
+    const bgUploadInput = document.getElementById('bg-upload');
+    let isLive = false; 
 
     function applyBg(url, type) {
       if (type.startsWith('video/')) {
@@ -395,8 +501,10 @@
 
     bgUploadInput.addEventListener('change', function(e) {
       if (e.target.files[0]) {
-        saveBg(e.target.files[0]); 
-        applyBg(URL.createObjectURL(e.target.files[0]), e.target.files[0].type);
+        const file = e.target.files[0];
+        const tx = db.transaction("bgStore", "readwrite");
+        tx.objectStore("bgStore").put({ fileData: file, fileType: file.type }, "myCustomBg");
+        applyBg(URL.createObjectURL(file), file.type);
       }
     });
 
