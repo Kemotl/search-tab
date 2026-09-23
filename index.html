@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | SMART AUDIO</title>
+  <title>Kemo_otak Command Center | XemoX</title>
   <style>
     body {
       margin: 0;
@@ -257,8 +257,6 @@
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
-    
-    <!-- Zrar Set Anghami el-gdeed -->
     <button id="set-anghami-btn" class="control-btn" style="border-color: #ff00ff; color: #ff00ff;">SET ANGHAMI</button>
   </div>
 
@@ -303,14 +301,10 @@
   </div>
 
   <script>
-    // ----------------------------------------------------
-    // SMART SEARCH & EASTER EGG LOGIC
-    // ----------------------------------------------------
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const query = document.getElementById('search-input').value.trim();
       const queryLower = query.toLowerCase();
 
-      // Easter Egg
       if (queryLower === 'the best game ever') {
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
@@ -318,29 +312,24 @@
         return;
       }
 
-      // Smart Anghami Search (if it starts with 'anghami')
       if (queryLower.startsWith('anghami ')) {
         event.preventDefault();
-        const searchQuery = query.substring(8).trim(); // Remove 'anghami '
+        const searchQuery = query.substring(8).trim(); 
         window.location.href = `https://play.anghami.com/search/${encodeURIComponent(searchQuery)}`;
         return;
       }
     });
 
-    // ----------------------------------------------------
-    // CUSTOM ANGHAMI PLAYLIST LOGIC
-    // ----------------------------------------------------
     const anghamiWidget = document.getElementById('anghami-widget');
     const setAnghamiBtn = document.getElementById('set-anghami-btn');
     
-    // Default fallback ID (if someone hasn't set theirs yet)
-    let savedAnghamiId = localStorage.getItem('kemo_anghami_id') || '104868205'; 
+    // Default fallback ID is now YOUR XemoX Playlist
+    let savedAnghamiId = localStorage.getItem('kemo_anghami_id') || '293228996'; 
     anghamiWidget.src = `https://widget.anghami.com/playlist/${savedAnghamiId}?theme=dark&layout=horizontal`;
 
     setAnghamiBtn.addEventListener('click', () => {
       const link = prompt("Paste your Anghami Playlist link here:\n(e.g., https://play.anghami.com/playlist/123456)");
       if (link) {
-        // Extract the numbers after /playlist/
         const match = link.match(/playlist\/(\d+)/);
         if (match && match[1]) {
           const newId = match[1];
@@ -353,10 +342,6 @@
       }
     });
 
-
-    // ----------------------------------------------------
-    // INDEXED-DB SYSTEM: Saves Background File
-    // ----------------------------------------------------
     const dbName = "KemoCommandDB_Final";
     let db;
     const request = indexedDB.open(dbName, 1);
