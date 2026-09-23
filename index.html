@@ -81,9 +81,10 @@
       box-shadow: 0 0 15px #00e5ff;
     }
 
+    /* --- PORTFOLIO SECRET BTN (Moved to bottom right to make room for Lyrics) --- */
     .secret-btn {
       position: absolute;
-      top: 15px;
+      bottom: 20px;
       right: 20px;
       color: #333;
       text-decoration: none;
@@ -99,6 +100,49 @@
       color: #00e5ff;
       text-shadow: 0 0 8px #00e5ff;
     }
+
+    /* --- LYRICS BOX (3la el-yameen fo2) --- */
+    .lyrics-container {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 260px;
+      max-height: 350px;
+      background: rgba(5, 10, 20, 0.85);
+      backdrop-filter: blur(15px);
+      border: 1px solid #00e5ff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lyrics-header {
+      color: #00e5ff;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .lyrics-content {
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.6;
+      text-align: center;
+      overflow-y: auto;
+      white-space: pre-wrap; /* Keeps the line breaks from JS */
+    }
+
+    /* Custom Scrollbar for Lyrics */
+    .lyrics-content::-webkit-scrollbar { width: 4px; }
+    .lyrics-content::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 4px; }
 
     /* --- PROFILE --- */
     .profile-pic {
@@ -256,12 +300,11 @@
     .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
 
     .xemox-playlist {
-      max-height: 120px; /* Scrollable list */
+      max-height: 120px; 
       overflow-y: auto;
       padding: 5px 0;
     }
 
-    /* Custom Scrollbar for playlist */
     .xemox-playlist::-webkit-scrollbar { width: 5px; }
     .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
@@ -281,10 +324,20 @@
       border-left: 3px solid #00e5ff;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .controls-container { flex-direction: column; gap: 8px; top: 10px; left: 10px; }
       .control-btn { padding: 6px 8px; font-size: 9px; }
-      .xemox-player { max-height: 180px; }
+      
+      /* On mobile, make lyrics smaller and overlay */
+      .lyrics-container {
+        top: 10px;
+        right: 10px;
+        width: 150px;
+        max-height: 200px;
+        padding: 10px;
+      }
+      .lyrics-header { font-size: 11px; }
+      .lyrics-content { font-size: 10px; }
     }
   </style>
 </head>
@@ -303,6 +356,12 @@
   </div>
 
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
+
+  <!-- LYRICS BOX (TOP RIGHT) -->
+  <div class="lyrics-container">
+    <div class="lyrics-header" id="lyrics-title">LYRICS</div>
+    <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
+  </div>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
@@ -337,15 +396,13 @@
     </div>
 
     <div class="xemox-playlist" id="x-list">
-      <!-- Tracks will be injected here by JS -->
+      <!-- Tracks injected by JS -->
     </div>
     
-    <!-- Hidden Audio element -->
     <audio id="x-audio"></audio>
   </div>
 
   <script>
-    // Search Easter Egg
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       if (document.getElementById('search-input').value.toLowerCase().trim() === 'the best game ever') {
         event.preventDefault(); 
@@ -355,35 +412,50 @@
     });
 
     // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER LOGIC
+    // XEMOX™ AUDIO PLAYER + LYRICS LOGIC
     // ----------------------------------------------------
+    // Yasta 3shan t-zbot el klmat:
+    // Htla2y 7aga esmha lyrics: `...` 
+    // Emsa7 el klam bta3y w 7ot klmat Abyusif mkano (lazm ykon ben el 3lamteen ` ` 3shan yzhr t7t b3d)
+    
     const tracks = [
-      { id: 1, title: "Samir Zamis", artist: "Abyusif" },
-      { id: 2, title: "3azra2eel", artist: "Abyusif" },
-      { id: 3, title: "Intro 2", artist: "Abyusif" },
-      { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif" },
-      { id: 5, title: "Amal 2", artist: "Abyusif" },
-      { id: 6, title: "El 3asefa", artist: "Abyusif" },
-      { id: 7, title: "Kan Fi Sora", artist: "Abyusif & Ismail Nosrat" },
-      { id: 8, title: "Talata Zayaha", artist: "Abyusif" },
-      { id: 9, title: "MA YORAM", artist: "Lil Baba (feat. Abyusif)" },
-      { id: 10, title: "Wtwat", artist: "Abyusif" },
-      { id: 11, title: "Reda", artist: "Lil Baba & Abyusif" },
-      { id: 12, title: "Replica", artist: "Abyusif" },
-      { id: 13, title: "Hal Di Kat Hayatak", artist: "Abyusif" },
-      { id: 14, title: "Khanza2or", artist: "Abyusif" },
-      { id: 15, title: "Fen El Dawa", artist: "Abyusif" },
-      { id: 16, title: "Msh Barodd", artist: "Abyusif" },
-      { id: 17, title: "El Hob Ebn Wes5a", artist: "Abyusif" },
-      { id: 18, title: "300 Marra", artist: "Abyusif" },
-      { id: 19, title: "K 7 M S", artist: "Abyusif & Lil Baba" },
-      { id: 20, title: "Bta3ti", artist: "Lil Baba & Abyusif" },
-      { id: 21, title: "Okay", artist: "Abyusif" },
-      { id: 22, title: "Mo3taz", artist: "Abyusif" },
-      { id: 23, title: "Ya Man Ana", artist: "Abyusif" },
-      { id: 24, title: "7RB", artist: "Abyusif" },
-      { id: 25, title: "SWLGN", artist: "Abyusif" },
-      { id: 26, title: "Gaw Br2", artist: "Abyusif" }
+      { 
+        id: 1, title: "Samir Zamis", artist: "Abyusif", 
+        lyrics: `اكتب كلمات سمير زامل هنا..
+تقدر تنزل سطر جديد عادي جدا
+كده..
+وكده..` 
+      },
+      { 
+        id: 2, title: "3azra2eel", artist: "Abyusif", 
+        lyrics: `اكتب كلمات عزرائيل هنا..
+السطر التاني
+السطر التالت` 
+      },
+      { id: 3, title: "Intro 2", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 5, title: "Amal 2", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 6, title: "El 3asefa", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 7, title: "Kan Fi Sora", artist: "Abyusif & Ismail Nosrat", lyrics: `No lyrics added yet...` },
+      { id: 8, title: "Talata Zayaha", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 9, title: "MA YORAM", artist: "Lil Baba (feat. Abyusif)", lyrics: `No lyrics added yet...` },
+      { id: 10, title: "Wtwat", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 11, title: "Reda", artist: "Lil Baba & Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 12, title: "Replica", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 13, title: "Hal Di Kat Hayatak", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 14, title: "Khanza2or", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 15, title: "Fen El Dawa", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 16, title: "Msh Barodd", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 17, title: "El Hob Ebn Wes5a", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 18, title: "300 Marra", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 19, title: "K 7 M S", artist: "Abyusif & Lil Baba", lyrics: `No lyrics added yet...` },
+      { id: 20, title: "Bta3ti", artist: "Lil Baba & Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 21, title: "Okay", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 22, title: "Mo3taz", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 23, title: "Ya Man Ana", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 24, title: "7RB", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 25, title: "SWLGN", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 26, title: "Gaw Br2", artist: "Abyusif", lyrics: `No lyrics added yet...` }
     ];
 
     const audioPlayer = document.getElementById('x-audio');
@@ -394,6 +466,10 @@
     const artistDisplay = document.getElementById('x-artist');
     const playlistContainer = document.getElementById('x-list');
     
+    // Lyrics Elements
+    const lyricsTitle = document.getElementById('lyrics-title');
+    const lyricsText = document.getElementById('lyrics-text');
+
     let currentIndex = 0;
 
     // Build the visible playlist
@@ -413,17 +489,21 @@
       titleDisplay.innerText = track.title;
       artistDisplay.innerText = track.artist;
       
+      // Update Lyrics
+      lyricsTitle.innerText = "LYRICS: " + track.title;
+      lyricsText.innerText = track.lyrics;
+      
       // Highlight in list
       const items = document.querySelectorAll('.playlist-item');
       items.forEach(i => i.classList.remove('active'));
       items[index].classList.add('active');
       items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-      // Setting Audio Source to local file (e.g., "1.mp3", "2.mp3" uploaded in your github)
+      // Setting Audio Source
       audioPlayer.src = `${track.id}.mp3`;
 
       if (playNow) {
-        audioPlayer.play().catch(e => console.log("Missing MP3 file on Github: " + track.id + ".mp3"));
+        audioPlayer.play().catch(e => console.log("Missing MP3 file on Github"));
         playBtn.innerText = '⏸';
       }
     }
@@ -448,7 +528,6 @@
       loadTrack(prevIndex, true);
     };
 
-    // Auto next track when ended
     audioPlayer.onended = () => nextBtn.onclick();
 
     // Init first track
