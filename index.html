@@ -16,7 +16,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 25px;
+      gap: 20px; /* قللنا المسافات شوية عشان تكفي الموبايل */
       position: relative;
     }
 
@@ -102,8 +102,8 @@
 
     /* --- PROFILE --- */
     .profile-pic {
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid #00e5ff;
@@ -135,7 +135,7 @@
     }
 
     .search-form input {
-      padding: 15px 20px;
+      padding: 12px 20px;
       flex: 1;
       background: rgba(10, 15, 25, 0.7);
       backdrop-filter: blur(10px);
@@ -154,7 +154,7 @@
     }
 
     .search-form button {
-      padding: 15px 25px;
+      padding: 12px 25px;
       background-color: #00e5ff;
       border: none;
       color: #000;
@@ -190,8 +190,8 @@
     }
 
     .shortcut-icon {
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       background: rgba(10, 15, 25, 0.6);
       backdrop-filter: blur(5px);
       border: 1px solid #0055ff;
@@ -199,8 +199,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
-      margin-bottom: 8px;
+      font-size: 18px;
+      margin-bottom: 5px;
       transition: 0.3s;
     }
 
@@ -211,12 +211,12 @@
       color: #00e5ff;
     }
 
-    /* --- MINI MUSIC PLAYER --- */
+    /* --- MINI MUSIC PLAYER (تم التعديل عشان يظهر تحت الأيقونات مباشرة) --- */
     .music-player {
-      position: absolute;
-      bottom: 20px;
-      width: 90%;
-      max-width: 500px;
+      position: relative; /* شلنا الـ absolute اللي كانت بتخبيه تحت */
+      margin-top: 10px;
+      width: 85%;
+      max-width: 400px;
       background: rgba(10, 15, 25, 0.8);
       backdrop-filter: blur(10px);
       border: 1px solid #0055ff;
@@ -224,7 +224,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 10px 15px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       z-index: 10;
     }
@@ -238,7 +238,7 @@
       background: none;
       border: none;
       color: #00e5ff;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       transition: 0.3s;
     }
@@ -251,22 +251,23 @@
     .track-info {
       flex: 1;
       text-align: center;
-      font-size: 12px;
+      font-size: 11px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      margin: 0 15px;
+      margin: 0 10px;
       color: #99aab5;
     }
 
     .upload-music-label {
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       color: #00e5ff;
       border: 1px solid #00e5ff;
-      padding: 5px 10px;
+      padding: 4px 8px;
       border-radius: 15px;
       transition: 0.3s;
+      white-space: nowrap;
     }
 
     .upload-music-label:hover {
@@ -274,9 +275,19 @@
     }
 
     @media (max-width: 600px) {
-      .music-player {
-        bottom: 10px;
-        padding: 8px 15px;
+      .controls-container {
+        flex-direction: column; 
+        gap: 8px;
+        top: 10px;
+        left: 10px;
+      }
+      .control-btn {
+        padding: 6px 8px;
+        font-size: 9px;
+      }
+      .secret-btn {
+        top: 10px;
+        right: 10px;
       }
     }
   </style>
@@ -307,7 +318,7 @@
     </form>
   </div>
 
-  <!-- QUICK LINKS (Replaced WhatsApp with Messenger) -->
+  <!-- QUICK LINKS -->
   <div class="quick-links">
     <a href="https://www.youtube.com" class="shortcut">
       <div class="shortcut-icon">▶</div><span>YouTube</span>
@@ -323,7 +334,7 @@
     </a>
   </div>
 
-  <!-- MINI MUSIC PLAYER -->
+  <!-- MINI MUSIC PLAYER (Now perfectly centered below icons) -->
   <div class="music-player">
     <div class="music-controls">
       <button id="play-pause-btn" class="music-btn">▶</button>
@@ -334,7 +345,7 @@
     <input type="file" id="music-upload" accept="audio/*" multiple hidden>
   </div>
 
-  <!-- Audio Element (Hidden) -->
+  <!-- Audio Element -->
   <audio id="audio-player"></audio>
 
   <script>
@@ -349,9 +360,9 @@
     });
 
     // ----------------------------------------------------
-    // SUPER INDEXED-DB SYSTEM: Background & Music Library
+    // INDEXED-DB SYSTEM: Background & Music
     // ----------------------------------------------------
-    const dbName = "KemoCommandDB";
+    const dbName = "KemoCommandDB_Final";
     let db;
     const request = indexedDB.open(dbName, 1);
 
@@ -442,7 +453,7 @@
         if (req.result && req.result.files) {
           library = req.result.files;
           if (library.length > 0) {
-            setupTrack(currentTrackIndex, false); // Setup but don't autoplay yet
+            setupTrack(currentTrackIndex, false); 
           }
         }
       };
@@ -459,7 +470,6 @@
         store.put({ files: currentLib }, "myMusicLib");
         
         library = currentLib;
-        // Start playing the first newly added song
         setupTrack(library.length - newFiles.length, true);
       };
     }
@@ -479,7 +489,6 @@
       audioPlayer.src = URL.createObjectURL(file);
       trackNameDisplay.innerText = file.name.replace('.mp3', '');
       
-      // Resume from saved time if it's the same track
       const savedTime = localStorage.getItem('kemo_track_time');
       if (savedTime && !autoPlay) {
         audioPlayer.currentTime = parseFloat(savedTime);
@@ -509,7 +518,6 @@
       if (library.length > 0) setupTrack(currentTrackIndex + 1, true);
     });
 
-    // Save exact second to resume later in a New Tab
     setInterval(() => {
       if (!audioPlayer.paused) {
         localStorage.setItem('kemo_track_time', audioPlayer.currentTime);
