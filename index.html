@@ -32,14 +32,8 @@
       transition: opacity 0.5s ease;
     }
     
-    #static-bg {
-      background: #030b14; 
-      display: none; 
-    }
-
-    #live-bg {
-      display: block; 
-    }
+    #static-bg { background: #030b14; display: none; }
+    #live-bg { display: block; }
 
     .bg-overlay {
       position: absolute;
@@ -57,8 +51,9 @@
       top: 15px;
       left: 20px;
       display: flex;
-      gap: 15px;
-      z-index: 10;
+      gap: 10px;
+      z-index: 20;
+      flex-wrap: wrap;
     }
 
     .control-btn {
@@ -92,7 +87,7 @@
       opacity: 0.4;
       transition: 0.4s;
       letter-spacing: 2px;
-      z-index: 10;
+      z-index: 100;
     }
 
     .secret-btn:hover {
@@ -114,9 +109,10 @@
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
-      z-index: 10;
-      display: flex;
+      z-index: 15;
+      display: flex; /* Toggle this via JS */
       flex-direction: column;
+      transition: opacity 0.3s ease;
     }
 
     .lyrics-header {
@@ -162,10 +158,11 @@
     }
 
     /* --- SEARCH --- */
-    .search-container {
+    .search-wrapper {
+      position: relative;
       width: 100%;
-      text-align: center;
-      z-index: 1;
+      max-width: 600px;
+      z-index: 50;
       padding: 0 20px;
       box-sizing: border-box;
     }
@@ -174,14 +171,12 @@
       display: flex;
       justify-content: center;
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
     }
 
     .search-form input {
       padding: 12px 20px;
       flex: 1;
-      background: rgba(10, 15, 25, 0.6);
+      background: rgba(10, 15, 25, 0.8);
       backdrop-filter: blur(10px);
       border: 2px solid #0055ff;
       color: white;
@@ -208,6 +203,41 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
+    /* --- AUTOCOMPLETE (زي جوجل) --- */
+    .autocomplete-items {
+      position: absolute;
+      top: 100%;
+      left: 20px;
+      right: 20px;
+      background: rgba(10, 15, 25, 0.95);
+      backdrop-filter: blur(15px);
+      border: 1px solid #00e5ff;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 99;
+      max-height: 180px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .autocomplete-items div {
+      padding: 12px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      transition: 0.2s;
+    }
+
+    .autocomplete-items div:hover {
+      background-color: rgba(0, 229, 255, 0.2);
+      color: #00e5ff;
+      padding-left: 20px;
+    }
+
+    .autocomplete-items::-webkit-scrollbar { width: 5px; }
+    .autocomplete-items::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
     /* --- QUICK LINKS --- */
     .quick-links {
@@ -324,53 +354,70 @@
       border-left: 3px solid #00e5ff;
     }
 
+    /* --- MOBILE CUSTOMIZATION (فاجر) --- */
     @media (max-width: 768px) {
-      .controls-container { flex-direction: column; gap: 8px; top: 10px; left: 10px; }
-      .control-btn { padding: 6px 8px; font-size: 9px; }
+      .controls-container { 
+        flex-direction: row; 
+        justify-content: center; 
+        width: 100%; 
+        top: 10px; 
+        left: 0; 
+      }
+      .control-btn { padding: 6px 10px; font-size: 10px; }
       
       .lyrics-container {
-        top: 10px;
+        top: 50px; /* نزلناها تحت الزراير */
         right: 10px;
-        width: 150px;
-        max-height: 200px;
-        padding: 10px;
+        width: 140px; /* صغيرة جداً عشان متضايقكش */
+        max-height: 160px;
+        padding: 8px;
       }
-      .lyrics-header { font-size: 11px; }
-      .lyrics-content { font-size: 10px; }
+      .lyrics-header { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }
+      .lyrics-content { font-size: 9px; line-height: 1.4; }
+
+      .search-form input { font-size: 14px; padding: 10px; }
+      .search-form button { font-size: 14px; padding: 10px 15px; }
+      
+      .profile-pic { width: 75px; height: 75px; }
+      .xemox-player { width: 95%; }
+      .autocomplete-items div { font-size: 12px; padding: 8px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUNDS: بنربط الفيديو الأساسي هنا -->
+  <!-- BACKGROUNDS -->
   <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
-  <!-- BG CONTROLS -->
+  <!-- BG CONTROLS & LYRICS TOGGLE -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
+    <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
   </div>
 
-  <!-- البورتفوليو هنا -->
+  <!-- PORTFOLIO -->
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <!-- LYRICS BOX (TOP RIGHT) -->
-  <div class="lyrics-container">
+  <!-- LYRICS BOX (With Toggle logic inside JS) -->
+  <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
   </div>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
-  <!-- SEARCH BAR -->
-  <div class="search-container">
+  <!-- SEARCH BAR with AUTOCOMPLETE -->
+  <div class="search-wrapper">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
+      <!-- Autofocus is here! -->
       <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
       <button type="submit">SEARCH</button>
     </form>
+    <div id="autocomplete-list" class="autocomplete-items"></div>
   </div>
 
   <!-- QUICK LINKS -->
@@ -384,7 +431,6 @@
   <!-- XEMOX CUSTOM MUSIC ENGINE -->
   <div class="xemox-player">
     <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
-    
     <div class="xemox-controls">
       <button class="x-btn" id="x-prev">⏮</button>
       <div style="display:flex; flex-direction:column; align-items:center;">
@@ -394,26 +440,99 @@
       <button class="x-btn" id="x-play">▶</button>
       <button class="x-btn" id="x-next">⏭</button>
     </div>
-
-    <div class="xemox-playlist" id="x-list">
-      <!-- Tracks injected by JS -->
-    </div>
-    
+    <div class="xemox-playlist" id="x-list"></div>
     <audio id="x-audio"></audio>
   </div>
 
   <script>
+    // --- FORCE AUTO-FOCUS ON LOAD (يخليك تكتب علطول أول ما تفتح) ---
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.getElementById('search-input').focus();
+      }, 500);
+    });
+
+    // --- AUTOCOMPLETE LOGIC (نظام التكملة زي جوجل) ---
+    const searchInput = document.getElementById('search-input');
+    const autocompleteList = document.getElementById('autocomplete-list');
+    
+    // الكلمات اللي بيقترحها
+    const suggestions = [
+      "best game ever",
+      "what is the best game ever",
+      "red dead redemption 2",
+      "rdr2",
+      "abyusif",
+      "lil baba",
+      "xemox audio engine",
+      "kemo_otak portfolio",
+      "samir zamis lyrics",
+      "3azra2eel"
+    ];
+
+    searchInput.addEventListener('input', function() {
+      const val = this.value.toLowerCase();
+      autocompleteList.innerHTML = '';
+      
+      if (!val) {
+        autocompleteList.style.display = 'none';
+        return false;
+      }
+
+      let hasMatch = false;
+      suggestions.forEach(item => {
+        if (item.toLowerCase().includes(val)) {
+          hasMatch = true;
+          const div = document.createElement('div');
+          // يخلي الكلمة اللي بتكتبها متعلمة أو مجرد يعرض الاقتراح
+          div.innerHTML = item;
+          div.addEventListener('click', function() {
+            searchInput.value = item; // يملى الخانة بالاختيار
+            autocompleteList.style.display = 'none';
+          });
+          autocompleteList.appendChild(div);
+        }
+      });
+      
+      autocompleteList.style.display = hasMatch ? 'block' : 'none';
+    });
+
+    // يقفل الاقتراحات لو دوست برا الخانة
+    document.addEventListener('click', function(e) {
+      if (e.target !== searchInput) {
+        autocompleteList.style.display = 'none';
+      }
+    });
+
+    // --- SEARCH ALERT (Best Game Ever) ---
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
-      const q = document.getElementById('search-input').value.toLowerCase().trim();
+      const q = searchInput.value.toLowerCase().trim();
       if ((q.includes('best') && q.includes('game')) || q.includes('red dead') || q.includes('rdr')) {
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
-        document.getElementById('search-input').value = '';
+        searchInput.value = '';
+        autocompleteList.style.display = 'none';
+      }
+    });
+
+    // --- ENABLE / DISABLE LYRICS ---
+    const toggleLyricsBtn = document.getElementById('toggle-lyrics-btn');
+    const lyricsBox = document.getElementById('lyrics-box');
+    let lyricsVisible = true;
+
+    toggleLyricsBtn.addEventListener('click', () => {
+      lyricsVisible = !lyricsVisible;
+      if (lyricsVisible) {
+        lyricsBox.style.display = 'flex'; // يظهر
+        toggleLyricsBtn.innerText = 'LYRICS: ON';
+      } else {
+        lyricsBox.style.display = 'none'; // يخفي تماماً
+        toggleLyricsBtn.innerText = 'LYRICS: OFF';
       }
     });
 
     // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER + LYRICS LOGIC
+    // XEMOX™ AUDIO PLAYER + FULL LYRICS
     // ----------------------------------------------------
     const tracks = [
       { 
@@ -1228,13 +1347,11 @@ Same active
     const artistDisplay = document.getElementById('x-artist');
     const playlistContainer = document.getElementById('x-list');
     
-    // Lyrics Elements
     const lyricsTitle = document.getElementById('lyrics-title');
     const lyricsText = document.getElementById('lyrics-text');
 
     let currentIndex = 0;
 
-    // Build the visible playlist
     tracks.forEach((track, index) => {
       const item = document.createElement('div');
       item.className = 'playlist-item';
@@ -1247,16 +1364,13 @@ Same active
       currentIndex = index;
       const track = tracks[index];
       
-      // Update UI
       titleDisplay.innerText = track.title;
       artistDisplay.innerText = track.artist;
       lyricsTitle.innerText = "LYRICS: " + track.title;
       lyricsText.innerText = track.lyrics;
       
-      // إعادة مربع الكلمات لفوق خالص
       lyricsText.scrollTop = 0;
       
-      // Highlight in list
       const items = document.querySelectorAll('.playlist-item');
       items.forEach(i => i.classList.remove('active'));
       if(items[index]) {
@@ -1264,7 +1378,6 @@ Same active
         items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
 
-      // Setting Audio Source
       audioPlayer.src = `${track.id}.mp3`;
 
       if (playNow) {
@@ -1272,7 +1385,6 @@ Same active
         playBtn.innerText = '⏸';
       }
 
-      // --- Media Session API (للتحكم من بره الموقع) ---
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: track.title,
@@ -1289,19 +1401,14 @@ Same active
         navigator.mediaSession.setActionHandler('previoustrack', () => prevBtn.onclick());
         navigator.mediaSession.setActionHandler('nexttrack', () => nextBtn.onclick());
       }
-      // ---------------------------------------------------
     }
 
-    // ----------------------------------------------------
-    // محرك السكرول التلقائي البطيء (Auto-Scroll)
-    // ----------------------------------------------------
     audioPlayer.addEventListener('timeupdate', () => {
       if (audioPlayer.duration) {
         const progress = audioPlayer.currentTime / audioPlayer.duration;
         const maxScroll = lyricsText.scrollHeight - lyricsText.clientHeight;
         
         if (maxScroll > 0) {
-          // هينزل سطر بسطر براحة جداً مع تقدم الأغنية
           lyricsText.scrollTop = maxScroll * progress;
         }
       }
@@ -1329,14 +1436,11 @@ Same active
 
     audioPlayer.onended = () => nextBtn.onclick();
 
-    // Init first track
     if(tracks.length > 0) {
       loadTrack(0, false);
     }
 
-    // ----------------------------------------------------
     // BACKGROUND SYSTEM
-    // ----------------------------------------------------
     const dbName = "KemoCommandDB_Final";
     let db;
     const request = indexedDB.open(dbName, 1);
@@ -1351,11 +1455,9 @@ Same active
       const tx = db.transaction("bgStore", "readonly");
       const req = tx.objectStore("bgStore").get("myCustomBg");
       req.onsuccess = function() {
-        // لو المستخدم رفع صورة قبل كده، هاتها
         if (req.result && req.result.fileData) {
           applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
         } else {
-          // لو مرفعش حاجة، شغل فيديو النيون (car.mp4) اللي إنت حطيته
           liveBg.style.display = 'block';
           staticBg.style.display = 'none';
           isLive = true;
