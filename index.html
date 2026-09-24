@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Kemo_otak Command Center | XEMOX AUDIO</title>
+  <link rel="icon" href="sasd.jpg" type="image/jpeg">
   <style>
     body {
       margin: 0;
@@ -204,7 +205,7 @@
       transition: 0.3s;
     }
 
-    /* --- AUTOCOMPLETE (جوجل سيرفرز) --- */
+    /* --- AUTOCOMPLETE --- */
     .autocomplete-items {
       position: absolute;
       top: 100%;
@@ -238,7 +239,7 @@
     }
 
     .autocomplete-items div b {
-      color: #00e5ff; /* الكلمة اللي بتكتبها بتنور أزرق */
+      color: #00e5ff;
       font-weight: bold;
     }
 
@@ -360,7 +361,7 @@
       border-left: 3px solid #00e5ff;
     }
 
-    /* --- MOBILE CUSTOMIZATION (فاجر) --- */
+    /* --- MOBILE CUSTOMIZATION --- */
     @media (max-width: 768px) {
       .controls-container { 
         flex-direction: row; 
@@ -392,12 +393,10 @@
 </head>
 <body>
 
-  <!-- BACKGROUNDS -->
   <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
-  <!-- BG CONTROLS & LYRICS TOGGLE -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
@@ -405,10 +404,8 @@
     <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
   </div>
 
-  <!-- PORTFOLIO -->
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <!-- LYRICS BOX -->
   <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
@@ -419,14 +416,12 @@
   <!-- SEARCH BAR with GOOGLE LIVE AUTOCOMPLETE -->
   <div class="search-wrapper">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <!-- autofocus بيخلي الماوس يكتب لوحده أول ما تفتح -->
       <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
       <button type="submit">SEARCH</button>
     </form>
     <div id="autocomplete-list" class="autocomplete-items"></div>
   </div>
 
-  <!-- QUICK LINKS -->
   <div class="quick-links">
     <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
     <a href="https://gemini.google.com" class="shortcut-icon" title="Gemini">✨</a>
@@ -434,7 +429,6 @@
     <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
   </div>
 
-  <!-- XEMOX CUSTOM MUSIC ENGINE -->
   <div class="xemox-player">
     <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
     <div class="xemox-controls">
@@ -451,25 +445,23 @@
   </div>
 
   <script>
-    // --- FORCE AUTO-FOCUS ON LOAD (تأكيد إن السيرش جاهز للكتابة) ---
+    // --- FORCE AUTO-FOCUS ON LOAD ---
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.getElementById('search-input').focus();
       }, 500);
     });
 
-    // --- GOOGLE LIVE AUTOCOMPLETE API (نظام جوجل الفعلي) ---
+    // --- GOOGLE LIVE AUTOCOMPLETE API ---
     const searchInput = document.getElementById('search-input');
     const autocompleteList = document.getElementById('autocomplete-list');
     let debounceTimer;
 
-    // كلماتك المخصصة اللي هتظهر لو بحثت عنها
     const kemoSuggestions = [
       "best game ever",
       "red dead redemption 2"
     ];
 
-    // عشان نحل مشكلة العلامات في الكود
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
     }
@@ -483,10 +475,8 @@
         return;
       }
 
-      // بنستنى 300 مللي ثانية عشان منعملش ضغط على سيرفرات جوجل
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
-        // بنعمل Script Tag عشان نسحب الاقتراحات الحقيقية من جوجل
         const scriptId = 'google-autocomplete-script';
         let oldScript = document.getElementById(scriptId);
         if (oldScript) oldScript.remove();
@@ -499,22 +489,19 @@
       }, 300);
     });
 
-    // الدالة اللي بتستقبل التكملة من سيرفرات جوجل
     window.handleGoogleSuggestions = function(data) {
        const googleSuggestions = data[1] || [];
        const val = searchInput.value.toLowerCase().trim();
        
-       // بندمج كلماتك الخاصة مع اقتراحات جوجل الحقيقية
        let matches = kemoSuggestions.filter(item => item.toLowerCase().includes(val));
        let combined = [...matches, ...googleSuggestions];
-       combined = [...new Set(combined)].slice(0, 8); // بنشيل المتكرر ونعرض 8 اقتراحات بس
+       combined = [...new Set(combined)].slice(0, 8); 
 
        autocompleteList.innerHTML = '';
        if (combined.length > 0) {
          combined.forEach(item => {
             const div = document.createElement('div');
             
-            // بنعلم الكلمة اللي بتكتبها بلون أزرق نيون (زي جوجل)
             const safeVal = escapeRegExp(val);
             const boldedItem = item.replace(new RegExp("(" + safeVal + ")", "gi"), "<b>$1</b>");
             div.innerHTML = boldedItem;
@@ -523,12 +510,11 @@
               searchInput.value = item;
               autocompleteList.style.display = 'none';
               
-              // لو اختار أحسن لعبة نشغل التنبيه، لو حاجة تانية نبحث عنها في جوجل علطول
               if ((item.includes('best') && item.includes('game')) || item.includes('red dead') || item.includes('rdr')) {
                  alert("Red Dead Redemption 2, like Kemo_otak knows!");
                  searchInput.value = '';
               } else {
-                 document.getElementById('kemo-search').submit(); // بيبحث في جوجل مباشرة
+                 document.getElementById('kemo-search').submit(); 
               }
             });
             autocompleteList.appendChild(div);
@@ -539,14 +525,12 @@
        }
     };
 
-    // يقفل الاقتراحات لو دوست برا الخانة
     document.addEventListener('click', function(e) {
       if (e.target !== searchInput) {
         autocompleteList.style.display = 'none';
       }
     });
 
-    // --- SEARCH ALERT (Best Game Ever) للبحث اليدوي بالـ Enter ---
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const q = searchInput.value.toLowerCase().trim();
       if ((q.includes('best') && q.includes('game')) || q.includes('red dead') || q.includes('rdr')) {
@@ -565,10 +549,10 @@
     toggleLyricsBtn.addEventListener('click', () => {
       lyricsVisible = !lyricsVisible;
       if (lyricsVisible) {
-        lyricsBox.style.display = 'flex'; // يظهر
+        lyricsBox.style.display = 'flex';
         toggleLyricsBtn.innerText = 'LYRICS: ON';
       } else {
-        lyricsBox.style.display = 'none'; // يخفي تماماً من الموبايل
+        lyricsBox.style.display = 'none';
         toggleLyricsBtn.innerText = 'LYRICS: OFF';
       }
     });
@@ -577,9 +561,7 @@
     // XEMOX™ AUDIO PLAYER + FULL LYRICS
     // ----------------------------------------------------
     const tracks = [
-      { 
-        id: 1, title: "Samir Zamis", artist: "Abyusif", 
-        lyrics: `صحاب مكان فمبندفعش لما بنكسر
+      { id: 1, title: "Samir Zamis", artist: "Abyusif", lyrics: `صحاب مكان فمبندفعش لما بنكسر
 دخلت الأستوديو ورجعت على الميكسر
 السلك زي ديل القطة طوحته هليكوبتر
 قالولي هنجيبلك غيره بالكتير تستلم بكره
@@ -657,11 +639,8 @@
 عيد سعيد، وعيد ميلاد سعيد
 ورأس سنة سعيدة، ورأس سنة هجرية سعيدة
 وعيد عمال سعيد، وفلانتاين سعيد
-عشان يبقى عندك كل السعادة` 
-      },
-      { 
-        id: 2, title: "3azra2eel", artist: "Abyusif", 
-        lyrics: `الإكتئاب مرتبط زى الموضه وسعر الشئ
+عشان يبقى عندك كل السعادة` },
+      { id: 2, title: "3azra2eel", artist: "Abyusif", lyrics: `الإكتئاب مرتبط زى الموضه وسعر الشئ
 هلاوس الفشل فى دماغى فنانه بتبدع بليل
 كل ما بقف على رجلى، تقولى فى ودنى بتعند ليه
 إنت بجد قاعد كل دا فى الأوضه بتعمل إيه
@@ -722,11 +701,8 @@ MC's حاقن البيبي في عِرق سحابة الـ
 عبله كات كذابه
 عامه بتغابى على متن دبابه
 موتور الرالى، سيمفونى أوركسترالى
-براب عشان أمك مش فاضيالى..` 
-      },
-      { 
-        id: 3, title: "Intro 2", artist: "Abyusif", 
-        lyrics: `بخُر عليكو من دور أعلى
+براب عشان أمك مش فاضيالى..` },
+      { id: 3, title: "Intro 2", artist: "Abyusif", lyrics: `بخُر عليكو من دور أعلى
 إنتو أوضة وصالة وأنا تور أعمى
 خيطك أنا، مش دكتور ساعدك
 وهخيط الدكتور بعدك
@@ -764,8 +740,7 @@ Bundesliga أكح تكنسل الـ
 وإدي دولي دوري كاس، هنيئاً لك
 Plaque مناصب، إحنا أسامينا
 مدفون في التلج Icebox صباعه في الـ
-—لو بس هيكون فيه شـ` 
-      },
+—لو بس هيكون فيه شـ` },
       { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif", lyrics: `كنتي فين لما ضاقت الحيطان دي عليا
 كنتي فين وأنا بلم الحطام ده بإيديا
 كنتي فين لما كنت عايز أموت
