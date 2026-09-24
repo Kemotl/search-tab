@@ -1,435 +1,424 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kemo_otak Command Center | XEMOX AUDIO</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh; 
-      overflow: hidden; 
-      background-color: #030b14;
-      color: #00e5ff;
-      font-family: 'Courier New', Courier, monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      position: relative;
-    }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kemo_otak Command Center | XEMOX AUDIO</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh; 
+      overflow: hidden; 
+      background-color: #030b14;
+      color: #00e5ff;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      position: relative;
+    }
 
-    /* --- BACKGROUNDS --- */
-    #static-bg, #live-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -2;
-      transition: opacity 0.5s ease;
-    }
-    
-    #static-bg { background: #030b14; display: none; }
-    #live-bg { display: block; }
+    /* --- BACKGROUNDS --- */
+    #static-bg, #live-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      transition: opacity 0.5s ease;
+    }
+    
+    #static-bg {
+      background: #030b14; 
+      display: none; 
+    }
 
-    .bg-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(3, 11, 20, 0.6); 
-      z-index: -1;
-    }
+    #live-bg {
+      display: block; 
+    }
 
-    /* --- TOP CONTROLS --- */
-    .controls-container {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      display: flex;
-      gap: 10px;
-      z-index: 20;
-      flex-wrap: wrap;
-    }
+    .bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(3, 11, 20, 0.6); 
+      z-index: -1;
+    }
 
-    .control-btn {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid #00e5ff;
-      color: #00e5ff;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
-      font-weight: bold;
-      backdrop-filter: blur(5px);
-      transition: 0.3s;
-      text-transform: uppercase;
-    }
+    /* --- TOP CONTROLS --- */
+    .controls-container {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      display: flex;
+      gap: 15px;
+      z-index: 10;
+    }
 
-    .control-btn:hover {
-      background: rgba(0, 229, 255, 0.3);
-      box-shadow: 0 0 15px #00e5ff;
-    }
+    .control-btn {
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid #00e5ff;
+      color: #00e5ff;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      font-weight: bold;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
+      text-transform: uppercase;
+    }
 
-    /* --- PORTFOLIO SECRET BTN --- */
-    .secret-btn {
-      position: absolute;
-      bottom: 20px;
-      left: 20px; /* اتنقل على الشمال عشان مايتغطاش */
-      color: #333;
-      text-decoration: none;
-      font-size: 12px;
-      opacity: 0.4;
-      transition: 0.4s;
-      letter-spacing: 2px;
-      z-index: 100;
-    }
+    .control-btn:hover {
+      background: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 15px #00e5ff;
+    }
 
-    .secret-btn:hover {
-      opacity: 1;
-      color: #00e5ff;
-      text-shadow: 0 0 8px #00e5ff;
-    }
+    /* --- PORTFOLIO SECRET BTN --- */
+    .secret-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: #333;
+      text-decoration: none;
+      font-size: 12px;
+      opacity: 0.4;
+      transition: 0.4s;
+      letter-spacing: 2px;
+      z-index: 10;
+    }
 
-    /* --- LYRICS BOX --- */
-    .lyrics-container {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      width: 260px;
-      max-height: 350px;
-      background: rgba(5, 10, 20, 0.7);
-      backdrop-filter: blur(10px);
-      border: 1px solid #00e5ff;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
-      z-index: 15;
-      display: flex;
-      flex-direction: column;
-      transition: opacity 0.3s ease, visibility 0.3s;
-    }
+    .secret-btn:hover {
+      opacity: 1;
+      color: #00e5ff;
+      text-shadow: 0 0 8px #00e5ff;
+    }
 
-    .lyrics-container.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
+    /* --- LYRICS BOX --- */
+    .lyrics-container {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 260px;
+      max-height: 350px;
+      background: rgba(5, 10, 20, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid #00e5ff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
 
-    .lyrics-header {
-      color: #00e5ff;
-      font-weight: bold;
-      font-size: 14px;
-      letter-spacing: 2px;
-      text-align: center;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
+    .lyrics-header {
+      color: #00e5ff;
+      font-weight: bold;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-align: center;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
 
-    .lyrics-content {
-      color: #fff;
-      font-size: 13px;
-      line-height: 1.8;
-      text-align: center;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      scroll-behavior: smooth;
-    }
+    .lyrics-content {
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.8;
+      text-align: center;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      scroll-behavior: smooth;
+    }
 
-    .lyrics-content::-webkit-scrollbar { width: 4px; }
-    .lyrics-content::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 4px; }
+    .lyrics-content::-webkit-scrollbar { width: 4px; }
+    .lyrics-content::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 4px; }
 
-    /* --- PROFILE --- */
-    .profile-pic {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #00e5ff;
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
-      z-index: 1;
-      transition: 0.3s;
-    }
-    
-    .profile-pic:hover {
-      box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
-      border-color: #0055ff;
-    }
+    /* --- PROFILE --- */
+    .profile-pic {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #00e5ff;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      z-index: 1;
+      transition: 0.3s;
+    }
+    
+    .profile-pic:hover {
+      box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
+      border-color: #0055ff;
+    }
 
-    /* --- SEARCH --- */
-    .search-container {
-      width: 100%;
-      text-align: center;
-      z-index: 1;
-      padding: 0 20px;
-      box-sizing: border-box;
-    }
-    
-    .search-form {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+    /* --- SEARCH --- */
+    .search-container {
+      width: 100%;
+      text-align: center;
+      z-index: 1;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    
+    .search-form {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-    .search-form input {
-      padding: 12px 20px;
-      flex: 1;
-      background: rgba(10, 15, 25, 0.6);
-      backdrop-filter: blur(10px);
-      border: 2px solid #0055ff;
-      color: white;
-      border-radius: 8px 0 0 8px;
-      font-size: 16px;
-      outline: none;
-      transition: 0.3s;
-      min-width: 0;
-    }
+    .search-form input {
+      padding: 12px 20px;
+      flex: 1;
+      background: rgba(10, 15, 25, 0.6);
+      backdrop-filter: blur(10px);
+      border: 2px solid #0055ff;
+      color: white;
+      border-radius: 8px 0 0 8px;
+      font-size: 16px;
+      outline: none;
+      transition: 0.3s;
+      min-width: 0;
+    }
 
-    .search-form input:focus {
-      border-color: #00e5ff; 
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-    }
+    .search-form input:focus {
+      border-color: #00e5ff; 
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+    }
 
-    .search-form button {
-      padding: 12px 25px;
-      background-color: #00e5ff;
-      border: none;
-      color: #000;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 0 8px 8px 0;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    .search-form button {
+      padding: 12px 25px;
+      background-color: #00e5ff;
+      border: none;
+      color: #000;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-    /* --- QUICK LINKS --- */
-    .quick-links {
-      display: flex;
-      gap: 20px;
-      z-index: 1;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    /* --- QUICK LINKS --- */
+    .quick-links {
+      display: flex;
+      gap: 20px;
+      z-index: 1;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
 
-    .shortcut-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(10, 15, 25, 0.6);
-      border: 1px solid #0055ff;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: #99aab5;
-      transition: 0.3s;
-      text-decoration: none;
-    }
+    .shortcut-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(10, 15, 25, 0.6);
+      border: 1px solid #0055ff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #99aab5;
+      transition: 0.3s;
+      text-decoration: none;
+    }
 
-    .shortcut-icon:hover {
-      border-color: #00e5ff;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
-      color: #00e5ff;
-      transform: translateY(-5px);
-    }
+    .shortcut-icon:hover {
+      border-color: #00e5ff;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      color: #00e5ff;
+      transform: translateY(-5px);
+    }
 
-    /* --- XEMOX CUSTOM PLAYER --- */
-    .xemox-player {
-      width: 90%;
-      max-width: 450px;
-      background: rgba(5, 10, 20, 0.7);
-      backdrop-filter: blur(15px);
-      border: 2px solid #00e5ff;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      z-index: 10;
-      overflow: hidden;
-    }
+    /* --- XEMOX CUSTOM PLAYER --- */
+    .xemox-player {
+      width: 90%;
+      max-width: 450px;
+      background: rgba(5, 10, 20, 0.7);
+      backdrop-filter: blur(15px);
+      border: 2px solid #00e5ff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+      overflow: hidden;
+    }
 
-    .xemox-header {
-      background: #00e5ff;
-      color: #000;
-      text-align: center;
-      padding: 5px;
-      font-weight: bold;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
+    .xemox-header {
+      background: #00e5ff;
+      color: #000;
+      text-align: center;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
 
-    .xemox-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-    }
+    .xemox-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+    }
 
-    .xemox-track-info {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin: 0 10px;
-    }
-    .xemox-track-artist {
-      font-size: 10px;
-      color: #00e5ff;
-    }
+    .xemox-track-info {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0 10px;
+    }
+    .xemox-track-artist {
+      font-size: 10px;
+      color: #00e5ff;
+    }
 
-    .x-btn {
-      background: none;
-      border: none;
-      color: #00e5ff;
-      font-size: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
+    .x-btn {
+      background: none;
+      border: none;
+      color: #00e5ff;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
 
-    .xemox-playlist {
-      max-height: 120px; 
-      overflow-y: auto;
-      padding: 5px 0;
-    }
+    .xemox-playlist {
+      max-height: 120px; 
+      overflow-y: auto;
+      padding: 5px 0;
+    }
 
-    .xemox-playlist::-webkit-scrollbar { width: 5px; }
-    .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
+    .xemox-playlist::-webkit-scrollbar { width: 5px; }
+    .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
-    .playlist-item {
-      padding: 8px 20px;
-      font-size: 12px;
-      color: #99aab5;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      transition: 0.2s;
-    }
+    .playlist-item {
+      padding: 8px 20px;
+      font-size: 12px;
+      color: #99aab5;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      transition: 0.2s;
+    }
 
-    .playlist-item:hover, .playlist-item.active {
-      background: rgba(0, 229, 255, 0.15);
-      color: #fff;
-      border-left: 3px solid #00e5ff;
-    }
+    .playlist-item:hover, .playlist-item.active {
+      background: rgba(0, 229, 255, 0.15);
+      color: #fff;
+      border-left: 3px solid #00e5ff;
+    }
 
-    /* --- MOBILE RESPONSIVE --- */
-    @media (max-width: 768px) {
-      .controls-container { flex-direction: row; gap: 8px; top: 10px; left: 10px; max-width: 100%; }
-      .control-btn { padding: 6px 8px; font-size: 9px; }
-      
-      .lyrics-container {
-        top: 45px; /* نزلناها شوية عشان الزراير اللي فوق */
-        right: 10px;
-        width: 120px; /* صغرنا العرض جداً عشان مايغطيش صورتك */
-        max-height: 150px;
-        padding: 8px;
-      }
-      .lyrics-header { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }
-      .lyrics-content { font-size: 9px; line-height: 1.5; }
-    }
-  </style>
+    @media (max-width: 768px) {
+      .controls-container { flex-direction: column; gap: 8px; top: 10px; left: 10px; }
+      .control-btn { padding: 6px 8px; font-size: 9px; }
+      
+      .lyrics-container {
+        top: 10px;
+        right: 10px;
+        width: 150px;
+        max-height: 200px;
+        padding: 10px;
+      }
+      .lyrics-header { font-size: 11px; }
+      .lyrics-content { font-size: 10px; }
+    }
+  </style>
 </head>
 <body>
 
-  <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
-  <div id="static-bg"></div>
-  <div class="bg-overlay"></div>
+  <!-- BACKGROUNDS: بنربط الفيديو الأساسي هنا -->
+  <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
+  <div id="static-bg"></div>
+  <div class="bg-overlay"></div>
 
-  <div class="controls-container">
-    <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
-    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
-    <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
-    <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
-  </div>
+  <!-- BG CONTROLS -->
+  <div class="controls-container">
+    <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
+    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
+    <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
+  </div>
 
-  <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
+  <!-- البورتفوليو هنا -->
+  <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <div class="lyrics-container" id="lyrics-box">
-    <div class="lyrics-header" id="lyrics-title">LYRICS</div>
-    <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
-  </div>
+  <!-- LYRICS BOX (TOP RIGHT) -->
+  <div class="lyrics-container">
+    <div class="lyrics-header" id="lyrics-title">LYRICS</div>
+    <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
+  </div>
 
-  <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
+  <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
-  <div class="search-container">
-    <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
-      <button type="submit">SEARCH</button>
-    </form>
-  </div>
+  <!-- SEARCH BAR -->
+  <div class="search-container">
+    <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
+      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
+      <button type="submit">SEARCH</button>
+    </form>
+  </div>
 
-  <div class="quick-links">
-    <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
-    <a href="https://gemini.google.com" class="shortcut-icon" title="Gemini">✨</a>
-    <a href="https://www.messenger.com/" class="shortcut-icon" title="Messenger">💬</a>
-    <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
-  </div>
+  <!-- QUICK LINKS -->
+  <div class="quick-links">
+    <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
+    <a href="https://gemini.google.com" class="shortcut-icon" title="Gemini">✨</a>
+    <a href="https://www.messenger.com/" class="shortcut-icon" title="Messenger">💬</a>
+    <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
+  </div>
 
-  <div class="xemox-player">
-    <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
-    
-    <div class="xemox-controls">
-      <button class="x-btn" id="x-prev">⏮</button>
-      <div style="display:flex; flex-direction:column; align-items:center;">
-        <div class="xemox-track-info" id="x-title">Welcome to XemoX</div>
-        <div class="xemox-track-artist" id="x-artist">Select a track</div>
-      </div>
-      <button class="x-btn" id="x-play">▶</button>
-      <button class="x-btn" id="x-next">⏭</button>
-    </div>
+  <!-- XEMOX CUSTOM MUSIC ENGINE -->
+  <div class="xemox-player">
+    <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
+    
+    <div class="xemox-controls">
+      <button class="x-btn" id="x-prev">⏮</button>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div class="xemox-track-info" id="x-title">Welcome to XemoX</div>
+        <div class="xemox-track-artist" id="x-artist">Select a track</div>
+      </div>
+      <button class="x-btn" id="x-play">▶</button>
+      <button class="x-btn" id="x-next">⏭</button>
+    </div>
 
-    <div class="xemox-playlist" id="x-list">
-      </div>
-    
-    <audio id="x-audio"></audio>
-  </div>
+    <div class="xemox-playlist" id="x-list">
+      <!-- Tracks injected by JS -->
+    </div>
+    
+    <audio id="x-audio"></audio>
+  </div>
 
-  <script>
-    document.getElementById('kemo-search').addEventListener('submit', function(event) {
-      if (document.getElementById('search-input').value.toLowerCase().trim() === 'the best game ever') {
-        event.preventDefault(); 
-        alert("Red Dead Redemption 2, like Kemo_otak knows!");
-        document.getElementById('search-input').value = '';
-      }
-    });
+  <script>
+    document.getElementById('kemo-search').addEventListener('submit', function(event) {
+      const q = document.getElementById('search-input').value.toLowerCase().trim();
+      if ((q.includes('best') && q.includes('game')) || q.includes('red dead') || q.includes('rdr')) {
+        event.preventDefault(); 
+        alert("Red Dead Redemption 2, like Kemo_otak knows!");
+        document.getElementById('search-input').value = '';
+      }
+    });
 
-    // --- إخفاء وإظهار الكلمات ---
-    const toggleLyricsBtn = document.getElementById('toggle-lyrics-btn');
-    const lyricsBox = document.getElementById('lyrics-box');
-    let lyricsVisible = true;
-
-    toggleLyricsBtn.addEventListener('click', () => {
-      lyricsVisible = !lyricsVisible;
-      if (lyricsVisible) {
-        lyricsBox.classList.remove('hidden');
-        toggleLyricsBtn.innerText = 'LYRICS: ON';
-      } else {
-        lyricsBox.classList.add('hidden');
-        toggleLyricsBtn.innerText = 'LYRICS: OFF';
-      }
-    });
-
-    // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER + LYRICS LOGIC
-    // ----------------------------------------------------
-    const tracks = [
-      { 
-        id: 1, title: "Samir Zamis", artist: "Abyusif", 
-        lyrics: `صحاب مكان فمبندفعش لما بنكسر
+    // ----------------------------------------------------
+    // XEMOX™ AUDIO PLAYER + LYRICS LOGIC
+    // ----------------------------------------------------
+    const tracks = [
+      { 
+        id: 1, title: "Samir Zamis", artist: "Abyusif", 
+        lyrics: `صحاب مكان فمبندفعش لما بنكسر
 دخلت الأستوديو ورجعت على الميكسر
 السلك زي ديل القطة طوحته هليكوبتر
 قالولي هنجيبلك غيره بالكتير تستلم بكره
@@ -507,11 +496,11 @@
 عيد سعيد، وعيد ميلاد سعيد
 ورأس سنة سعيدة، ورأس سنة هجرية سعيدة
 وعيد عمال سعيد، وفلانتاين سعيد
-عشان يبقى عندك كل السعادة` 
-      },
-      { 
-        id: 2, title: "3azra2eel", artist: "Abyusif", 
-        lyrics: `الإكتئاب مرتبط زى الموضه وسعر الشئ
+عشان يبقى عندك كل السعادة` 
+      },
+      { 
+        id: 2, title: "3azra2eel", artist: "Abyusif", 
+        lyrics: `الإكتئاب مرتبط زى الموضه وسعر الشئ
 هلاوس الفشل فى دماغى فنانه بتبدع بليل
 كل ما بقف على رجلى، تقولى فى ودنى بتعند ليه
 إنت بجد قاعد كل دا فى الأوضه بتعمل إيه
@@ -572,11 +561,11 @@ MC's حاقن البيبي في عِرق سحابة الـ
 عبله كات كذابه
 عامه بتغابى على متن دبابه
 موتور الرالى، سيمفونى أوركسترالى
-براب عشان أمك مش فاضيالى..` 
-      },
-      { 
-        id: 3, title: "Intro 2", artist: "Abyusif", 
-        lyrics: `بخُر عليكو من دور أعلى
+براب عشان أمك مش فاضيالى..` 
+      },
+      { 
+        id: 3, title: "Intro 2", artist: "Abyusif", 
+        lyrics: `بخُر عليكو من دور أعلى
 إنتو أوضة وصالة وأنا تور أعمى
 خيطك أنا، مش دكتور ساعدك
 وهخيط الدكتور بعدك
@@ -614,9 +603,9 @@ Bundesliga أكح تكنسل الـ
 وإدي دولي دوري كاس، هنيئاً لك
 Plaque مناصب، إحنا أسامينا
 مدفون في التلج Icebox صباعه في الـ
-—لو بس هيكون فيه شـ` 
-      },
-      { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif", lyrics: `كنتي فين لما ضاقت الحيطان دي عليا
+—لو بس هيكون فيه شـ` 
+      },
+      { id: 4, title: "Wa7ed Wa7ed", artist: "Abyusif", lyrics: `كنتي فين لما ضاقت الحيطان دي عليا
 كنتي فين وأنا بلم الحطام ده بإيديا
 كنتي فين لما كنت عايز أموت
 متجيش دلوقتي تفتكريني أنا مبسوط
@@ -668,7 +657,7 @@ Plaque مناصب، إحنا أسامينا
 عارف إن انتي مادية، بس مش للدرجة دي
 فا متغيريش كلامك، كل واحد من الطريق
 المهم تبقي عرفتي، إنك متستاهلينيش` },
-      { id: 5, title: "Amal 2", artist: "Abyusif", lyrics: `شكراً على كل كلمة ساعدت
+      { id: 5, title: "Amal 2", artist: "Abyusif", lyrics: `شكراً على كل كلمة ساعدت
 بس خلاص أنا مابقتش قادر أعند
 راضي بالمكتوب أكيد ومش مستعجب
 بس مستني عزرائيل أنا ومستعجل
@@ -763,7 +752,7 @@ Plaque مناصب، إحنا أسامينا
 طولت أوي كده ليه
 مش يلا بقى ولا إيه
 طولت أوي كده ليه` },
-      { id: 6, title: "El 3asefa", artist: "Abyusif", lyrics: `‫(أكيد كل ده بعمل الـ Beat)
+      { id: 6, title: "El 3asefa", artist: "Abyusif", lyrics: `‫(أكيد كل ده بعمل الـ Beat)
 اقلب الوش
 كله يكش
 واحدة بخ
@@ -846,7 +835,7 @@ Plaque مناصب، إحنا أسامينا
 و الـrap انا هشتريه
 ٣ بارات و نتشت السين
 مؤذي` },
-      { id: 7, title: "Kan Fi Sora", artist: "Abyusif & Ismail Nosrat", lyrics: `كان فيه صورة ليكي بالورد ببص عليها وأنا مخنوق
+      { id: 7, title: "Kan Fi Sora", artist: "Abyusif & Ismail Nosrat", lyrics: `كان فيه صورة ليكي بالورد ببص عليها وأنا مخنوق
 جنب الترابيزة ركنك لسه زي ما هو ما حركتوش
 تالت سنة لينا مش مع بعض
 سادس شهر ما نتكلمش
@@ -886,8 +875,8 @@ Plaque مناصب، إحنا أسامينا
 حضن البطلة وخلص الفيلم
 نزل التتر بس ما بجمعش
 إن أنا الوحيد اللي لسه ما فهمش إني ما بمثلش` },
-      { id: 8, title: "Talata Zayaha", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 9, title: "MA YORAM", artist: "Lil Baba (feat. Abyusif)", lyrics: `لا أنا مش على ما يرام
+      { id: 8, title: "Talata Zayaha", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 9, title: "MA YORAM", artist: "Lil Baba (feat. Abyusif)", lyrics: `لا أنا مش على ما يرام
 حاسس إن كل ده سراب
 بحاول أطلع من تحت الأنقاض
 لما بتمشي بيبقى في ظلام
@@ -954,7 +943,7 @@ Haytham king
 مش عارف إني أهندل نفسي لما أفوق
 كاتم اللي يتقل عليا السموم
 كل دي خصوم، كل دي خصوم` },
-      { id: 10, title: "Wtwat", artist: "Abyusif", lyrics: `تنس، هبد فوق شبك
+      { id: 10, title: "Wtwat", artist: "Abyusif", lyrics: `تنس، هبد فوق شبك
 مينيت، وأقلبه سبق
 كنز، بس له تمن
 فينيش، ناس بتؤتمن
@@ -1043,8 +1032,8 @@ Haytham king
 مفيش بريق
 دفين طاهيك
 زفير شهيق` },
-      { id: 11, title: "Reda", artist: "Lil Baba & Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 12, title: "Replica", artist: "Abyusif", lyrics: `بتعلو في اوضة ليها سقف ، راسكو تخبط
+      { id: 11, title: "Reda", artist: "Lil Baba & Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 12, title: "Replica", artist: "Abyusif", lyrics: `بتعلو في اوضة ليها سقف ، راسكو تخبط
 كل موضة و ليها بأف ، عرضتو تخلص
 تفتحوا بس بقكو بقفل طلابتكو تكتر
 ماتروحوا المصيف؟ حتى كمان ارقامكو تغطس
@@ -1121,14 +1110,14 @@ Im back
 Same active
 انا املي حد ااه بس عيب اكتب
 انا اجمد رابر نطق بالعربي ليه اكدب` },
-      { id: 13, title: "Hal Di Kat Hayatak", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 14, title: "Khanza2or", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 15, title: "Fen El Dawa", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 16, title: "Msh Barodd", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 17, title: "El Hob Ebn Wes5a", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 18, title: "300 Marra", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 19, title: "K 7 M S", artist: "Abyusif & Lil Baba", lyrics: `No lyrics added yet...` },
-      { id: 20, title: "Bta3ti", artist: "Lil Baba & Abyusif", lyrics: `وانا يفرقلي ف ايه؟
+      { id: 13, title: "Hal Di Kat Hayatak", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 14, title: "Khanza2or", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 15, title: "Fen El Dawa", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 16, title: "Msh Barodd", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 17, title: "El Hob Ebn Wes5a", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 18, title: "300 Marra", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 19, title: "K 7 M S", artist: "Abyusif & Lil Baba", lyrics: `No lyrics added yet...` },
+      { id: 20, title: "Bta3ti", artist: "Lil Baba & Abyusif", lyrics: `وانا يفرقلي ف ايه؟
 لو كلكو ذيعتوا او كلكوا بيعتوا
 مش هيزيدني في شيء
 يا نفوس يا وسخة اصل ده لو رزقك
@@ -1223,199 +1212,201 @@ Same active
 اصل الدنيا ديه بتاعتي كلها بتاعتي
 لفة زي ساعتي حوالين ال Wrist
 تلف وتدور` },
-      { id: 21, title: "Okay", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 22, title: "Mo3taz", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 23, title: "Ya Man Ana", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 24, title: "7RB", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 25, title: "SWLGN", artist: "Abyusif", lyrics: `No lyrics added yet...` },
-      { id: 26, title: "Gaw Br2", artist: "Abyusif", lyrics: `No lyrics added yet...` }
-    ];
+      { id: 21, title: "Okay", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 22, title: "Mo3taz", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 23, title: "Ya Man Ana", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 24, title: "7RB", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 25, title: "SWLGN", artist: "Abyusif", lyrics: `No lyrics added yet...` },
+      { id: 26, title: "Gaw Br2", artist: "Abyusif", lyrics: `No lyrics added yet...` }
+    ];
 
-    const audioPlayer = document.getElementById('x-audio');
-    const playBtn = document.getElementById('x-play');
-    const prevBtn = document.getElementById('x-prev');
-    const nextBtn = document.getElementById('x-next');
-    const titleDisplay = document.getElementById('x-title');
-    const artistDisplay = document.getElementById('x-artist');
-    const playlistContainer = document.getElementById('x-list');
-    
-    // Lyrics Elements
-    const lyricsTitle = document.getElementById('lyrics-title');
-    const lyricsText = document.getElementById('lyrics-text');
+    const audioPlayer = document.getElementById('x-audio');
+    const playBtn = document.getElementById('x-play');
+    const prevBtn = document.getElementById('x-prev');
+    const nextBtn = document.getElementById('x-next');
+    const titleDisplay = document.getElementById('x-title');
+    const artistDisplay = document.getElementById('x-artist');
+    const playlistContainer = document.getElementById('x-list');
+    
+    // Lyrics Elements
+    const lyricsTitle = document.getElementById('lyrics-title');
+    const lyricsText = document.getElementById('lyrics-text');
 
-    let currentIndex = 0;
+    let currentIndex = 0;
 
-    // Build the visible playlist
-    tracks.forEach((track, index) => {
-      const item = document.createElement('div');
-      item.className = 'playlist-item';
-      item.innerHTML = `<span>${index + 1}. ${track.title}</span> <span style="font-size:9px; color:#555;">${track.artist}</span>`;
-      item.onclick = () => loadTrack(index, true);
-      playlistContainer.appendChild(item);
-    });
+    // Build the visible playlist
+    tracks.forEach((track, index) => {
+      const item = document.createElement('div');
+      item.className = 'playlist-item';
+      item.innerHTML = `<span>${index + 1}. ${track.title}</span> <span style="font-size:9px; color:#555;">${track.artist}</span>`;
+      item.onclick = () => loadTrack(index, true);
+      playlistContainer.appendChild(item);
+    });
 
-    function loadTrack(index, playNow = false) {
-      currentIndex = index;
-      const track = tracks[index];
-      
-      // Update UI
-      titleDisplay.innerText = track.title;
-      artistDisplay.innerText = track.artist;
-      lyricsTitle.innerText = "LYRICS: " + track.title;
-      lyricsText.innerText = track.lyrics;
-      
-      // إعادة مربع الكلمات لفوق خالص
-      lyricsText.scrollTop = 0;
-      
-      // Highlight in list
-      const items = document.querySelectorAll('.playlist-item');
-      items.forEach(i => i.classList.remove('active'));
-      if(items[index]) {
-        items[index].classList.add('active');
-        items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+    function loadTrack(index, playNow = false) {
+      currentIndex = index;
+      const track = tracks[index];
+      
+      // Update UI
+      titleDisplay.innerText = track.title;
+      artistDisplay.innerText = track.artist;
+      lyricsTitle.innerText = "LYRICS: " + track.title;
+      lyricsText.innerText = track.lyrics;
+      
+      // إعادة مربع الكلمات لفوق خالص
+      lyricsText.scrollTop = 0;
+      
+      // Highlight in list
+      const items = document.querySelectorAll('.playlist-item');
+      items.forEach(i => i.classList.remove('active'));
+      if(items[index]) {
+        items[index].classList.add('active');
+        items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
 
-      // Setting Audio Source
-      audioPlayer.src = `${track.id}.mp3`;
+      // Setting Audio Source
+      audioPlayer.src = `${track.id}.mp3`;
 
-      if (playNow) {
-        audioPlayer.play().catch(e => console.log("Missing MP3 file on Github"));
-        playBtn.innerText = '⏸';
-      }
+      if (playNow) {
+        audioPlayer.play().catch(e => console.log("Missing MP3 file on Github"));
+        playBtn.innerText = '⏸';
+      }
 
-      // --- Media Session API ---
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
-          title: track.title,
-          artist: track.artist,
-          album: 'XEMOX Audio Engine',
-          artwork: [
-            { src: 'sasd.jpg', sizes: '96x96', type: 'image/jpeg' },
-            { src: 'sasd.jpg', sizes: '512x512', type: 'image/jpeg' }
-          ]
-        });
+      // --- Media Session API (للتحكم من بره الموقع) ---
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: track.title,
+          artist: track.artist,
+          album: 'XEMOX Audio Engine',
+          artwork: [
+            { src: 'sasd.jpg', sizes: '96x96', type: 'image/jpeg' },
+            { src: 'sasd.jpg', sizes: '512x512', type: 'image/jpeg' }
+          ]
+        });
 
-        navigator.mediaSession.setActionHandler('play', () => playBtn.onclick());
-        navigator.mediaSession.setActionHandler('pause', () => playBtn.onclick());
-        navigator.mediaSession.setActionHandler('previoustrack', () => prevBtn.onclick());
-        navigator.mediaSession.setActionHandler('nexttrack', () => nextBtn.onclick());
-      }
-    }
+        navigator.mediaSession.setActionHandler('play', () => playBtn.onclick());
+        navigator.mediaSession.setActionHandler('pause', () => playBtn.onclick());
+        navigator.mediaSession.setActionHandler('previoustrack', () => prevBtn.onclick());
+        navigator.mediaSession.setActionHandler('nexttrack', () => nextBtn.onclick());
+      }
+      // ---------------------------------------------------
+    }
 
-    // ----------------------------------------------------
-    // محرك السكرول التلقائي البطيء (Auto-Scroll)
-    // ----------------------------------------------------
-    audioPlayer.addEventListener('timeupdate', () => {
-      if (audioPlayer.duration) {
-        const progress = audioPlayer.currentTime / audioPlayer.duration;
-        const maxScroll = lyricsText.scrollHeight - lyricsText.clientHeight;
-        
-        if (maxScroll > 0) {
-          lyricsText.scrollTop = maxScroll * progress;
-        }
-      }
-    });
+    // ----------------------------------------------------
+    // محرك السكرول التلقائي البطيء (Auto-Scroll)
+    // ----------------------------------------------------
+    audioPlayer.addEventListener('timeupdate', () => {
+      if (audioPlayer.duration) {
+        const progress = audioPlayer.currentTime / audioPlayer.duration;
+        const maxScroll = lyricsText.scrollHeight - lyricsText.clientHeight;
+        
+        if (maxScroll > 0) {
+          // هينزل سطر بسطر براحة جداً مع تقدم الأغنية
+          lyricsText.scrollTop = maxScroll * progress;
+        }
+      }
+    });
 
-    playBtn.onclick = () => {
-      if (audioPlayer.paused) {
-        audioPlayer.play().catch(e => alert("Please upload " + tracks[currentIndex].id + ".mp3 to your GitHub to play this track!"));
-        playBtn.innerText = '⏸';
-      } else {
-        audioPlayer.pause();
-        playBtn.innerText = '▶';
-      }
-    };
+    playBtn.onclick = () => {
+      if (audioPlayer.paused) {
+        audioPlayer.play().catch(e => alert("Please upload " + tracks[currentIndex].id + ".mp3 to your GitHub to play this track!"));
+        playBtn.innerText = '⏸';
+      } else {
+        audioPlayer.pause();
+        playBtn.innerText = '▶';
+      }
+    };
 
-    nextBtn.onclick = () => {
-      let nextIndex = currentIndex + 1 >= tracks.length ? 0 : currentIndex + 1;
-      loadTrack(nextIndex, true);
-    };
+    nextBtn.onclick = () => {
+      let nextIndex = currentIndex + 1 >= tracks.length ? 0 : currentIndex + 1;
+      loadTrack(nextIndex, true);
+    };
 
-    prevBtn.onclick = () => {
-      let prevIndex = currentIndex - 1 < 0 ? tracks.length - 1 : currentIndex - 1;
-      loadTrack(prevIndex, true);
-    };
+    prevBtn.onclick = () => {
+      let prevIndex = currentIndex - 1 < 0 ? tracks.length - 1 : currentIndex - 1;
+      loadTrack(prevIndex, true);
+    };
 
-    audioPlayer.onended = () => nextBtn.onclick();
+    audioPlayer.onended = () => nextBtn.onclick();
 
-    // Init first track
-    if(tracks.length > 0) {
-      loadTrack(0, false);
-    }
+    // Init first track
+    if(tracks.length > 0) {
+      loadTrack(0, false);
+    }
 
-    // ----------------------------------------------------
-    // BACKGROUND SYSTEM
-    // ----------------------------------------------------
-    const dbName = "KemoCommandDB_Final";
-    let db;
-    const request = indexedDB.open(dbName, 1);
+    // ----------------------------------------------------
+    // BACKGROUND SYSTEM
+    // ----------------------------------------------------
+    const dbName = "KemoCommandDB_Final";
+    let db;
+    const request = indexedDB.open(dbName, 1);
 
-    request.onupgradeneeded = function(e) {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains("bgStore")) db.createObjectStore("bgStore");
-    };
+    request.onupgradeneeded = function(e) {
+      db = e.target.result;
+      if (!db.objectStoreNames.contains("bgStore")) db.createObjectStore("bgStore");
+    };
 
-    request.onsuccess = function(e) {
-      db = e.target.result;
-      const tx = db.transaction("bgStore", "readonly");
-      const req = tx.objectStore("bgStore").get("myCustomBg");
-      req.onsuccess = function() {
-        if (req.result && req.result.fileData) {
-          applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
-        } else {
-          liveBg.style.display = 'block';
-          staticBg.style.display = 'none';
-          isLive = true;
-          liveBg.play().catch(e => console.log("Autoplay blocked"));
-        }
-      };
-    };
+    request.onsuccess = function(e) {
+      db = e.target.result;
+      const tx = db.transaction("bgStore", "readonly");
+      const req = tx.objectStore("bgStore").get("myCustomBg");
+      req.onsuccess = function() {
+        // لو المستخدم رفع صورة قبل كده، هاتها
+        if (req.result && req.result.fileData) {
+          applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
+        } else {
+          // لو مرفعش حاجة، شغل فيديو النيون (car.mp4) اللي إنت حطيته
+          liveBg.style.display = 'block';
+          staticBg.style.display = 'none';
+          isLive = true;
+          liveBg.play().catch(e => console.log("Autoplay blocked"));
+        }
+      };
+    };
 
-    const liveBg = document.getElementById('live-bg');
-    const staticBg = document.getElementById('static-bg');
-    const toggleBtn = document.getElementById('toggle-bg-btn');
-    const bgUploadInput = document.getElementById('bg-upload');
-    let isLive = true; 
+    const liveBg = document.getElementById('live-bg');
+    const staticBg = document.getElementById('static-bg');
+    const toggleBtn = document.getElementById('toggle-bg-btn');
+    const bgUploadInput = document.getElementById('bg-upload');
+    let isLive = true; 
 
-    function applyBg(url, type) {
-      if (type.startsWith('video/')) {
-        liveBg.src = url;
-        liveBg.style.display = 'block';
-        staticBg.style.display = 'none';
-        isLive = true;
-        liveBg.play().catch(e => console.log("Video Autoplay Blocked"));
-      } else if (type.startsWith('image/')) {
-        staticBg.style.backgroundImage = `url(${url})`;
-        staticBg.style.display = 'block';
-        liveBg.style.display = 'none';
-        isLive = false;
-        liveBg.pause();
-      }
-    }
+    function applyBg(url, type) {
+      if (type.startsWith('video/')) {
+        liveBg.src = url;
+        liveBg.style.display = 'block';
+        staticBg.style.display = 'none';
+        isLive = true;
+        liveBg.play().catch(e => console.log("Video Autoplay Blocked"));
+      } else if (type.startsWith('image/')) {
+        staticBg.style.backgroundImage = `url(${url})`;
+        staticBg.style.display = 'block';
+        liveBg.style.display = 'none';
+        isLive = false;
+        liveBg.pause();
+      }
+    }
 
-    bgUploadInput.addEventListener('change', function(e) {
-      if (e.target.files[0]) {
-        const file = e.target.files[0];
-        const tx = db.transaction("bgStore", "readwrite");
-        tx.objectStore("bgStore").put({ fileData: file, fileType: file.type }, "myCustomBg");
-        applyBg(URL.createObjectURL(file), file.type);
-      }
-    });
+    bgUploadInput.addEventListener('change', function(e) {
+      if (e.target.files[0]) {
+        const file = e.target.files[0];
+        const tx = db.transaction("bgStore", "readwrite");
+        tx.objectStore("bgStore").put({ fileData: file, fileType: file.type }, "myCustomBg");
+        applyBg(URL.createObjectURL(file), file.type);
+      }
+    });
 
-    toggleBtn.addEventListener('click', () => {
-      isLive = !isLive;
-      if (isLive && liveBg.src) {
-        liveBg.style.display = 'block';
-        staticBg.style.display = 'none';
-        liveBg.play();
-      } else {
-        liveBg.style.display = 'none';
-        staticBg.style.display = 'block';
-        liveBg.pause();
-      }
-    });
-  </script>
+    toggleBtn.addEventListener('click', () => {
+      isLive = !isLive;
+      if (isLive && liveBg.src) {
+        liveBg.style.display = 'block';
+        staticBg.style.display = 'none';
+        liveBg.play();
+      } else {
+        liveBg.style.display = 'none';
+        staticBg.style.display = 'block';
+        liveBg.pause();
+      }
+    });
+  </script>
 </body>
 </html>
-
-
