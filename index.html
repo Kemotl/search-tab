@@ -342,18 +342,22 @@
 </head>
 <body>
 
+  <!-- BACKGROUNDS: بنربط الفيديو الأساسي هنا -->
   <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
+  <!-- BG CONTROLS -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
   </div>
 
+  <!-- البورتفوليو هنا -->
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
+  <!-- LYRICS BOX (TOP RIGHT) -->
   <div class="lyrics-container">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
@@ -361,13 +365,15 @@
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
+  <!-- SEARCH BAR (Added autofocus here) -->
   <div class="search-container">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off">
+      <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
       <button type="submit">SEARCH</button>
     </form>
   </div>
 
+  <!-- QUICK LINKS (Gemini Added!) -->
   <div class="quick-links">
     <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
     <a href="https://gemini.google.com" class="shortcut-icon" title="Gemini">✨</a>
@@ -375,6 +381,7 @@
     <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
   </div>
 
+  <!-- XEMOX CUSTOM MUSIC ENGINE -->
   <div class="xemox-player">
     <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
     
@@ -389,7 +396,8 @@
     </div>
 
     <div class="xemox-playlist" id="x-list">
-      </div>
+      <!-- Tracks injected by JS -->
+    </div>
     
     <audio id="x-audio"></audio>
   </div>
@@ -1263,6 +1271,25 @@ Same active
         audioPlayer.play().catch(e => console.log("Missing MP3 file on Github"));
         playBtn.innerText = '⏸';
       }
+
+      // --- Media Session API (للتحكم من بره الموقع) ---
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: track.title,
+          artist: track.artist,
+          album: 'XEMOX Audio Engine',
+          artwork: [
+            { src: 'sasd.jpg', sizes: '96x96', type: 'image/jpeg' },
+            { src: 'sasd.jpg', sizes: '512x512', type: 'image/jpeg' }
+          ]
+        });
+
+        navigator.mediaSession.setActionHandler('play', () => playBtn.onclick());
+        navigator.mediaSession.setActionHandler('pause', () => playBtn.onclick());
+        navigator.mediaSession.setActionHandler('previoustrack', () => prevBtn.onclick());
+        navigator.mediaSession.setActionHandler('nexttrack', () => nextBtn.onclick());
+      }
+      // ---------------------------------------------------
     }
 
     // ----------------------------------------------------
