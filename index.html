@@ -110,7 +110,7 @@
       padding: 15px;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
       z-index: 15;
-      display: flex; /* Toggle this via JS */
+      display: flex; 
       flex-direction: column;
       transition: opacity 0.3s ease;
     }
@@ -204,7 +204,7 @@
       transition: 0.3s;
     }
 
-    /* --- AUTOCOMPLETE (زي جوجل) --- */
+    /* --- AUTOCOMPLETE (جوجل سيرفرز) --- */
     .autocomplete-items {
       position: absolute;
       top: 100%;
@@ -216,24 +216,30 @@
       border-top: none;
       border-radius: 0 0 8px 8px;
       z-index: 99;
-      max-height: 180px;
+      max-height: 220px;
       overflow-y: auto;
       display: none;
+      text-align: left;
     }
 
     .autocomplete-items div {
       padding: 12px;
       cursor: pointer;
-      color: #fff;
-      font-size: 14px;
+      color: #99aab5;
+      font-size: 15px;
       border-bottom: 1px solid rgba(0, 229, 255, 0.2);
       transition: 0.2s;
     }
 
     .autocomplete-items div:hover {
       background-color: rgba(0, 229, 255, 0.2);
-      color: #00e5ff;
+      color: #fff;
       padding-left: 20px;
+    }
+
+    .autocomplete-items div b {
+      color: #00e5ff; /* الكلمة اللي بتكتبها بتنور أزرق */
+      font-weight: bold;
     }
 
     .autocomplete-items::-webkit-scrollbar { width: 5px; }
@@ -366,9 +372,9 @@
       .control-btn { padding: 6px 10px; font-size: 10px; }
       
       .lyrics-container {
-        top: 50px; /* نزلناها تحت الزراير */
+        top: 50px; 
         right: 10px;
-        width: 140px; /* صغيرة جداً عشان متضايقكش */
+        width: 140px; 
         max-height: 160px;
         padding: 8px;
       }
@@ -402,7 +408,7 @@
   <!-- PORTFOLIO -->
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <!-- LYRICS BOX (With Toggle logic inside JS) -->
+  <!-- LYRICS BOX -->
   <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
@@ -410,10 +416,10 @@
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
-  <!-- SEARCH BAR with AUTOCOMPLETE -->
+  <!-- SEARCH BAR with GOOGLE LIVE AUTOCOMPLETE -->
   <div class="search-wrapper">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
-      <!-- Autofocus is here! -->
+      <!-- autofocus بيخلي الماوس يكتب لوحده أول ما تفتح -->
       <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
       <button type="submit">SEARCH</button>
     </form>
@@ -445,57 +451,93 @@
   </div>
 
   <script>
-    // --- FORCE AUTO-FOCUS ON LOAD (يخليك تكتب علطول أول ما تفتح) ---
+    // --- FORCE AUTO-FOCUS ON LOAD (تأكيد إن السيرش جاهز للكتابة) ---
     window.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.getElementById('search-input').focus();
       }, 500);
     });
 
-    // --- AUTOCOMPLETE LOGIC (نظام التكملة زي جوجل) ---
+    // --- GOOGLE LIVE AUTOCOMPLETE API (نظام جوجل الفعلي) ---
     const searchInput = document.getElementById('search-input');
     const autocompleteList = document.getElementById('autocomplete-list');
-    
-    // الكلمات اللي بيقترحها
-    const suggestions = [
+    let debounceTimer;
+
+    // كلماتك المخصصة اللي هتظهر لو بحثت عنها
+    const kemoSuggestions = [
       "best game ever",
-      "what is the best game ever",
-      "red dead redemption 2",
-      "rdr2",
-      "abyusif",
-      "lil baba",
-      "xemox audio engine",
-      "kemo_otak portfolio",
-      "samir zamis lyrics",
-      "3azra2eel"
+      "red dead redemption 2"
     ];
 
+    // عشان نحل مشكلة العلامات في الكود
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
+    }
+
     searchInput.addEventListener('input', function() {
-      const val = this.value.toLowerCase();
+      const val = this.value.trim().toLowerCase();
       autocompleteList.innerHTML = '';
       
       if (!val) {
         autocompleteList.style.display = 'none';
-        return false;
+        return;
       }
 
-      let hasMatch = false;
-      suggestions.forEach(item => {
-        if (item.toLowerCase().includes(val)) {
-          hasMatch = true;
-          const div = document.createElement('div');
-          // يخلي الكلمة اللي بتكتبها متعلمة أو مجرد يعرض الاقتراح
-          div.innerHTML = item;
-          div.addEventListener('click', function() {
-            searchInput.value = item; // يملى الخانة بالاختيار
-            autocompleteList.style.display = 'none';
-          });
-          autocompleteList.appendChild(div);
-        }
-      });
-      
-      autocompleteList.style.display = hasMatch ? 'block' : 'none';
+      // بنستنى 300 مللي ثانية عشان منعملش ضغط على سيرفرات جوجل
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        // بنعمل Script Tag عشان نسحب الاقتراحات الحقيقية من جوجل
+        const scriptId = 'google-autocomplete-script';
+        let oldScript = document.getElementById(scriptId);
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(val)}&callback=handleGoogleSuggestions`;
+        document.body.appendChild(script);
+
+      }, 300);
     });
+
+    // الدالة اللي بتستقبل التكملة من سيرفرات جوجل
+    window.handleGoogleSuggestions = function(data) {
+       const googleSuggestions = data[1] || [];
+       const val = searchInput.value.toLowerCase().trim();
+       
+       // بندمج كلماتك الخاصة مع اقتراحات جوجل الحقيقية
+       let matches = kemoSuggestions.filter(item => item.toLowerCase().includes(val));
+       let combined = [...matches, ...googleSuggestions];
+       combined = [...new Set(combined)].slice(0, 8); // بنشيل المتكرر ونعرض 8 اقتراحات بس
+
+       autocompleteList.innerHTML = '';
+       if (combined.length > 0) {
+         combined.forEach(item => {
+            const div = document.createElement('div');
+            
+            // بنعلم الكلمة اللي بتكتبها بلون أزرق نيون (زي جوجل)
+            const safeVal = escapeRegExp(val);
+            const boldedItem = item.replace(new RegExp("(" + safeVal + ")", "gi"), "<b>$1</b>");
+            div.innerHTML = boldedItem;
+            
+            div.addEventListener('click', function() {
+              searchInput.value = item;
+              autocompleteList.style.display = 'none';
+              
+              // لو اختار أحسن لعبة نشغل التنبيه، لو حاجة تانية نبحث عنها في جوجل علطول
+              if ((item.includes('best') && item.includes('game')) || item.includes('red dead') || item.includes('rdr')) {
+                 alert("Red Dead Redemption 2, like Kemo_otak knows!");
+                 searchInput.value = '';
+              } else {
+                 document.getElementById('kemo-search').submit(); // بيبحث في جوجل مباشرة
+              }
+            });
+            autocompleteList.appendChild(div);
+         });
+         autocompleteList.style.display = 'block';
+       } else {
+         autocompleteList.style.display = 'none';
+       }
+    };
 
     // يقفل الاقتراحات لو دوست برا الخانة
     document.addEventListener('click', function(e) {
@@ -504,7 +546,7 @@
       }
     });
 
-    // --- SEARCH ALERT (Best Game Ever) ---
+    // --- SEARCH ALERT (Best Game Ever) للبحث اليدوي بالـ Enter ---
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const q = searchInput.value.toLowerCase().trim();
       if ((q.includes('best') && q.includes('game')) || q.includes('red dead') || q.includes('rdr')) {
@@ -526,7 +568,7 @@
         lyricsBox.style.display = 'flex'; // يظهر
         toggleLyricsBtn.innerText = 'LYRICS: ON';
       } else {
-        lyricsBox.style.display = 'none'; // يخفي تماماً
+        lyricsBox.style.display = 'none'; // يخفي تماماً من الموبايل
         toggleLyricsBtn.innerText = 'LYRICS: OFF';
       }
     });
@@ -1346,12 +1388,8 @@ Same active
     const titleDisplay = document.getElementById('x-title');
     const artistDisplay = document.getElementById('x-artist');
     const playlistContainer = document.getElementById('x-list');
-    
-    const lyricsTitle = document.getElementById('lyrics-title');
-    const lyricsText = document.getElementById('lyrics-text');
 
-    let currentIndex = 0;
-
+    // Build the visible playlist
     tracks.forEach((track, index) => {
       const item = document.createElement('div');
       item.className = 'playlist-item';
@@ -1366,10 +1404,10 @@ Same active
       
       titleDisplay.innerText = track.title;
       artistDisplay.innerText = track.artist;
-      lyricsTitle.innerText = "LYRICS: " + track.title;
-      lyricsText.innerText = track.lyrics;
+      document.getElementById('lyrics-title').innerText = "LYRICS: " + track.title;
+      document.getElementById('lyrics-text').innerText = track.lyrics;
       
-      lyricsText.scrollTop = 0;
+      document.getElementById('lyrics-text').scrollTop = 0;
       
       const items = document.querySelectorAll('.playlist-item');
       items.forEach(i => i.classList.remove('active'));
@@ -1406,6 +1444,7 @@ Same active
     audioPlayer.addEventListener('timeupdate', () => {
       if (audioPlayer.duration) {
         const progress = audioPlayer.currentTime / audioPlayer.duration;
+        const lyricsText = document.getElementById('lyrics-text');
         const maxScroll = lyricsText.scrollHeight - lyricsText.clientHeight;
         
         if (maxScroll > 0) {
@@ -1458,21 +1497,19 @@ Same active
         if (req.result && req.result.fileData) {
           applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
         } else {
-          liveBg.style.display = 'block';
-          staticBg.style.display = 'none';
+          document.getElementById('live-bg').style.display = 'block';
+          document.getElementById('static-bg').style.display = 'none';
           isLive = true;
-          liveBg.play().catch(e => console.log("Autoplay blocked"));
+          document.getElementById('live-bg').play().catch(e => console.log("Autoplay blocked"));
         }
       };
     };
 
-    const liveBg = document.getElementById('live-bg');
-    const staticBg = document.getElementById('static-bg');
-    const toggleBtn = document.getElementById('toggle-bg-btn');
-    const bgUploadInput = document.getElementById('bg-upload');
     let isLive = true; 
 
     function applyBg(url, type) {
+      const liveBg = document.getElementById('live-bg');
+      const staticBg = document.getElementById('static-bg');
       if (type.startsWith('video/')) {
         liveBg.src = url;
         liveBg.style.display = 'block';
@@ -1488,7 +1525,7 @@ Same active
       }
     }
 
-    bgUploadInput.addEventListener('change', function(e) {
+    document.getElementById('bg-upload').addEventListener('change', function(e) {
       if (e.target.files[0]) {
         const file = e.target.files[0];
         const tx = db.transaction("bgStore", "readwrite");
@@ -1497,7 +1534,9 @@ Same active
       }
     });
 
-    toggleBtn.addEventListener('click', () => {
+    document.getElementById('toggle-bg-btn').addEventListener('click', () => {
+      const liveBg = document.getElementById('live-bg');
+      const staticBg = document.getElementById('static-bg');
       isLive = !isLive;
       if (isLive && liveBg.src) {
         liveBg.style.display = 'block';
