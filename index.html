@@ -11,7 +11,7 @@
       height: 100vh; 
       overflow: hidden; 
       background-color: #030b14;
-      color: #fff;
+      color: #00e5ff;
       font-family: 'Courier New', Courier, monospace;
       display: flex;
       flex-direction: column;
@@ -36,27 +36,18 @@
     #static-bg { background: #030b14; display: none; }
     #live-bg { display: block; }
 
+    /* التعتيم الأصلي بتاعك */
     .bg-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      /* خففنا الطبقة السودا شوية عشان الإزاز يبان أحلى */
-      background: rgba(3, 11, 20, 0.35); 
+      background: rgba(3, 11, 20, 0.6); 
       z-index: -1;
     }
 
-    /* --- LIQUID GLASS BASE CLASSES --- */
-    .glass-panel {
-      background: rgba(10, 15, 30, 0.25);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 229, 255, 0.15);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-    }
-
-    /* --- TOP CONTROLS --- */
+    /* --- TOP CONTROLS (الستايل القديم) --- */
     .controls-container {
       position: absolute;
       top: 15px;
@@ -68,25 +59,23 @@
     }
 
     .control-btn {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 229, 255, 0.2);
+      background: rgba(0, 229, 255, 0.1);
+      border: 1px solid #00e5ff;
       color: #00e5ff;
       padding: 8px 12px;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
       font-family: 'Courier New', Courier, monospace;
       font-size: 12px;
       font-weight: bold;
-      transition: 0.4s ease;
+      backdrop-filter: blur(5px);
+      transition: 0.3s;
       text-transform: uppercase;
     }
 
     .control-btn:hover {
-      background: rgba(0, 229, 255, 0.15);
-      border-color: rgba(0, 229, 255, 0.5);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.2);
+      background: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 15px #00e5ff;
     }
 
     /* --- PORTFOLIO SECRET BTN --- */
@@ -94,35 +83,40 @@
       position: absolute;
       bottom: 20px;
       left: 20px;
-      color: #fff;
+      color: #333;
       text-decoration: none;
       font-size: 12px;
-      opacity: 0.3;
+      opacity: 0.4;
       transition: 0.4s;
       letter-spacing: 2px;
       z-index: 100;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     .secret-btn:hover {
       opacity: 1;
       color: #00e5ff;
-      text-shadow: 0 0 10px #00e5ff;
+      text-shadow: 0 0 8px #00e5ff;
     }
 
-    /* --- LYRICS BOX (LIQUID GLASS) --- */
+    /* --- LYRICS BOX (LIQUID GLASS الفاجر) --- */
     .lyrics-container {
       position: absolute;
       top: 15px;
       right: 20px;
       width: 260px;
       max-height: 350px;
+      /* تأثير الإزاز الشفاف بس هنا */
+      background: rgba(10, 15, 30, 0.15);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       border-radius: 16px;
       padding: 15px;
       z-index: 15;
       display: flex; 
       flex-direction: column;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.3s ease;
     }
 
     .lyrics-header {
@@ -131,7 +125,7 @@
       font-size: 14px;
       letter-spacing: 2px;
       text-align: center;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
       padding-bottom: 10px;
       margin-bottom: 10px;
       text-transform: uppercase;
@@ -139,7 +133,7 @@
     }
 
     .lyrics-content {
-      color: #e0f7fa;
+      color: #fff;
       font-size: 13px;
       line-height: 1.8;
       text-align: center;
@@ -150,28 +144,26 @@
     }
 
     .lyrics-content::-webkit-scrollbar { width: 4px; }
-    .lyrics-content::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: 4px; }
+    .lyrics-content::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
 
-    /* --- PROFILE --- */
+    /* --- PROFILE (الستايل القديم) --- */
     .profile-pic {
       width: 90px;
       height: 90px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(0, 229, 255, 0.4);
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+      border: 3px solid #00e5ff;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
       z-index: 1;
-      transition: 0.4s ease;
-      backdrop-filter: blur(5px);
+      transition: 0.3s;
     }
     
     .profile-pic:hover {
-      box-shadow: 0 0 40px rgba(0, 229, 255, 0.6);
-      border-color: #00e5ff;
-      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
+      border-color: #0055ff;
     }
 
-    /* --- SEARCH --- */
+    /* --- SEARCH (الستايل القديم) --- */
     .search-wrapper {
       position: relative;
       width: 100%;
@@ -188,47 +180,34 @@
     }
 
     .search-form input {
-      padding: 14px 20px;
+      padding: 12px 20px;
       flex: 1;
-      background: rgba(10, 15, 30, 0.2);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 229, 255, 0.2);
-      border-right: none;
+      background: rgba(10, 15, 25, 0.8);
+      backdrop-filter: blur(10px);
+      border: 2px solid #0055ff;
       color: white;
-      border-radius: 12px 0 0 12px;
+      border-radius: 8px 0 0 8px;
       font-size: 16px;
       outline: none;
-      transition: 0.4s ease;
+      transition: 0.3s;
       min-width: 0;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
     }
 
     .search-form input:focus {
-      background: rgba(10, 15, 30, 0.35);
-      border-color: rgba(0, 229, 255, 0.5); 
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15), inset 0 0 10px rgba(0,0,0,0.3);
+      border-color: #00e5ff; 
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
     }
 
     .search-form button {
-      padding: 14px 25px;
-      background: rgba(0, 229, 255, 0.15);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(0, 229, 255, 0.2);
-      border-left: 1px solid rgba(255,255,255,0.05);
-      color: #00e5ff;
+      padding: 12px 25px;
+      background-color: #00e5ff;
+      border: none;
+      color: #000;
       font-size: 16px;
       font-weight: bold;
-      border-radius: 0 12px 12px 0;
+      border-radius: 0 8px 8px 0;
       cursor: pointer;
-      transition: 0.4s ease;
-    }
-
-    .search-form button:hover {
-      background: rgba(0, 229, 255, 0.3);
-      color: #fff;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+      transition: 0.3s;
     }
 
     /* --- AUTOCOMPLETE --- */
@@ -237,44 +216,40 @@
       top: 100%;
       left: 20px;
       right: 20px;
-      background: rgba(5, 10, 20, 0.4);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(0, 229, 255, 0.15);
+      background: rgba(10, 15, 25, 0.95);
+      backdrop-filter: blur(15px);
+      border: 1px solid #00e5ff;
       border-top: none;
-      border-radius: 0 0 12px 12px;
+      border-radius: 0 0 8px 8px;
       z-index: 99;
       max-height: 220px;
       overflow-y: auto;
       display: none;
       text-align: left;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .autocomplete-items div {
-      padding: 12px 15px;
+      padding: 12px;
       cursor: pointer;
-      color: #b2ebf2;
+      color: #99aab5;
       font-size: 15px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: 0.3s;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      transition: 0.2s;
     }
 
     .autocomplete-items div:hover {
-      background-color: rgba(0, 229, 255, 0.15);
+      background-color: rgba(0, 229, 255, 0.2);
       color: #fff;
-      padding-left: 25px;
+      padding-left: 20px;
     }
 
     .autocomplete-items div b {
       color: #00e5ff;
       font-weight: bold;
-      text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
     }
 
     .autocomplete-items::-webkit-scrollbar { width: 5px; }
-    .autocomplete-items::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.3); border-radius: 5px; }
+    .autocomplete-items::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
     /* --- QUICK LINKS --- */
     .quick-links {
@@ -286,36 +261,36 @@
     }
 
     .shortcut-icon {
-      width: 42px;
-      height: 42px;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(0, 229, 255, 0.15);
+      width: 40px;
+      height: 40px;
+      background: rgba(10, 15, 25, 0.6);
+      border: 1px solid #0055ff;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      color: #b2ebf2;
-      transition: 0.4s ease;
+      color: #99aab5;
+      transition: 0.3s;
       text-decoration: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .shortcut-icon:hover {
-      border-color: rgba(0, 229, 255, 0.5);
-      background: rgba(0, 229, 255, 0.1);
-      color: #fff;
+      border-color: #00e5ff;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+      color: #00e5ff;
       transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 229, 255, 0.2);
     }
 
-    /* --- XEMOX CUSTOM PLAYER (LIQUID GLASS) --- */
+    /* --- XEMOX CUSTOM PLAYER (الستايل القديم) --- */
     .xemox-player {
       width: 90%;
       max-width: 450px;
-      border-radius: 20px;
+      background: rgba(5, 10, 20, 0.7);
+      backdrop-filter: blur(15px);
+      border: 2px solid #00e5ff;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
       display: flex;
       flex-direction: column;
       z-index: 10;
@@ -323,24 +298,22 @@
     }
 
     .xemox-header {
-      background: rgba(0, 229, 255, 0.1);
-      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
-      color: #00e5ff;
+      background: #00e5ff;
+      color: #000;
       text-align: center;
-      padding: 8px;
+      padding: 5px;
       font-weight: bold;
       font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .xemox-controls {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
     }
 
     .xemox-track-info {
@@ -352,7 +325,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 0 10px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
     .xemox-track-artist {
       font-size: 10px;
@@ -366,9 +338,8 @@
       font-size: 20px;
       cursor: pointer;
       transition: 0.3s;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.5);
     }
-    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
+    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
 
     .xemox-playlist {
       max-height: 120px; 
@@ -377,21 +348,20 @@
     }
 
     .xemox-playlist::-webkit-scrollbar { width: 5px; }
-    .xemox-playlist::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.2); border-radius: 5px; }
+    .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
     .playlist-item {
-      padding: 10px 20px;
+      padding: 8px 20px;
       font-size: 12px;
-      color: #b2ebf2;
+      color: #99aab5;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
-      transition: 0.3s;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      transition: 0.2s;
     }
 
     .playlist-item:hover, .playlist-item.active {
-      background: rgba(0, 229, 255, 0.1);
+      background: rgba(0, 229, 255, 0.15);
       color: #fff;
       border-left: 3px solid #00e5ff;
     }
@@ -418,12 +388,12 @@
       .lyrics-header { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }
       .lyrics-content { font-size: 9px; line-height: 1.4; }
 
-      .search-form input { font-size: 14px; padding: 12px; }
-      .search-form button { font-size: 14px; padding: 12px 15px; }
+      .search-form input { font-size: 14px; padding: 10px; }
+      .search-form button { font-size: 14px; padding: 10px 15px; }
       
       .profile-pic { width: 75px; height: 75px; }
-      .xemox-player { width: 95%; border-radius: 16px; }
-      .autocomplete-items div { font-size: 12px; padding: 10px; }
+      .xemox-player { width: 95%; }
+      .autocomplete-items div { font-size: 12px; padding: 8px; }
     }
   </style>
 </head>
@@ -434,15 +404,15 @@
   <div class="bg-overlay"></div>
 
   <div class="controls-container">
-    <button id="toggle-bg-btn" class="control-btn glass-panel">SWITCH BG</button>
-    <label for="bg-upload" class="control-btn glass-panel" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
+    <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
+    <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
-    <button id="toggle-lyrics-btn" class="control-btn glass-panel">LYRICS: ON</button>
+    <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
   </div>
 
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <div class="lyrics-container glass-panel" id="lyrics-box">
+  <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
   </div>
@@ -465,7 +435,7 @@
     <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
   </div>
 
-  <div class="xemox-player glass-panel">
+  <div class="xemox-player">
     <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
     <div class="xemox-controls">
       <button class="x-btn" id="x-prev">⏮</button>
@@ -594,7 +564,7 @@
     });
 
     // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER + FULL LYRICS
+    // XEMOX™ AUDIO PLAYER + FULL LYRICS (26 TRACKS)
     // ----------------------------------------------------
     const tracks = [
       { id: 1, title: "Samir Zamis", artist: "Abyusif", lyrics: `صحاب مكان فمبندفعش لما بنكسر
