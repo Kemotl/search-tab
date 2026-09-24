@@ -32,14 +32,8 @@
       transition: opacity 0.5s ease;
     }
     
-    #static-bg {
-      background: #030b14; 
-      display: none; 
-    }
-
-    #live-bg {
-      display: block; 
-    }
+    #static-bg { background: #030b14; display: none; }
+    #live-bg { display: block; }
 
     .bg-overlay {
       position: absolute;
@@ -57,8 +51,9 @@
       top: 15px;
       left: 20px;
       display: flex;
-      gap: 15px;
-      z-index: 10;
+      gap: 10px;
+      z-index: 20;
+      flex-wrap: wrap;
     }
 
     .control-btn {
@@ -85,14 +80,14 @@
     .secret-btn {
       position: absolute;
       bottom: 20px;
-      right: 20px;
+      left: 20px; /* اتنقل على الشمال عشان مايتغطاش */
       color: #333;
       text-decoration: none;
       font-size: 12px;
       opacity: 0.4;
       transition: 0.4s;
       letter-spacing: 2px;
-      z-index: 10;
+      z-index: 100;
     }
 
     .secret-btn:hover {
@@ -114,9 +109,16 @@
       border-radius: 12px;
       padding: 15px;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.2), inset 0 0 10px rgba(0, 229, 255, 0.05);
-      z-index: 10;
+      z-index: 15;
       display: flex;
       flex-direction: column;
+      transition: opacity 0.3s ease, visibility 0.3s;
+    }
+
+    .lyrics-container.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .lyrics-header {
@@ -324,48 +326,45 @@
       border-left: 3px solid #00e5ff;
     }
 
+    /* --- MOBILE RESPONSIVE --- */
     @media (max-width: 768px) {
-      .controls-container { flex-direction: column; gap: 8px; top: 10px; left: 10px; }
+      .controls-container { flex-direction: row; gap: 8px; top: 10px; left: 10px; max-width: 100%; }
       .control-btn { padding: 6px 8px; font-size: 9px; }
       
       .lyrics-container {
-        top: 10px;
+        top: 45px; /* نزلناها شوية عشان الزراير اللي فوق */
         right: 10px;
-        width: 150px;
-        max-height: 200px;
-        padding: 10px;
+        width: 120px; /* صغرنا العرض جداً عشان مايغطيش صورتك */
+        max-height: 150px;
+        padding: 8px;
       }
-      .lyrics-header { font-size: 11px; }
-      .lyrics-content { font-size: 10px; }
+      .lyrics-header { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }
+      .lyrics-content { font-size: 9px; line-height: 1.5; }
     }
   </style>
 </head>
 <body>
 
-  <!-- BACKGROUNDS: بنربط الفيديو الأساسي هنا -->
   <video id="live-bg" src="car.mp4" autoplay loop muted playsinline></video>
   <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
-  <!-- BG CONTROLS -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
+    <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
   </div>
 
-  <!-- البورتفوليو هنا -->
   <a href="https://plan-for-tahiti-o4vw83mxl-kareemmohamedharidy-7974s-projects.vercel.app/" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <!-- LYRICS BOX (TOP RIGHT) -->
-  <div class="lyrics-container">
+  <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
   </div>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
 
-  <!-- SEARCH BAR (Added autofocus here) -->
   <div class="search-container">
     <form id="kemo-search" class="search-form" action="https://www.google.com/search" method="get">
       <input type="text" id="search-input" name="q" placeholder="Search the web or enter secret code..." required autocomplete="off" autofocus>
@@ -373,7 +372,6 @@
     </form>
   </div>
 
-  <!-- QUICK LINKS (Gemini Added!) -->
   <div class="quick-links">
     <a href="https://www.youtube.com" class="shortcut-icon" title="YouTube">▶</a>
     <a href="https://gemini.google.com" class="shortcut-icon" title="Gemini">✨</a>
@@ -381,7 +379,6 @@
     <a href="https://github.com/Kemotl" class="shortcut-icon" title="GitHub">💻</a>
   </div>
 
-  <!-- XEMOX CUSTOM MUSIC ENGINE -->
   <div class="xemox-player">
     <div class="xemox-header">⚡ XEMOX™ AUDIO ENGINE ⚡</div>
     
@@ -396,8 +393,7 @@
     </div>
 
     <div class="xemox-playlist" id="x-list">
-      <!-- Tracks injected by JS -->
-    </div>
+      </div>
     
     <audio id="x-audio"></audio>
   </div>
@@ -408,6 +404,22 @@
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
         document.getElementById('search-input').value = '';
+      }
+    });
+
+    // --- إخفاء وإظهار الكلمات ---
+    const toggleLyricsBtn = document.getElementById('toggle-lyrics-btn');
+    const lyricsBox = document.getElementById('lyrics-box');
+    let lyricsVisible = true;
+
+    toggleLyricsBtn.addEventListener('click', () => {
+      lyricsVisible = !lyricsVisible;
+      if (lyricsVisible) {
+        lyricsBox.classList.remove('hidden');
+        toggleLyricsBtn.innerText = 'LYRICS: ON';
+      } else {
+        lyricsBox.classList.add('hidden');
+        toggleLyricsBtn.innerText = 'LYRICS: OFF';
       }
     });
 
@@ -686,7 +698,6 @@ Plaque مناصب، إحنا أسامينا
 مش قادر أنافقكوا
 بالعافية أنا عارفكوا
 أكيد أنا قارفكوا
-
 
 [قبل اللازمة]
 مش يلا بقى ولا إيه
@@ -1272,7 +1283,7 @@ Same active
         playBtn.innerText = '⏸';
       }
 
-      // --- Media Session API (للتحكم من بره الموقع) ---
+      // --- Media Session API ---
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: track.title,
@@ -1289,7 +1300,6 @@ Same active
         navigator.mediaSession.setActionHandler('previoustrack', () => prevBtn.onclick());
         navigator.mediaSession.setActionHandler('nexttrack', () => nextBtn.onclick());
       }
-      // ---------------------------------------------------
     }
 
     // ----------------------------------------------------
@@ -1301,7 +1311,6 @@ Same active
         const maxScroll = lyricsText.scrollHeight - lyricsText.clientHeight;
         
         if (maxScroll > 0) {
-          // هينزل سطر بسطر براحة جداً مع تقدم الأغنية
           lyricsText.scrollTop = maxScroll * progress;
         }
       }
@@ -1351,11 +1360,9 @@ Same active
       const tx = db.transaction("bgStore", "readonly");
       const req = tx.objectStore("bgStore").get("myCustomBg");
       req.onsuccess = function() {
-        // لو المستخدم رفع صورة قبل كده، هاتها
         if (req.result && req.result.fileData) {
           applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
         } else {
-          // لو مرفعش حاجة، شغل فيديو النيون (car.mp4) اللي إنت حطيته
           liveBg.style.display = 'block';
           staticBg.style.display = 'none';
           isLive = true;
