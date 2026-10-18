@@ -201,22 +201,27 @@
     #personal-notes::-webkit-scrollbar { width: 4px; }
     #personal-notes::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
 
-    /* --- AI ASSISTANT HUB --- */
-    .ai-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 300px;
-      padding: 20px;
-      z-index: 120;
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      background: rgba(5, 12, 25, 0.85);
-      border: 1px solid #00e5ff;
-      box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
-    }
+   /* --- AI ASSISTANT HUB --- */
+.ai-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  height: 420px;
+  padding: 20px;
+  z-index: 120;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(5, 12, 25, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #00e5ff;
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
+}
 
     .ai-card {
       display: flex;
@@ -547,8 +552,46 @@
       }
     });
 
-    closeAiBtn.addEventListener('click', () => { aiBox.style.display = 'none'; });
+closeAiBtn.addEventListener('click', () => { aiBox.style.display = 'none'; });
 
+    // --- محرك شات الـ AI اللايف جوه الموقع ---
+    const aiChatHistory = document.getElementById('ai-chat-history');
+    const aiUserInput = document.getElementById('ai-user-input');
+    const aiSendBtn = document.getElementById('ai-send-btn');
+    const aiModelSelect = document.getElementById('ai-model-select');
+
+    async function sendAiMessage() {
+      const text = aiUserInput.value.trim();
+      if (!text) return;
+
+      const selectedModel = aiModelSelect.options[aiModelSelect.selectedIndex].text;
+      
+      aiChatHistory.innerHTML += `<div style="color: #fff; text-align: right; background: rgba(0, 85, 255, 0.25); padding: 6px 10px; border-radius: 8px; align-self: flex-end; max-width: 85%;"><b>You:</b> ${text}</div>`;
+      aiUserInput.value = '';
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+
+      const loadingId = 'loading-' + Date.now();
+      aiChatHistory.innerHTML += `<div id="${loadingId}" style="color: #99aab5; font-size: 11px;"><i>⚡ ${selectedModel} is thinking...</i></div>`;
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+
+      try {
+        const systemPrompt = `You are acting as ${selectedModel} inside Kemo_otak's Cyberpunk Command Center. Answer concisely, smartly, and in the same language the user speaks (Arabic or English).`;
+        const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(systemPrompt + "\nUser: " + text)}`);
+        const reply = await response.text();
+
+        document.getElementById(loadingId).remove();
+        aiChatHistory.innerHTML += `<div style="color: #00e5ff; background: rgba(0, 229, 255, 0.1); border-left: 2px solid #00e5ff; padding: 6px 10px; border-radius: 4px; align-self: flex-start; max-width: 90%; white-space: pre-wrap;"><b>[${aiModelSelect.value.toUpperCase()}]:</b> ${reply}</div>`;
+      } catch (err) {
+        document.getElementById(loadingId).remove();
+        aiChatHistory.innerHTML += `<div style="color: #ff0055;"><b>[ERROR]:</b> Connection failed. Try again!</div>`;
+      }
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+    }
+
+    aiSendBtn.addEventListener('click', sendAiMessage);
+    aiUserInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') sendAiMessage();
+    });
     // --- GOOGLE LIVE AUTOCOMPLETE API ---
     const searchInput = document.getElementById('search-input');
     const autocompleteList = document.getElementById('autocomplete-list');
