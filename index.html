@@ -517,31 +517,36 @@
     let lyricsVisible = !isMobile;
     let notesVisible = !isMobile;
 
-    if (isMobile) {
-      lyricsBox.style.display = 'none';
-      toggleLyricsBtn.innerText = 'LYRICS: OFF';
-      notesBox.style.display = 'none';
-      toggleNotesBtn.innerText = 'NOTES: OFF';
-    }
-
+  if (isMobile) {
+    if (lyricsBox) lyricsBox.style.display = 'none';
+    if (toggleLyricsBtn) toggleLyricsBtn.innerText = 'LYRICS: OFF';
+    if (notesBox) notesBox.style.display = 'none';
+    if (toggleNotesBtn) toggleNotesBtn.innerText = 'NOTES: OFF';
+}
+    if (toggleLyricsBtn && lyricsBox) {
     toggleLyricsBtn.addEventListener('click', () => {
-      lyricsVisible = !lyricsVisible;
-      lyricsBox.style.display = lyricsVisible ? 'flex' : 'none';
-      toggleLyricsBtn.innerText = lyricsVisible ? 'LYRICS: ON' : 'LYRICS: OFF';
-      if (isMobile && lyricsVisible && notesVisible) {
-        notesVisible = false; notesBox.style.display = 'none'; toggleNotesBtn.innerText = 'NOTES: OFF';
-      }
+        lyricsVisible = !lyricsVisible;
+        lyricsBox.style.display = lyricsVisible ? 'flex' : 'none';
+        toggleLyricsBtn.innerText = lyricsVisible ? 'LYRICS: ON' : 'LYRICS: OFF';
+        if (isMobile && lyricsVisible && notesVisible && notesBox && toggleNotesBtn) {
+            notesVisible = false; 
+            notesBox.style.display = 'none'; 
+            toggleNotesBtn.innerText = 'NOTES: OFF';
+        }
     });
+}
 
+if (toggleNotesBtn && notesBox) {
     toggleNotesBtn.addEventListener('click', () => {
-      notesVisible = !notesVisible;
-      notesBox.style.display = notesVisible ? 'flex' : 'none';
-      toggleNotesBtn.innerText = notesVisible ? 'NOTES: ON' : 'NOTES: OFF';
-      if (isMobile && notesVisible && lyricsVisible) {
-        lyricsVisible = false; lyricsBox.style.display = 'none'; toggleLyricsBtn.innerText = 'LYRICS: OFF';
-      }
+        notesVisible = !notesVisible;
+        notesBox.style.display = notesVisible ? 'flex' : 'none';
+        toggleNotesBtn.innerText = notesVisible ? 'NOTES: ON' : 'NOTES: OFF';
+        if (isMobile && notesVisible && lyricsVisible && lyricsBox && toggleLyricsBtn) {
+            lyricsVisible = false;
+            lyricsBox.style.display = 'none';
+            toggleLyricsBtn.innerText = 'LYRICS: OFF';
+        }
     });
-
     toggleAiBtn.addEventListener('click', () => {
       aiBox.style.display = 'flex';
       if (currentStreak >= 20) {
@@ -553,7 +558,6 @@
     });
 
 closeAiBtn.addEventListener('click', () => { aiBox.style.display = 'none'; });
-
     // --- محرك شات الـ AI اللايف جوه الموقع ---
     const aiChatHistory = document.getElementById('ai-chat-history');
     const aiUserInput = document.getElementById('ai-user-input');
