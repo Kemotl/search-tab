@@ -36,7 +36,6 @@
     #static-bg { background: #030b14; display: none; }
     #live-bg { display: block; }
 
-    /* التعتيم الأصلي بتاعك */
     .bg-overlay {
       position: absolute;
       top: 0;
@@ -47,7 +46,7 @@
       z-index: -1;
     }
 
-    /* --- TOP CONTROLS (الستايل القديم) --- */
+    /* --- TOP CONTROLS --- */
     .controls-container {
       position: absolute;
       top: 15px;
@@ -78,6 +77,30 @@
       box-shadow: 0 0 15px #00e5ff;
     }
 
+    /* --- STREAK BADGE --- */
+    .streak-badge {
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      background: rgba(255, 152, 0, 0.15);
+      backdrop-filter: blur(10px);
+      border: 1px solid #ff9800;
+      color: #ff9800;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 13px;
+      z-index: 20;
+      box-shadow: 0 0 15px rgba(255, 152, 0, 0.3);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .streak-badge:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 152, 0, 0.6);
+    }
+
     /* --- PORTFOLIO SECRET BTN --- */
     .secret-btn {
       position: absolute;
@@ -98,20 +121,23 @@
       text-shadow: 0 0 8px #00e5ff;
     }
 
-    /* --- LYRICS BOX (LIQUID GLASS الفاجر) --- */
-    .lyrics-container {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      width: 260px;
-      max-height: 350px;
-      /* تأثير الإزاز الشفاف بس هنا */
+    /* --- LIQUID GLASS PANELS (LYRICS, NOTES, AI HUB) --- */
+    .glass-panel {
       background: rgba(10, 15, 30, 0.15);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(0, 229, 255, 0.2);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       border-radius: 16px;
+    }
+
+    /* --- LYRICS BOX --- */
+    .lyrics-container {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 260px;
+      max-height: 350px;
       padding: 15px;
       z-index: 15;
       display: flex; 
@@ -119,7 +145,7 @@
       transition: opacity 0.3s ease;
     }
 
-    .lyrics-header {
+    .lyrics-header, .notes-header, .ai-header {
       color: #00e5ff;
       font-weight: bold;
       font-size: 14px;
@@ -142,11 +168,92 @@
       scroll-behavior: smooth;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
-
     .lyrics-content::-webkit-scrollbar { width: 4px; }
     .lyrics-content::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
 
-    /* --- PROFILE (الستايل القديم) --- */
+    /* --- NOTES BOX --- */
+    .notes-container {
+      position: absolute;
+      top: 105px;
+      left: 20px;
+      width: 250px;
+      height: 240px;
+      padding: 15px;
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      transition: opacity 0.3s ease;
+    }
+
+    #personal-notes {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: none;
+      outline: none;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    }
+    #personal-notes::placeholder { color: rgba(255, 255, 255, 0.4); }
+    #personal-notes::-webkit-scrollbar { width: 4px; }
+    #personal-notes::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
+
+    /* --- AI ASSISTANT HUB --- */
+    .ai-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      z-index: 120;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(5, 12, 25, 0.85);
+      border: 1px solid #00e5ff;
+      box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
+    }
+
+    .ai-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 15px;
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    .ai-card:hover {
+      background: rgba(0, 229, 255, 0.25);
+      border-color: #00e5ff;
+      transform: translateX(5px);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    }
+
+    .close-modal-btn {
+      margin-top: 5px;
+      background: rgba(255, 0, 85, 0.2);
+      border: 1px solid #ff0055;
+      color: #ff0055;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .close-modal-btn:hover { background: #ff0055; color: #fff; }
+
+    /* --- PROFILE --- */
     .profile-pic {
       width: 90px;
       height: 90px;
@@ -157,13 +264,12 @@
       z-index: 1;
       transition: 0.3s;
     }
-    
     .profile-pic:hover {
       box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
       border-color: #0055ff;
     }
 
-    /* --- SEARCH (الستايل القديم) --- */
+    /* --- SEARCH --- */
     .search-wrapper {
       position: relative;
       width: 100%;
@@ -172,13 +278,7 @@
       padding: 0 20px;
       box-sizing: border-box;
     }
-    
-    .search-form {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-    }
-
+    .search-form { display: flex; justify-content: center; width: 100%; }
     .search-form input {
       padding: 12px 20px;
       flex: 1;
@@ -192,12 +292,7 @@
       transition: 0.3s;
       min-width: 0;
     }
-
-    .search-form input:focus {
-      border-color: #00e5ff; 
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
-    }
-
+    .search-form input:focus { border-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); }
     .search-form button {
       padding: 12px 25px;
       background-color: #00e5ff;
@@ -227,7 +322,6 @@
       display: none;
       text-align: left;
     }
-
     .autocomplete-items div {
       padding: 12px;
       cursor: pointer;
@@ -236,164 +330,54 @@
       border-bottom: 1px solid rgba(0, 229, 255, 0.2);
       transition: 0.2s;
     }
-
-    .autocomplete-items div:hover {
-      background-color: rgba(0, 229, 255, 0.2);
-      color: #fff;
-      padding-left: 20px;
-    }
-
-    .autocomplete-items div b {
-      color: #00e5ff;
-      font-weight: bold;
-    }
-
+    .autocomplete-items div:hover { background-color: rgba(0, 229, 255, 0.2); color: #fff; padding-left: 20px; }
+    .autocomplete-items div b { color: #00e5ff; font-weight: bold; }
     .autocomplete-items::-webkit-scrollbar { width: 5px; }
     .autocomplete-items::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
 
     /* --- QUICK LINKS --- */
-    .quick-links {
-      display: flex;
-      gap: 20px;
-      z-index: 1;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
+    .quick-links { display: flex; gap: 20px; z-index: 1; flex-wrap: wrap; justify-content: center; }
     .shortcut-icon {
-      width: 40px;
-      height: 40px;
-      background: rgba(10, 15, 25, 0.6);
-      border: 1px solid #0055ff;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      color: #99aab5;
-      transition: 0.3s;
-      text-decoration: none;
+      width: 40px; height: 40px; background: rgba(10, 15, 25, 0.6);
+      border: 1px solid #0055ff; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #99aab5; transition: 0.3s; text-decoration: none;
     }
+    .shortcut-icon:hover { border-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.5); color: #00e5ff; transform: translateY(-5px); }
 
-    .shortcut-icon:hover {
-      border-color: #00e5ff;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
-      color: #00e5ff;
-      transform: translateY(-5px);
-    }
-
-    /* --- XEMOX CUSTOM PLAYER (الستايل القديم) --- */
+    /* --- XEMOX PLAYER --- */
     .xemox-player {
-      width: 90%;
-      max-width: 450px;
-      background: rgba(5, 10, 20, 0.7);
-      backdrop-filter: blur(15px);
-      border: 2px solid #00e5ff;
-      border-radius: 15px;
+      width: 90%; max-width: 450px;
+      background: rgba(5, 10, 20, 0.7); backdrop-filter: blur(15px);
+      border: 2px solid #00e5ff; border-radius: 15px;
       box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      z-index: 10;
-      overflow: hidden;
+      display: flex; flex-direction: column; z-index: 10; overflow: hidden;
     }
-
-    .xemox-header {
-      background: #00e5ff;
-      color: #000;
-      text-align: center;
-      padding: 5px;
-      font-weight: bold;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .xemox-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
-    }
-
-    .xemox-track-info {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin: 0 10px;
-    }
-    .xemox-track-artist {
-      font-size: 10px;
-      color: #00e5ff;
-    }
-
-    .x-btn {
-      background: none;
-      border: none;
-      color: #00e5ff;
-      font-size: 20px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+    .xemox-header { background: #00e5ff; color: #000; text-align: center; padding: 5px; font-weight: bold; font-size: 12px; letter-spacing: 2px; }
+    .xemox-controls { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-bottom: 1px solid rgba(0, 229, 255, 0.2); }
+    .xemox-track-info { flex: 1; text-align: center; font-size: 13px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 10px; }
+    .xemox-track-artist { font-size: 10px; color: #00e5ff; }
+    .x-btn { background: none; border: none; color: #00e5ff; font-size: 20px; cursor: pointer; transition: 0.3s; }
     .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
-
-    .xemox-playlist {
-      max-height: 120px; 
-      overflow-y: auto;
-      padding: 5px 0;
-    }
-
+    .xemox-playlist { max-height: 120px; overflow-y: auto; padding: 5px 0; }
     .xemox-playlist::-webkit-scrollbar { width: 5px; }
     .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
-
-    .playlist-item {
-      padding: 8px 20px;
-      font-size: 12px;
-      color: #99aab5;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      transition: 0.2s;
-    }
-
-    .playlist-item:hover, .playlist-item.active {
-      background: rgba(0, 229, 255, 0.15);
-      color: #fff;
-      border-left: 3px solid #00e5ff;
-    }
+    .playlist-item { padding: 8px 20px; font-size: 12px; color: #99aab5; cursor: pointer; display: flex; justify-content: space-between; transition: 0.2s; }
+    .playlist-item:hover, .playlist-item.active { background: rgba(0, 229, 255, 0.15); color: #fff; border-left: 3px solid #00e5ff; }
 
     /* --- MOBILE CUSTOMIZATION --- */
     @media (max-width: 768px) {
-      .controls-container { 
-        flex-direction: row; 
-        justify-content: center; 
-        width: 100%; 
-        top: 10px; 
-        left: 0; 
-      }
-      .control-btn { padding: 6px 10px; font-size: 10px; }
+      .controls-container { flex-direction: row; justify-content: center; width: 100%; top: 10px; left: 0; gap: 6px; }
+      .control-btn { padding: 6px 8px; font-size: 9px; }
+      .streak-badge { top: 48px; left: 50%; transform: translateX(-50%); font-size: 11px; padding: 4px 10px; }
       
-      .lyrics-container {
-        top: 50px; 
-        right: 10px;
-        width: 140px; 
-        max-height: 160px;
-        padding: 8px;
-        border-radius: 12px;
+      .lyrics-container, .notes-container {
+        top: 50%; left: 50%; right: auto; transform: translate(-50%, -50%);
+        width: 85%; max-height: 55vh; padding: 15px;
+        background: rgba(5, 10, 22, 0.92); z-index: 100; box-shadow: 0 0 40px rgba(0,0,0,0.9);
       }
-      .lyrics-header { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }
-      .lyrics-content { font-size: 9px; line-height: 1.4; }
-
-      .search-form input { font-size: 14px; padding: 10px; }
-      .search-form button { font-size: 14px; padding: 10px 15px; }
-      
-      .profile-pic { width: 75px; height: 75px; }
+      .profile-pic { width: 75px; height: 75px; margin-top: 55px; } 
       .xemox-player { width: 95%; }
-      .autocomplete-items div { font-size: 12px; padding: 8px; }
     }
   </style>
 </head>
@@ -403,18 +387,49 @@
   <div id="static-bg"></div>
   <div class="bg-overlay"></div>
 
+  <!-- TOP CONTROLS -->
   <div class="controls-container">
     <button id="toggle-bg-btn" class="control-btn">SWITCH BG</button>
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
     <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
+    <button id="toggle-notes-btn" class="control-btn">NOTES: ON</button>
+    <button id="toggle-ai-btn" class="control-btn" style="border-color: #bb86fc; color: #bb86fc;">🤖 AI HUB</button>
+  </div>
+
+  <!-- STREAK COUNTER -->
+  <div class="streak-badge" id="streak-badge" title="Keep visiting daily to unlock rewards!">
+    🔥 STREAK: <span id="streak-count">1</span> DAYS
   </div>
 
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
 
-  <div class="lyrics-container" id="lyrics-box">
+  <!-- LYRICS BOX (LIQUID GLASS) -->
+  <div class="lyrics-container glass-panel" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
+  </div>
+
+  <!-- NOTES BOX (LIQUID GLASS) -->
+  <div class="notes-container glass-panel" id="notes-box">
+    <div class="notes-header">📝 SECURE NOTES</div>
+    <textarea id="personal-notes" placeholder="Write anything on your mind... Auto-saved on your device!"></textarea>
+  </div>
+
+  <!-- AI ASSISTANT HUB MODAL -->
+  <div class="ai-container glass-panel" id="ai-box">
+    <div class="ai-header">🤖 KEMO AI ASSISTANT HUB</div>
+    <div id="ai-status-msg" style="font-size: 11px; color: #ff9800; text-align: center; margin-bottom: 5px;"></div>
+    <a href="https://gemini.google.com" target="_blank" class="ai-card">
+      <span>✨ Google Gemini</span> <span style="font-size:11px; color:#00e5ff;">LAUNCH ➔</span>
+    </a>
+    <a href="https://claude.ai" target="_blank" class="ai-card">
+      <span>🧠 Anthropic Claude</span> <span style="font-size:11px; color:#00e5ff;">LAUNCH ➔</span>
+    </a>
+    <a href="https://chatgpt.com" target="_blank" class="ai-card">
+      <span>⚡ OpenAI ChatGPT</span> <span style="font-size:11px; color:#00e5ff;">LAUNCH ➔</span>
+    </a>
+    <button class="close-modal-btn" id="close-ai-btn">CLOSE [X]</button>
   </div>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
@@ -451,35 +466,101 @@
   </div>
 
   <script>
-    // --- FORCE AUTO-FOCUS ON LOAD ---
+    // --- FORCE AUTO-FOCUS & STREAK LOGIC ---
+    let currentStreak = 1;
     window.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        document.getElementById('search-input').focus();
-      }, 500);
+      setTimeout(() => { document.getElementById('search-input').focus(); }, 500);
+
+      const streakCountEl = document.getElementById('streak-count');
+      currentStreak = parseInt(localStorage.getItem('kemo_streak')) || 0;
+      let lastVisit = localStorage.getItem('kemo_last_visit');
+      const today = new Date().toDateString();
+
+      if (lastVisit !== today) {
+        if (lastVisit) {
+          const lastDate = new Date(lastVisit);
+          const currentDate = new Date(today);
+          const diffDays = Math.ceil(Math.abs(currentDate - lastDate) / (1000 * 60 * 60 * 24));
+          currentStreak = (diffDays === 1) ? currentStreak + 1 : 1;
+        } else {
+          currentStreak = 1;
+        }
+        localStorage.setItem('kemo_streak', currentStreak);
+        localStorage.setItem('kemo_last_visit', today);
+      }
+      streakCountEl.innerText = currentStreak;
     });
+
+    // --- SECURE NOTES AUTO-SAVE ---
+    const notesInput = document.getElementById('personal-notes');
+    notesInput.value = localStorage.getItem('kemo_personal_notes') || '';
+    notesInput.addEventListener('input', () => {
+      localStorage.setItem('kemo_personal_notes', notesInput.value);
+    });
+
+    // --- TOGGLE BOXES (LYRICS, NOTES, AI HUB) ---
+    const toggleLyricsBtn = document.getElementById('toggle-lyrics-btn');
+    const lyricsBox = document.getElementById('lyrics-box');
+    const toggleNotesBtn = document.getElementById('toggle-notes-btn');
+    const notesBox = document.getElementById('notes-box');
+    const toggleAiBtn = document.getElementById('toggle-ai-btn');
+    const aiBox = document.getElementById('ai-box');
+    const closeAiBtn = document.getElementById('close-ai-btn');
+    const aiStatusMsg = document.getElementById('ai-status-msg');
+
+    let isMobile = window.innerWidth <= 768;
+    let lyricsVisible = !isMobile;
+    let notesVisible = !isMobile;
+
+    if (isMobile) {
+      lyricsBox.style.display = 'none';
+      toggleLyricsBtn.innerText = 'LYRICS: OFF';
+      notesBox.style.display = 'none';
+      toggleNotesBtn.innerText = 'NOTES: OFF';
+    }
+
+    toggleLyricsBtn.addEventListener('click', () => {
+      lyricsVisible = !lyricsVisible;
+      lyricsBox.style.display = lyricsVisible ? 'flex' : 'none';
+      toggleLyricsBtn.innerText = lyricsVisible ? 'LYRICS: ON' : 'LYRICS: OFF';
+      if (isMobile && lyricsVisible && notesVisible) {
+        notesVisible = false; notesBox.style.display = 'none'; toggleNotesBtn.innerText = 'NOTES: OFF';
+      }
+    });
+
+    toggleNotesBtn.addEventListener('click', () => {
+      notesVisible = !notesVisible;
+      notesBox.style.display = notesVisible ? 'flex' : 'none';
+      toggleNotesBtn.innerText = notesVisible ? 'NOTES: ON' : 'NOTES: OFF';
+      if (isMobile && notesVisible && lyricsVisible) {
+        lyricsVisible = false; lyricsBox.style.display = 'none'; toggleLyricsBtn.innerText = 'LYRICS: OFF';
+      }
+    });
+
+    toggleAiBtn.addEventListener('click', () => {
+      aiBox.style.display = 'flex';
+      if (currentStreak >= 20) {
+        aiStatusMsg.innerText = "🔥 20+ DAY STREAK UNLOCKED! VIP AI ACCESS ACTIVE.";
+        aiStatusMsg.style.color = "#00e5ff";
+      } else {
+        aiStatusMsg.innerText = `⚡ Early Access Mode (Streak: ${currentStreak}/20 Days)`;
+      }
+    });
+
+    closeAiBtn.addEventListener('click', () => { aiBox.style.display = 'none'; });
 
     // --- GOOGLE LIVE AUTOCOMPLETE API ---
     const searchInput = document.getElementById('search-input');
     const autocompleteList = document.getElementById('autocomplete-list');
     let debounceTimer;
+    const kemoSuggestions = ["best game ever", "red dead redemption 2"];
 
-    const kemoSuggestions = [
-      "best game ever",
-      "red dead redemption 2"
-    ];
-
-    function escapeRegExp(string) {
-      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); 
-    }
+    function escapeRegExp(string) { return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
     searchInput.addEventListener('input', function() {
       const val = this.value.trim().toLowerCase();
       autocompleteList.innerHTML = '';
-      
-      if (!val) {
-        autocompleteList.style.display = 'none';
-        return;
-      }
+      if (!val) { autocompleteList.style.display = 'none'; return; }
 
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
@@ -491,31 +572,24 @@
         script.id = scriptId;
         script.src = `https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(val)}&callback=handleGoogleSuggestions`;
         document.body.appendChild(script);
-
       }, 300);
     });
 
     window.handleGoogleSuggestions = function(data) {
        const googleSuggestions = data[1] || [];
        const val = searchInput.value.toLowerCase().trim();
-       
        let matches = kemoSuggestions.filter(item => item.toLowerCase().includes(val));
-       let combined = [...matches, ...googleSuggestions];
-       combined = [...new Set(combined)].slice(0, 8); 
+       let combined = [...new Set([...matches, ...googleSuggestions])].slice(0, 8); 
 
        autocompleteList.innerHTML = '';
        if (combined.length > 0) {
          combined.forEach(item => {
             const div = document.createElement('div');
-            
             const safeVal = escapeRegExp(val);
-            const boldedItem = item.replace(new RegExp("(" + safeVal + ")", "gi"), "<b>$1</b>");
-            div.innerHTML = boldedItem;
-            
+            div.innerHTML = item.replace(new RegExp("(" + safeVal + ")", "gi"), "<b>$1</b>");
             div.addEventListener('click', function() {
               searchInput.value = item;
               autocompleteList.style.display = 'none';
-              
               if ((item.includes('best') && item.includes('game')) || item.includes('red dead') || item.includes('rdr')) {
                  alert("Red Dead Redemption 2, like Kemo_otak knows!");
                  searchInput.value = '';
@@ -532,9 +606,7 @@
     };
 
     document.addEventListener('click', function(e) {
-      if (e.target !== searchInput) {
-        autocompleteList.style.display = 'none';
-      }
+      if (e.target !== searchInput) autocompleteList.style.display = 'none';
     });
 
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
@@ -547,24 +619,8 @@
       }
     });
 
-    // --- ENABLE / DISABLE LYRICS ---
-    const toggleLyricsBtn = document.getElementById('toggle-lyrics-btn');
-    const lyricsBox = document.getElementById('lyrics-box');
-    let lyricsVisible = true;
-
-    toggleLyricsBtn.addEventListener('click', () => {
-      lyricsVisible = !lyricsVisible;
-      if (lyricsVisible) {
-        lyricsBox.style.display = 'flex';
-        toggleLyricsBtn.innerText = 'LYRICS: ON';
-      } else {
-        lyricsBox.style.display = 'none';
-        toggleLyricsBtn.innerText = 'LYRICS: OFF';
-      }
-    });
-
     // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER + FULL LYRICS (26 TRACKS)
+    // XEMOX™ AUDIO PLAYER + FULL LYRICS (PART 1)
     // ----------------------------------------------------
     const tracks = [
       { id: 1, title: "Samir Zamis", artist: "Abyusif", lyrics: `صحاب مكان فمبندفعش لما بنكسر
@@ -798,8 +854,7 @@ Plaque مناصب، إحنا أسامينا
 ايه اللي فكرك بيا، مش كنت مستاهلكيش؟
 عارف إن انتي مادية، بس مش للدرجة دي
 فا متغيريش كلامك، كل واحد من الطريق
-المهم تبقي عرفتي، إنك متستاهلينيش` },
-      { id: 5, title: "Amal 2", artist: "Abyusif", lyrics: `شكراً على كل كلمة ساعدت
+المهم تبقي عرفتي، إنك متستاهلينيش` },{ id: 5, title: "Amal 2", artist: "Abyusif", lyrics: `شكراً على كل كلمة ساعدت
 بس خلاص أنا مابقتش قادر أعند
 راضي بالمكتوب أكيد ومش مستعجب
 بس مستني عزرائيل أنا ومستعجل
@@ -1369,6 +1424,8 @@ Same active
     const titleDisplay = document.getElementById('x-title');
     const artistDisplay = document.getElementById('x-artist');
     const playlistContainer = document.getElementById('x-list');
+
+    let currentIndex = 0;
 
     // Build the visible playlist
     tracks.forEach((track, index) => {
