@@ -375,7 +375,7 @@
       border-left: 3px solid var(--neon-primary);
     }
 
-    /* --- 👑 SECRET ADMIN PANEL (LIQUID GLASS) --- */
+    /* --- 👑 SECRET ADMIN PANEL --- */
     .admin-modal {
       position: absolute;
       top: 50%;
@@ -478,7 +478,7 @@
       gap: 8px;
     }
 
-    /* --- 🥷 STEALTH / BOSS MODE SCREEN --- */
+    /* --- 🥷 STEALTH SCREEN --- */
     #stealth-screen {
       position: fixed;
       top: 0;
@@ -537,7 +537,6 @@
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
     <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
-    <!-- زرار الأدمن السري: مخفي ومش بيظهر غير لما تكتب الكود السري مرة واحدة -->
     <button id="admin-panel-btn" class="control-btn" style="display: none; border-color: #ffd700; color: #ffd700;">👑 ADMIN</button>
   </div>
 
@@ -596,16 +595,19 @@
       <textarea id="admin-vault-text" class="admin-textarea" rows="7" placeholder="Store your secret passwords, private links, or codes here... Only visible in Admin Mode!"></textarea>
     </div>
 
-    <!-- 6. ستوديو تعديل كلمات الأغاني لايف -->
+    <!-- 6. ستوديو تعديل كلمات الأغاني مع زرار النسخ الذكي -->
     <div id="tab-studio" class="admin-section">
-      <div style="font-size:11px; color:#00e5ff;">🎵 Live Lyrics Injector (Saves Permanently):</div>
+      <div style="font-size:11px; color:#00e5ff;">🎵 Live Lyrics Studio & Code Generator:</div>
       <select id="studio-track-select" class="admin-select"></select>
-      <textarea id="studio-lyrics-input" class="admin-textarea" rows="5" placeholder="Paste or edit track lyrics here..."></textarea>
-      <button id="studio-save-btn" class="admin-action-btn">💾 SAVE LYRICS TO SYSTEM</button>
+      <textarea id="studio-lyrics-input" class="admin-textarea" rows="4" placeholder="Paste or edit track lyrics here..."></textarea>
+      <div style="display:flex; gap:5px;">
+        <button id="studio-save-btn" class="admin-action-btn" style="flex:1;">💾 SAVE LOCAL</button>
+        <button id="studio-copy-code-btn" class="admin-action-btn" style="background:#ffd700; flex:1;" title="Copy updated tracks array for GitHub">📋 COPY CODE</button>
+      </div>
     </div>
   </div>
 
-  <!-- 🥷 STEALTH SCREEN (صفحة جوجل العادية للتمويه) -->
+  <!-- 🥷 STEALTH SCREEN -->
   <div id="stealth-screen">
     <h1 style="font-size: 55px; margin-bottom: 20px; letter-spacing: -2px;">
       <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
@@ -739,17 +741,16 @@
       }
     });
 
-    // --- SEARCH SUBMIT + SECRET ADMIN CODE ---
+    // --- SEARCH SUBMIT + SECRET ADMIN CODE (Remembered Forever) ---
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const q = searchInput.value.toLowerCase().trim();
       
-      // فتح الأدمن وحفظه للأبد لما تكتب الكود السري
       if (q === 'sys.admin.kemo' || q === 'kemo.admin') {
         event.preventDefault();
         localStorage.setItem('kemo_is_admin', 'true');
         document.getElementById('admin-panel-btn').style.display = 'inline-block';
         document.getElementById('admin-modal').style.display = 'flex';
-        alert("👑 ACCESS GRANTED: Welcome back, Commander Kemo! Admin Mode is now permanently unlocked on this device.");
+        alert("👑 ACCESS GRANTED: Welcome back, Commander Kemo! Admin Mode is now permanently unlocked.");
         searchInput.value = '';
         autocompleteList.style.display = 'none';
         return;
@@ -780,7 +781,7 @@
     });
 
     // ----------------------------------------------------
-    // XEMOX™ AUDIO PLAYER + FULL LYRICS (26 TRACKS)
+    // XEMOX™ AUDIO PLAYER + FULL LYRICS (PART 1)
     // ----------------------------------------------------
     const tracks = [
       { id: 1, title: "Samir Zamis", artist: "Abyusif", lyrics: `صحاب مكان فمبندفعش لما بنكسر
@@ -1175,7 +1176,7 @@ Plaque مناصب، إحنا أسامينا
 راب زي تورتيلا
 سينج زي ويكيند
 مروة كفاية حك، مش هيفيديك
-ابيو زي الجارد، مش هيسيبك
+ابيو زي الجارد, مش هيسيبك
 شوفوا انا لما اجز فيش حد مش
 بشوطه لما win عيش ملح انا بصونه
 انتو العكس لسة و هتشوفوا
@@ -1578,7 +1579,7 @@ Same active
       { id: 26, title: "Gaw Br2", artist: "Abyusif", lyrics: `No lyrics added yet...` }
     ];
 
-    // Load any custom saved lyrics from Admin Studio
+    // Load any custom saved lyrics from LocalStorage
     const savedCustomLyrics = JSON.parse(localStorage.getItem('kemo_custom_lyrics') || '{}');
     tracks.forEach(t => {
       if (savedCustomLyrics[t.id]) {
@@ -1686,13 +1687,12 @@ Same active
     }
 
     // ----------------------------------------------------
-    // 👑 ADMIN HUB LOGIC (5 SUPER FEATURES)
+    // 👑 ADMIN HUB LOGIC
     // ----------------------------------------------------
     const adminBtn = document.getElementById('admin-panel-btn');
     const adminModal = document.getElementById('admin-modal');
     const closeAdminBtn = document.getElementById('close-admin-btn');
 
-    // Remember Admin forever if unlocked once
     if (localStorage.getItem('kemo_is_admin') === 'true') {
       adminBtn.style.display = 'inline-block';
     }
@@ -1706,7 +1706,7 @@ Same active
       localStorage.removeItem('kemo_is_admin');
       adminBtn.style.display = 'none';
       adminModal.style.display = 'none';
-      alert("🔒 Admin Panel Locked. Type 'sys.admin.kemo' in search to unlock again.");
+      alert("🔒 Admin Panel Locked. Type 'sys.admin.kemo' in search to unlock.");
     };
 
     window.switchAdminTab = function(tabId, btnEl) {
@@ -1716,7 +1716,7 @@ Same active
       btnEl.classList.add('active');
     };
 
-    // 1. Instant Translator & Franco Decoder
+    // 1. Translator & Franco Decoder
     document.getElementById('trans-btn').onclick = async () => {
       const text = document.getElementById('trans-input').value.trim();
       const langPair = document.getElementById('trans-dir').value;
@@ -1725,190 +1725,3 @@ Same active
       outBox.value = "⏳ Translating...";
       try {
         const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`);
-        const data = await res.json();
-        outBox.value = data.responseData.translatedText || "Translation error.";
-      } catch (err) {
-        outBox.value = "Network error while translating.";
-      }
-    };
-
-    document.getElementById('franco-btn').onclick = () => {
-      let txt = document.getElementById('trans-input').value.toLowerCase();
-      const francoMap = {
-        "3'": "غ", "7'": "خ", "sh": "ش", "ch": "ش", "th": "ث", "kh": "خ", "gh": "غ", "dh": "ذ",
-        "2": "ء", "3": "ع", "4": "ش", "5": "خ", "6": "ط", "7": "ح", "8": "ق", "9": "ص",
-        "a": "ا", "b": "ب", "t": "ت", "g": "ج", "j": "ج", "d": "د", "r": "ر", "z": "ز",
-        "s": "س", "f": "ف", "q": "ق", "k": "ك", "l": "ل", "m": "م", "n": "ن", "h": "ه",
-        "w": "و", "o": "و", "u": "و", "y": "ي", "i": "ي", "e": "ي", "p": "ب", "v": "ف"
-      };
-      ["3'", "7'", "sh", "ch", "th", "kh", "gh", "dh"].forEach(k => {
-        txt = txt.split(k).join(francoMap[k]);
-      });
-      let result = "";
-      for (let char of txt) {
-        result += francoMap[char] !== undefined ? francoMap[char] : char;
-      }
-      document.getElementById('trans-output').value = result;
-    };
-
-    // 3. Super Theme Switcher (Saved in localStorage)
-    window.setTheme = function(primary, secondary, glow, dim) {
-      document.documentElement.style.setProperty('--neon-primary', primary);
-      document.documentElement.style.setProperty('--neon-secondary', secondary);
-      document.documentElement.style.setProperty('--neon-glow', glow);
-      document.documentElement.style.setProperty('--neon-dim', dim);
-      localStorage.setItem('kemo_saved_theme', JSON.stringify({ primary, secondary, glow, dim }));
-    };
-
-    const savedTheme = JSON.parse(localStorage.getItem('kemo_saved_theme') || 'null');
-    if (savedTheme) {
-      setTheme(savedTheme.primary, savedTheme.secondary, savedTheme.glow, savedTheme.dim);
-    }
-
-    // 4. Encrypted Admin Vault
-    const vaultInput = document.getElementById('admin-vault-text');
-    vaultInput.value = localStorage.getItem('kemo_admin_vault') || '';
-    vaultInput.addEventListener('input', () => {
-      localStorage.setItem('kemo_admin_vault', vaultInput.value);
-    });
-
-    // 5. Stealth / Boss Mode (Button or Double ESC)
-    const stealthScreen = document.getElementById('stealth-screen');
-    let stealthActive = false;
-    let lastEscTime = 0;
-
-    function toggleStealth() {
-      stealthActive = !stealthActive;
-      if (stealthActive) {
-        stealthScreen.style.display = 'flex';
-        audioPlayer.pause();
-        playBtn.innerText = '▶';
-        document.title = "Google";
-      } else {
-        stealthScreen.style.display = 'none';
-        document.title = "Kemo_otak Command Center | XEMOX AUDIO";
-      }
-    }
-
-    document.getElementById('activate-stealth-btn').onclick = () => {
-      adminModal.style.display = 'none';
-      toggleStealth();
-    };
-    document.getElementById('exit-stealth-btn').onclick = toggleStealth;
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        const now = Date.now();
-        if (now - lastEscTime < 400) {
-          toggleStealth();
-        }
-        lastEscTime = now;
-      }
-    });
-
-    // 6. Live Lyrics Studio Injector
-    const studioSelect = document.getElementById('studio-track-select');
-    const studioLyricsInput = document.getElementById('studio-lyrics-input');
-
-    tracks.forEach((t, idx) => {
-      const opt = document.createElement('option');
-      opt.value = idx;
-      opt.innerText = `${t.id}. ${t.title} - ${t.artist}`;
-      studioSelect.appendChild(opt);
-    });
-
-    studioSelect.onchange = () => {
-      const idx = parseInt(studioSelect.value);
-      studioLyricsInput.value = tracks[idx].lyrics;
-    };
-    if (tracks.length > 0) studioLyricsInput.value = tracks[0].lyrics;
-
-    document.getElementById('studio-save-btn').onclick = () => {
-      const idx = parseInt(studioSelect.value);
-      const newLyrics = studioLyricsInput.value;
-      tracks[idx].lyrics = newLyrics;
-      
-      const customStore = JSON.parse(localStorage.getItem('kemo_custom_lyrics') || '{}');
-      customStore[tracks[idx].id] = newLyrics;
-      localStorage.setItem('kemo_custom_lyrics', JSON.stringify(customStore));
-
-      if (currentIndex === idx) {
-        document.getElementById('lyrics-text').innerText = newLyrics;
-      }
-      alert(`✅ Lyrics for "${tracks[idx].title}" saved permanently!`);
-    };
-
-    // ----------------------------------------------------
-    // BACKGROUND SYSTEM
-    // ----------------------------------------------------
-    const dbName = "KemoCommandDB_Final";
-    let db;
-    const request = indexedDB.open(dbName, 1);
-
-    request.onupgradeneeded = function(e) {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains("bgStore")) db.createObjectStore("bgStore");
-    };
-
-    request.onsuccess = function(e) {
-      db = e.target.result;
-      const tx = db.transaction("bgStore", "readonly");
-      const req = tx.objectStore("bgStore").get("myCustomBg");
-      req.onsuccess = function() {
-        if (req.result && req.result.fileData) {
-          applyBg(URL.createObjectURL(req.result.fileData), req.result.fileType);
-        } else {
-          document.getElementById('live-bg').style.display = 'block';
-          document.getElementById('static-bg').style.display = 'none';
-          isLive = true;
-          document.getElementById('live-bg').play().catch(e => console.log("Autoplay blocked"));
-        }
-      };
-    };
-
-    let isLive = true; 
-
-    function applyBg(url, type) {
-      const liveBg = document.getElementById('live-bg');
-      const staticBg = document.getElementById('static-bg');
-      if (type.startsWith('video/')) {
-        liveBg.src = url;
-        liveBg.style.display = 'block';
-        staticBg.style.display = 'none';
-        isLive = true;
-        liveBg.play().catch(e => console.log("Video Autoplay Blocked"));
-      } else if (type.startsWith('image/')) {
-        staticBg.style.backgroundImage = `url(${url})`;
-        staticBg.style.display = 'block';
-        liveBg.style.display = 'none';
-        isLive = false;
-        liveBg.pause();
-      }
-    }
-
-    document.getElementById('bg-upload').addEventListener('change', function(e) {
-      if (e.target.files[0]) {
-        const file = e.target.files[0];
-        const tx = db.transaction("bgStore", "readwrite");
-        tx.objectStore("bgStore").put({ fileData: file, fileType: file.type }, "myCustomBg");
-        applyBg(URL.createObjectURL(file), file.type);
-      }
-    });
-
-    document.getElementById('toggle-bg-btn').addEventListener('click', () => {
-      const liveBg = document.getElementById('live-bg');
-      const staticBg = document.getElementById('static-bg');
-      isLive = !isLive;
-      if (isLive && liveBg.src) {
-        liveBg.style.display = 'block';
-        staticBg.style.display = 'none';
-        liveBg.play();
-      } else {
-        liveBg.style.display = 'none';
-        staticBg.style.display = 'block';
-        liveBg.pause();
-      }
-    });
-  </script>
-</body>
-</html>
