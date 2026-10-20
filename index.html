@@ -6,12 +6,19 @@
   <title>Kemo_otak Command Center | XEMOX AUDIO</title>
   <link rel="icon" href="sasd.jpg" type="image/jpeg">
   <style>
+    :root {
+      --neon-primary: #00e5ff;
+      --neon-secondary: #0055ff;
+      --neon-glow: rgba(0, 229, 255, 0.5);
+      --neon-dim: rgba(0, 229, 255, 0.15);
+    }
+
     body {
       margin: 0;
       height: 100vh; 
       overflow: hidden; 
       background-color: #030b14;
-      color: #00e5ff;
+      color: var(--neon-primary);
       font-family: 'Courier New', Courier, monospace;
       display: flex;
       flex-direction: column;
@@ -19,6 +26,7 @@
       justify-content: center;
       gap: 15px;
       position: relative;
+      transition: color 0.3s ease;
     }
 
     /* --- BACKGROUNDS --- */
@@ -36,7 +44,6 @@
     #static-bg { background: #030b14; display: none; }
     #live-bg { display: block; }
 
-    /* التعتيم الأصلي بتاعك */
     .bg-overlay {
       position: absolute;
       top: 0;
@@ -47,7 +54,7 @@
       z-index: -1;
     }
 
-    /* --- TOP CONTROLS (الستايل القديم) --- */
+    /* --- TOP CONTROLS --- */
     .controls-container {
       position: absolute;
       top: 15px;
@@ -59,9 +66,9 @@
     }
 
     .control-btn {
-      background: rgba(0, 229, 255, 0.1);
-      border: 1px solid #00e5ff;
-      color: #00e5ff;
+      background: var(--neon-dim);
+      border: 1px solid var(--neon-primary);
+      color: var(--neon-primary);
       padding: 8px 12px;
       border-radius: 5px;
       cursor: pointer;
@@ -74,8 +81,9 @@
     }
 
     .control-btn:hover {
-      background: rgba(0, 229, 255, 0.3);
-      box-shadow: 0 0 15px #00e5ff;
+      background: var(--neon-glow);
+      box-shadow: 0 0 15px var(--neon-primary);
+      color: #fff;
     }
 
     /* --- PORTFOLIO SECRET BTN --- */
@@ -94,38 +102,37 @@
 
     .secret-btn:hover {
       opacity: 1;
-      color: #00e5ff;
-      text-shadow: 0 0 8px #00e5ff;
+      color: var(--neon-primary);
+      text-shadow: 0 0 8px var(--neon-primary);
     }
 
-    /* --- LYRICS BOX (LIQUID GLASS الفاجر) --- */
+    /* --- LYRICS BOX (LIQUID GLASS) --- */
     .lyrics-container {
       position: absolute;
       top: 15px;
       right: 20px;
       width: 260px;
       max-height: 350px;
-      /* تأثير الإزاز الشفاف بس هنا */
       background: rgba(10, 15, 30, 0.15);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 229, 255, 0.2);
+      border: 1px solid var(--neon-dim);
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       border-radius: 16px;
       padding: 15px;
       z-index: 15;
       display: flex; 
       flex-direction: column;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s ease, border-color 0.3s ease;
     }
 
     .lyrics-header {
-      color: #00e5ff;
+      color: var(--neon-primary);
       font-weight: bold;
       font-size: 14px;
       letter-spacing: 2px;
       text-align: center;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      border-bottom: 1px solid var(--neon-dim);
       padding-bottom: 10px;
       margin-bottom: 10px;
       text-transform: uppercase;
@@ -144,26 +151,26 @@
     }
 
     .lyrics-content::-webkit-scrollbar { width: 4px; }
-    .lyrics-content::-webkit-scrollbar-thumb { background: rgba(0, 229, 255, 0.5); border-radius: 4px; }
+    .lyrics-content::-webkit-scrollbar-thumb { background: var(--neon-primary); border-radius: 4px; }
 
-    /* --- PROFILE (الستايل القديم) --- */
+    /* --- PROFILE --- */
     .profile-pic {
       width: 90px;
       height: 90px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #00e5ff;
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+      border: 3px solid var(--neon-primary);
+      box-shadow: 0 0 25px var(--neon-glow);
       z-index: 1;
       transition: 0.3s;
     }
     
     .profile-pic:hover {
-      box-shadow: 0 0 40px rgba(0, 85, 255, 0.8);
-      border-color: #0055ff;
+      box-shadow: 0 0 40px var(--neon-secondary);
+      border-color: var(--neon-secondary);
     }
 
-    /* --- SEARCH (الستايل القديم) --- */
+    /* --- SEARCH --- */
     .search-wrapper {
       position: relative;
       width: 100%;
@@ -184,7 +191,7 @@
       flex: 1;
       background: rgba(10, 15, 25, 0.8);
       backdrop-filter: blur(10px);
-      border: 2px solid #0055ff;
+      border: 2px solid var(--neon-secondary);
       color: white;
       border-radius: 8px 0 0 8px;
       font-size: 16px;
@@ -194,13 +201,13 @@
     }
 
     .search-form input:focus {
-      border-color: #00e5ff; 
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      border-color: var(--neon-primary); 
+      box-shadow: 0 0 20px var(--neon-glow);
     }
 
     .search-form button {
       padding: 12px 25px;
-      background-color: #00e5ff;
+      background-color: var(--neon-primary);
       border: none;
       color: #000;
       font-size: 16px;
@@ -218,7 +225,7 @@
       right: 20px;
       background: rgba(10, 15, 25, 0.95);
       backdrop-filter: blur(15px);
-      border: 1px solid #00e5ff;
+      border: 1px solid var(--neon-primary);
       border-top: none;
       border-radius: 0 0 8px 8px;
       z-index: 99;
@@ -233,23 +240,23 @@
       cursor: pointer;
       color: #99aab5;
       font-size: 15px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      border-bottom: 1px solid var(--neon-dim);
       transition: 0.2s;
     }
 
     .autocomplete-items div:hover {
-      background-color: rgba(0, 229, 255, 0.2);
+      background-color: var(--neon-dim);
       color: #fff;
       padding-left: 20px;
     }
 
     .autocomplete-items div b {
-      color: #00e5ff;
+      color: var(--neon-primary);
       font-weight: bold;
     }
 
     .autocomplete-items::-webkit-scrollbar { width: 5px; }
-    .autocomplete-items::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
+    .autocomplete-items::-webkit-scrollbar-thumb { background: var(--neon-primary); border-radius: 5px; }
 
     /* --- QUICK LINKS --- */
     .quick-links {
@@ -264,7 +271,7 @@
       width: 40px;
       height: 40px;
       background: rgba(10, 15, 25, 0.6);
-      border: 1px solid #0055ff;
+      border: 1px solid var(--neon-secondary);
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -276,29 +283,30 @@
     }
 
     .shortcut-icon:hover {
-      border-color: #00e5ff;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
-      color: #00e5ff;
+      border-color: var(--neon-primary);
+      box-shadow: 0 0 20px var(--neon-glow);
+      color: var(--neon-primary);
       transform: translateY(-5px);
     }
 
-    /* --- XEMOX CUSTOM PLAYER (الستايل القديم) --- */
+    /* --- XEMOX CUSTOM PLAYER --- */
     .xemox-player {
       width: 90%;
       max-width: 450px;
       background: rgba(5, 10, 20, 0.7);
       backdrop-filter: blur(15px);
-      border: 2px solid #00e5ff;
+      border: 2px solid var(--neon-primary);
       border-radius: 15px;
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3), inset 0 0 10px rgba(0, 229, 255, 0.1);
+      box-shadow: 0 0 20px var(--neon-glow), inset 0 0 10px var(--neon-dim);
       display: flex;
       flex-direction: column;
       z-index: 10;
       overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .xemox-header {
-      background: #00e5ff;
+      background: var(--neon-primary);
       color: #000;
       text-align: center;
       padding: 5px;
@@ -306,6 +314,7 @@
       font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
+      transition: background 0.3s ease;
     }
 
     .xemox-controls {
@@ -313,7 +322,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 10px 20px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+      border-bottom: 1px solid var(--neon-dim);
     }
 
     .xemox-track-info {
@@ -328,18 +337,18 @@
     }
     .xemox-track-artist {
       font-size: 10px;
-      color: #00e5ff;
+      color: var(--neon-primary);
     }
 
     .x-btn {
       background: none;
       border: none;
-      color: #00e5ff;
+      color: var(--neon-primary);
       font-size: 20px;
       cursor: pointer;
       transition: 0.3s;
     }
-    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px #00e5ff; }
+    .x-btn:hover { color: #fff; transform: scale(1.2); text-shadow: 0 0 10px var(--neon-primary); }
 
     .xemox-playlist {
       max-height: 120px; 
@@ -348,7 +357,7 @@
     }
 
     .xemox-playlist::-webkit-scrollbar { width: 5px; }
-    .xemox-playlist::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 5px; }
+    .xemox-playlist::-webkit-scrollbar-thumb { background: var(--neon-primary); border-radius: 5px; }
 
     .playlist-item {
       padding: 8px 20px;
@@ -361,9 +370,129 @@
     }
 
     .playlist-item:hover, .playlist-item.active {
-      background: rgba(0, 229, 255, 0.15);
+      background: var(--neon-dim);
       color: #fff;
-      border-left: 3px solid #00e5ff;
+      border-left: 3px solid var(--neon-primary);
+    }
+
+    /* --- 👑 SECRET ADMIN PANEL (LIQUID GLASS) --- */
+    .admin-modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 440px;
+      background: rgba(5, 10, 22, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 2px solid var(--neon-primary);
+      border-radius: 16px;
+      padding: 18px;
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 25px var(--neon-glow);
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--neon-dim);
+      padding-bottom: 10px;
+      font-weight: bold;
+      font-size: 15px;
+      letter-spacing: 2px;
+      color: var(--neon-primary);
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 5px;
+      justify-content: space-between;
+    }
+
+    .admin-tab-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--neon-dim);
+      color: #99aab5;
+      padding: 7px 4px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .admin-tab-btn.active, .admin-tab-btn:hover {
+      background: var(--neon-primary);
+      color: #000;
+      border-color: var(--neon-primary);
+    }
+
+    .admin-section {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .admin-section.active { display: flex; }
+
+    .admin-textarea, .admin-select {
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--neon-primary);
+      color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 12px;
+      outline: none;
+      resize: none;
+    }
+
+    .admin-action-btn {
+      background: var(--neon-primary);
+      color: #000;
+      border: none;
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      transition: 0.2s;
+      text-transform: uppercase;
+    }
+    .admin-action-btn:hover { filter: brightness(1.2); box-shadow: 0 0 12px var(--neon-primary); }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* --- 🥷 STEALTH / BOSS MODE SCREEN --- */
+    #stealth-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      color: #202124;
+      z-index: 99999;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
     }
 
     /* --- MOBILE CUSTOMIZATION --- */
@@ -408,6 +537,8 @@
     <label for="bg-upload" class="control-btn" style="cursor: pointer; text-align: center;">UPLOAD BG</label>
     <input type="file" id="bg-upload" accept="image/*,video/*" hidden>
     <button id="toggle-lyrics-btn" class="control-btn">LYRICS: ON</button>
+    <!-- زرار الأدمن السري: مخفي ومش بيظهر غير لما تكتب الكود السري مرة واحدة -->
+    <button id="admin-panel-btn" class="control-btn" style="display: none; border-color: #ffd700; color: #ffd700;">👑 ADMIN</button>
   </div>
 
   <a href="https://kemo-otakk.vercel.app" class="secret-btn">[ SYS.PORTFOLIO ]</a>
@@ -415,6 +546,77 @@
   <div class="lyrics-container" id="lyrics-box">
     <div class="lyrics-header" id="lyrics-title">LYRICS</div>
     <div class="lyrics-content" id="lyrics-text">Select a track to view lyrics...</div>
+  </div>
+
+  <!-- 👑 SECRET ADMIN COMMAND HUB -->
+  <div class="admin-modal" id="admin-modal">
+    <div class="admin-header">
+      <span>👑 KEMO ADMIN HUB</span>
+      <button id="close-admin-btn" style="background:none; border:none; color:#ff0055; font-size:16px; font-weight:bold; cursor:pointer;">[X]</button>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" onclick="switchAdminTab('tab-trans', this)">🌐 TRANSLATE</button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('tab-themes', this)">🎨 THEMES</button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('tab-vault', this)">🔐 VAULT</button>
+      <button class="admin-tab-btn" onclick="switchAdminTab('tab-studio', this)">🎵 STUDIO</button>
+    </div>
+
+    <!-- 1. المترجم الفوري والفرانكو -->
+    <div id="tab-trans" class="admin-section active">
+      <div style="display:flex; gap:5px;">
+        <select id="trans-dir" class="admin-select" style="flex:1;">
+          <option value="en|ar">English ➔ Arabic</option>
+          <option value="ar|en">Arabic ➔ English</option>
+        </select>
+        <button id="trans-btn" class="admin-action-btn">TRANSLATE</button>
+        <button id="franco-btn" class="admin-action-btn" style="background:#ff9800;" title="Convert Franco to Arabic">FRANCO➔AR</button>
+      </div>
+      <textarea id="trans-input" class="admin-textarea" rows="3" placeholder="Type text or Franco (e.g. 3aml eh ya kemo)..."></textarea>
+      <textarea id="trans-output" class="admin-textarea" rows="3" placeholder="Translation output..." readonly></textarea>
+    </div>
+
+    <!-- 3 & 5. الثيمات الخارقة + وضع الشبح -->
+    <div id="tab-themes" class="admin-section">
+      <div style="font-size:11px; color:#99aab5; text-align:center;">Choose Command Center Theme:</div>
+      <div class="theme-grid">
+        <button class="admin-action-btn" style="background:#00e5ff; color:#000;" onclick="setTheme('#00e5ff', '#0055ff', 'rgba(0,229,255,0.5)', 'rgba(0,229,255,0.15)')">⚡ CYBER BLUE</button>
+        <button class="admin-action-btn" style="background:#ff0040; color:#fff;" onclick="setTheme('#ff0040', '#990026', 'rgba(255,0,64,0.5)', 'rgba(255,0,64,0.15)')">🚨 RED ALERT</button>
+        <button class="admin-action-btn" style="background:#00ff41; color:#000;" onclick="setTheme('#00ff41', '#008f11', 'rgba(0,255,65,0.5)', 'rgba(0,255,65,0.15)')">💻 MATRIX GREEN</button>
+        <button class="admin-action-btn" style="background:#ffd700; color:#000;" onclick="setTheme('#ffd700', '#b8860b', 'rgba(255,215,0,0.5)', 'rgba(255,215,0,0.15)')">👑 GOLD VIP</button>
+      </div>
+      <hr style="border-color: rgba(255,255,255,0.1); width:100%;">
+      <button id="activate-stealth-btn" class="admin-action-btn" style="background:#ff0055; color:#fff;">🥷 ACTIVATE STEALTH / BOSS MODE (OR DOUBLE ESC)</button>
+      <button id="logout-admin-btn" class="admin-action-btn" style="background:#222; color:#888; font-size:10px;">🔒 LOCK ADMIN PANEL</button>
+    </div>
+
+    <!-- 4. الخزنة السرية -->
+    <div id="tab-vault" class="admin-section">
+      <div style="font-size:11px; color:#ffd700;">🔒 Admin Private Encrypted Vault (Auto-Saved):</div>
+      <textarea id="admin-vault-text" class="admin-textarea" rows="7" placeholder="Store your secret passwords, private links, or codes here... Only visible in Admin Mode!"></textarea>
+    </div>
+
+    <!-- 6. ستوديو تعديل كلمات الأغاني لايف -->
+    <div id="tab-studio" class="admin-section">
+      <div style="font-size:11px; color:#00e5ff;">🎵 Live Lyrics Injector (Saves Permanently):</div>
+      <select id="studio-track-select" class="admin-select"></select>
+      <textarea id="studio-lyrics-input" class="admin-textarea" rows="5" placeholder="Paste or edit track lyrics here..."></textarea>
+      <button id="studio-save-btn" class="admin-action-btn">💾 SAVE LYRICS TO SYSTEM</button>
+    </div>
+  </div>
+
+  <!-- 🥷 STEALTH SCREEN (صفحة جوجل العادية للتمويه) -->
+  <div id="stealth-screen">
+    <h1 style="font-size: 55px; margin-bottom: 20px; letter-spacing: -2px;">
+      <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+    </h1>
+    <form action="https://www.google.com/search" method="get" style="width:90%; max-width:480px; display:flex; flex-direction:column; gap:15px; align-items:center;">
+      <input type="text" name="q" placeholder="Search Google or type a URL" style="width:100%; padding:12px 20px; border-radius:24px; border:1px solid #dfe1e5; font-size:16px; outline:none; box-sizing:border-box;">
+      <div style="display:flex; gap:10px;">
+        <button type="submit" style="padding:8px 16px; background:#f8f9fa; border:1px solid #f8f9fa; border-radius:4px; color:#3c4043; cursor:pointer;">Google Search</button>
+        <button type="button" id="exit-stealth-btn" style="padding:8px 16px; background:#f8f9fa; border:1px solid #f8f9fa; border-radius:4px; color:#3c4043; cursor:pointer;">I'm Feeling Lucky</button>
+      </div>
+    </form>
   </div>
 
   <img src="sasd.jpg" alt="Kemo_otak" class="profile-pic">
@@ -537,8 +739,22 @@
       }
     });
 
+    // --- SEARCH SUBMIT + SECRET ADMIN CODE ---
     document.getElementById('kemo-search').addEventListener('submit', function(event) {
       const q = searchInput.value.toLowerCase().trim();
+      
+      // فتح الأدمن وحفظه للأبد لما تكتب الكود السري
+      if (q === 'sys.admin.kemo' || q === 'kemo.admin') {
+        event.preventDefault();
+        localStorage.setItem('kemo_is_admin', 'true');
+        document.getElementById('admin-panel-btn').style.display = 'inline-block';
+        document.getElementById('admin-modal').style.display = 'flex';
+        alert("👑 ACCESS GRANTED: Welcome back, Commander Kemo! Admin Mode is now permanently unlocked on this device.");
+        searchInput.value = '';
+        autocompleteList.style.display = 'none';
+        return;
+      }
+
       if ((q.includes('best') && q.includes('game')) || q.includes('red dead') || q.includes('rdr')) {
         event.preventDefault(); 
         alert("Red Dead Redemption 2, like Kemo_otak knows!");
@@ -1362,6 +1578,14 @@ Same active
       { id: 26, title: "Gaw Br2", artist: "Abyusif", lyrics: `No lyrics added yet...` }
     ];
 
+    // Load any custom saved lyrics from Admin Studio
+    const savedCustomLyrics = JSON.parse(localStorage.getItem('kemo_custom_lyrics') || '{}');
+    tracks.forEach(t => {
+      if (savedCustomLyrics[t.id]) {
+        t.lyrics = savedCustomLyrics[t.id];
+      }
+    });
+
     const audioPlayer = document.getElementById('x-audio');
     const playBtn = document.getElementById('x-play');
     const prevBtn = document.getElementById('x-prev');
@@ -1369,6 +1593,7 @@ Same active
     const titleDisplay = document.getElementById('x-title');
     const artistDisplay = document.getElementById('x-artist');
     const playlistContainer = document.getElementById('x-list');
+    let currentIndex = 0;
 
     // Build the visible playlist
     tracks.forEach((track, index) => {
@@ -1460,7 +1685,162 @@ Same active
       loadTrack(0, false);
     }
 
+    // ----------------------------------------------------
+    // 👑 ADMIN HUB LOGIC (5 SUPER FEATURES)
+    // ----------------------------------------------------
+    const adminBtn = document.getElementById('admin-panel-btn');
+    const adminModal = document.getElementById('admin-modal');
+    const closeAdminBtn = document.getElementById('close-admin-btn');
+
+    // Remember Admin forever if unlocked once
+    if (localStorage.getItem('kemo_is_admin') === 'true') {
+      adminBtn.style.display = 'inline-block';
+    }
+
+    adminBtn.onclick = () => {
+      adminModal.style.display = adminModal.style.display === 'flex' ? 'none' : 'flex';
+    };
+    closeAdminBtn.onclick = () => { adminModal.style.display = 'none'; };
+
+    document.getElementById('logout-admin-btn').onclick = () => {
+      localStorage.removeItem('kemo_is_admin');
+      adminBtn.style.display = 'none';
+      adminModal.style.display = 'none';
+      alert("🔒 Admin Panel Locked. Type 'sys.admin.kemo' in search to unlock again.");
+    };
+
+    window.switchAdminTab = function(tabId, btnEl) {
+      document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btnEl.classList.add('active');
+    };
+
+    // 1. Instant Translator & Franco Decoder
+    document.getElementById('trans-btn').onclick = async () => {
+      const text = document.getElementById('trans-input').value.trim();
+      const langPair = document.getElementById('trans-dir').value;
+      const outBox = document.getElementById('trans-output');
+      if (!text) return;
+      outBox.value = "⏳ Translating...";
+      try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${langPair}`);
+        const data = await res.json();
+        outBox.value = data.responseData.translatedText || "Translation error.";
+      } catch (err) {
+        outBox.value = "Network error while translating.";
+      }
+    };
+
+    document.getElementById('franco-btn').onclick = () => {
+      let txt = document.getElementById('trans-input').value.toLowerCase();
+      const francoMap = {
+        "3'": "غ", "7'": "خ", "sh": "ش", "ch": "ش", "th": "ث", "kh": "خ", "gh": "غ", "dh": "ذ",
+        "2": "ء", "3": "ع", "4": "ش", "5": "خ", "6": "ط", "7": "ح", "8": "ق", "9": "ص",
+        "a": "ا", "b": "ب", "t": "ت", "g": "ج", "j": "ج", "d": "د", "r": "ر", "z": "ز",
+        "s": "س", "f": "ف", "q": "ق", "k": "ك", "l": "ل", "m": "م", "n": "ن", "h": "ه",
+        "w": "و", "o": "و", "u": "و", "y": "ي", "i": "ي", "e": "ي", "p": "ب", "v": "ف"
+      };
+      ["3'", "7'", "sh", "ch", "th", "kh", "gh", "dh"].forEach(k => {
+        txt = txt.split(k).join(francoMap[k]);
+      });
+      let result = "";
+      for (let char of txt) {
+        result += francoMap[char] !== undefined ? francoMap[char] : char;
+      }
+      document.getElementById('trans-output').value = result;
+    };
+
+    // 3. Super Theme Switcher (Saved in localStorage)
+    window.setTheme = function(primary, secondary, glow, dim) {
+      document.documentElement.style.setProperty('--neon-primary', primary);
+      document.documentElement.style.setProperty('--neon-secondary', secondary);
+      document.documentElement.style.setProperty('--neon-glow', glow);
+      document.documentElement.style.setProperty('--neon-dim', dim);
+      localStorage.setItem('kemo_saved_theme', JSON.stringify({ primary, secondary, glow, dim }));
+    };
+
+    const savedTheme = JSON.parse(localStorage.getItem('kemo_saved_theme') || 'null');
+    if (savedTheme) {
+      setTheme(savedTheme.primary, savedTheme.secondary, savedTheme.glow, savedTheme.dim);
+    }
+
+    // 4. Encrypted Admin Vault
+    const vaultInput = document.getElementById('admin-vault-text');
+    vaultInput.value = localStorage.getItem('kemo_admin_vault') || '';
+    vaultInput.addEventListener('input', () => {
+      localStorage.setItem('kemo_admin_vault', vaultInput.value);
+    });
+
+    // 5. Stealth / Boss Mode (Button or Double ESC)
+    const stealthScreen = document.getElementById('stealth-screen');
+    let stealthActive = false;
+    let lastEscTime = 0;
+
+    function toggleStealth() {
+      stealthActive = !stealthActive;
+      if (stealthActive) {
+        stealthScreen.style.display = 'flex';
+        audioPlayer.pause();
+        playBtn.innerText = '▶';
+        document.title = "Google";
+      } else {
+        stealthScreen.style.display = 'none';
+        document.title = "Kemo_otak Command Center | XEMOX AUDIO";
+      }
+    }
+
+    document.getElementById('activate-stealth-btn').onclick = () => {
+      adminModal.style.display = 'none';
+      toggleStealth();
+    };
+    document.getElementById('exit-stealth-btn').onclick = toggleStealth;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const now = Date.now();
+        if (now - lastEscTime < 400) {
+          toggleStealth();
+        }
+        lastEscTime = now;
+      }
+    });
+
+    // 6. Live Lyrics Studio Injector
+    const studioSelect = document.getElementById('studio-track-select');
+    const studioLyricsInput = document.getElementById('studio-lyrics-input');
+
+    tracks.forEach((t, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.innerText = `${t.id}. ${t.title} - ${t.artist}`;
+      studioSelect.appendChild(opt);
+    });
+
+    studioSelect.onchange = () => {
+      const idx = parseInt(studioSelect.value);
+      studioLyricsInput.value = tracks[idx].lyrics;
+    };
+    if (tracks.length > 0) studioLyricsInput.value = tracks[0].lyrics;
+
+    document.getElementById('studio-save-btn').onclick = () => {
+      const idx = parseInt(studioSelect.value);
+      const newLyrics = studioLyricsInput.value;
+      tracks[idx].lyrics = newLyrics;
+      
+      const customStore = JSON.parse(localStorage.getItem('kemo_custom_lyrics') || '{}');
+      customStore[tracks[idx].id] = newLyrics;
+      localStorage.setItem('kemo_custom_lyrics', JSON.stringify(customStore));
+
+      if (currentIndex === idx) {
+        document.getElementById('lyrics-text').innerText = newLyrics;
+      }
+      alert(`✅ Lyrics for "${tracks[idx].title}" saved permanently!`);
+    };
+
+    // ----------------------------------------------------
     // BACKGROUND SYSTEM
+    // ----------------------------------------------------
     const dbName = "KemoCommandDB_Final";
     let db;
     const request = indexedDB.open(dbName, 1);
