@@ -1743,8 +1743,44 @@ Plaque مناصب، إحنا أسامينا
     speakCyber(`VIP Identity Card generated for ${name}`);
   };
 </script>
-<!-- ================== END OF UPGRADES ================== -->
+<!-- ================== END OF UPGRADES ================== --><script>
+      <script>
+    // تشغيل صوتك الحقيقي "تعالي لي يا باشا" فوراً عند تفعيل المقلب
+    window.startHackPrank = function() {
+      const target = prompt("🎯 Target name:", "SCHOOL_SERVER");
+      if (!target) return;
+      document.getElementById('admin-modal').style.display = 'none';
+      
+      // تشغيل ملف الصوت المرفق
+      const voiceAudio = new Audio('voice.mp4');
+      voiceAudio.play().catch(e => console.log("Audio play blocked"));
+
+      const overlay = document.getElementById('hacker-overlay');
+      const logs = document.getElementById('hacker-logs');
+      const alertBox = document.getElementById('hack-target-alert');
+      overlay.style.display = 'flex';
+      logs.innerHTML = '';
+      alertBox.style.display = 'none';
+
+      const lines = [
+        `[+] Connecting to node 192.168.1.254...`,
+        `[+] Target locked: ${target.toUpperCase()}`,
+        `[*] Bypassing firewall security...`,
+        `[+] Injected XEMOX_PAYLOAD successfully!`,
+        `[!] ROOT ACCESS GRANTED TO COMMANDER KEMO!`
+      ];
+      let i = 0;
+      let hackInterval = setInterval(() => {
+        if (i < lines.length) {
+          logs.innerHTML += lines[i] + '\n';
+          i++;
+        } else {
+          clearInterval(hackInterval);
+          alertBox.style.display = 'block';
+          alertBox.innerHTML = `⚠️ SYSTEM COMPROMISED ⚠️<br><span style="font-size:15px; color:#fff;">Target [${target.toUpperCase()}] is under Kemo's control!</span>`;
+        }
+      }, 500);
+    };
+  </script>
 </body>
 </html>
-
-  
