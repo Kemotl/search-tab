@@ -1533,6 +1533,217 @@ Plaque مناصب، إحنا أسامينا
       }
     });
   </script>
+  <!-- ================== 🚀 5 SCHOOL FLEX UPGRADES ================== -->
+<style>
+  /* 1. رادار البطارية والبنج الحي */
+  .sys-hud {
+    position: absolute; bottom: 20px; right: 20px;
+    background: rgba(5, 10, 22, 0.85); backdrop-filter: blur(10px);
+    border: 1px solid var(--neon-primary); border-radius: 10px;
+    padding: 8px 14px; font-size: 11px; color: var(--neon-primary);
+    display: flex; gap: 12px; z-index: 100;
+    box-shadow: 0 0 15px var(--neon-dim); font-weight: bold;
+  }
+
+  /* 2. الموجات الصوتية التفاعلية */
+  .visualizer-box {
+    display: flex; align-items: flex-end; justify-content: center;
+    gap: 3px; height: 22px; padding: 4px 0;
+    background: rgba(0, 0, 0, 0.4); border-bottom: 1px solid var(--neon-dim);
+  }
+  .v-bar {
+    width: 4px; height: 4px; background: var(--neon-primary);
+    border-radius: 2px; transition: height 0.08s ease;
+    box-shadow: 0 0 8px var(--neon-primary);
+  }
+
+  /* 3. شاشة الاختراق الوهمي (Prank Hacker) */
+  #hacker-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #000; color: #00ff41; font-family: 'Courier New', monospace;
+    z-index: 99999; display: none; flex-direction: column;
+    padding: 25px; box-sizing: border-box; overflow: hidden;
+  }
+  #hacker-logs { flex: 1; overflow-y: auto; font-size: 14px; line-height: 1.6; text-shadow: 0 0 8px #00ff41; white-space: pre-wrap; }
+  .hack-target-box {
+    border: 2px solid #00ff41; padding: 20px; text-align: center;
+    font-size: 22px; font-weight: bold; background: rgba(0, 255, 65, 0.1);
+    box-shadow: 0 0 30px rgba(0, 255, 65, 0.4); margin-top: 15px; display: none;
+  }
+
+  /* 4. كارت الـ VIP لصحابك */
+  #vip-card-modal {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 310px; background: linear-gradient(135deg, #060d1a 0%, #102542 100%);
+    border: 2px solid #ffd700; border-radius: 16px; padding: 20px;
+    z-index: 9999; display: none; flex-direction: column; align-items: center;
+    gap: 10px; box-shadow: 0 0 50px rgba(255, 215, 0, 0.5); text-align: center;
+  }
+  .vip-avatar { width: 70px; height: 70px; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; box-shadow: 0 0 15px #ffd700; }
+  .vip-rank { background: #ffd700; color: #000; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; letter-spacing: 1px; }
+
+  @media (max-width: 768px) {
+    .sys-hud { bottom: 10px; right: 10px; font-size: 9px; padding: 5px 8px; }
+  }
+</style>
+
+<!-- 📡 رادار حالة الجهاز الحي -->
+<div class="sys-hud">
+  <span id="hud-bat">🔋 BAT: --%</span>
+  <span id="hud-ping">📡 PING: 18ms</span>
+  <span id="hud-net">🌐 ONLINE</span>
+</div>
+
+<!-- 💻 شاشة مقلب الهاكرز -->
+<div id="hacker-overlay">
+  <div style="display:flex; justify-content:space-between; border-bottom:1px solid #00ff41; padding-bottom:10px; margin-bottom:10px;">
+    <span>⚡ XEMOX ROOT BREACH v4.2 // ACTIVE</span>
+    <button onclick="stopHackPrank()" style="background:#ff0040; color:#fff; border:none; padding:4px 12px; cursor:pointer; font-weight:bold; border-radius:4px;">[ EXIT ]</button>
+  </div>
+  <div id="hacker-logs"></div>
+  <div id="hack-target-alert" class="hack-target-box"></div>
+</div>
+
+<!-- 🪪 نافذة كارت الـ VIP -->
+<div id="vip-card-modal">
+  <div style="font-size:10px; color:#ffd700; letter-spacing:3px;">⚡ KEMO_OTAK COMMAND CENTER ⚡</div>
+  <img src="sasd.jpg" class="vip-avatar" alt="VIP">
+  <div id="vip-friend-name" style="font-size:20px; font-weight:bold; color:#fff; text-shadow:0 0 10px #ffd700;">FRIEND NAME</div>
+  <div id="vip-friend-rank" class="vip-rank">CO-COMMANDER</div>
+  <div id="vip-friend-id" style="font-size:11px; color:#00e5ff; font-family:monospace; margin-top:5px;">ID: #XMX-9920</div>
+  <div style="font-size:9px; color:#888; border-top:1px solid rgba(255,215,0,0.2); padding-top:8px; width:100%;">AUTHORIZED BY COMMANDER KEMO</div>
+  <button onclick="document.getElementById('vip-card-modal').style.display='none'" class="admin-action-btn" style="margin-top:8px; background:#ffd700; width:100%;">CLOSE CARD</button>
+</div>
+
+<script>
+  // 1. 🗣️ المساعد الصوتي الترحيبي (Jarvis Voice)
+  function speakCyber(text) {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'en-US';
+      msg.pitch = 0.75; // صوت روبوت عميق
+      msg.rate = 1.0;
+      window.speechSynthesis.speak(msg);
+    }
+  }
+
+  // تشغيل الصوت الترحيبي لما تدوس على زرار الأدمن أو تفتح الموقع كأدمن
+  document.getElementById('admin-panel-btn').addEventListener('click', () => {
+    if (document.getElementById('admin-modal').style.display === 'flex') {
+      speakCyber("Welcome back, Commander Kemo. All systems operational.");
+    }
+  });
+
+  // 2. 📊 زرع وتشغيل الموجات الصوتية جوه مشغل XEMOX أوتوماتيك
+  const playerControls = document.querySelector('.xemox-controls');
+  const visContainer = document.createElement('div');
+  visContainer.className = 'visualizer-box';
+  for (let i = 0; i < 24; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'v-bar';
+    visContainer.appendChild(bar);
+  }
+  playerControls.parentNode.insertBefore(visContainer, playerControls.nextSibling);
+
+  setInterval(() => {
+    const bars = document.querySelectorAll('.v-bar');
+    if (!audioPlayer.paused) {
+      bars.forEach(b => {
+        b.style.height = (Math.floor(Math.random() * 19) + 3) + 'px';
+      });
+    } else {
+      bars.forEach(b => b.style.height = '3px');
+    }
+  }, 90);
+
+  // 3. 🔋 رادار البطارية الحقيقية والبنج اللايف
+  if ('getBattery' in navigator) {
+    navigator.getBattery().then(bat => {
+      function updateBat() {
+        const lvl = Math.round(bat.level * 100);
+        document.getElementById('hud-bat').innerText = `${bat.charging ? '⚡' : '🔋'} BAT: ${lvl}%`;
+      }
+      updateBat();
+      bat.addEventListener('levelchange', updateBat);
+      bat.addEventListener('chargingchange', updateBat);
+    });
+  }
+  setInterval(() => {
+    const ping = Math.floor(Math.random() * 14) + 12;
+    document.getElementById('hud-ping').innerText = `📡 PING: ${ping}ms`;
+    document.getElementById('hud-net').innerText = navigator.onLine ? '🌐 ONLINE' : '❌ OFFLINE';
+  }, 2500);
+
+  // 4 & 5. إضافة زراير (الهاكرز + كارت VIP) جوه لوحة الأدمن أوتوماتيك
+  const themeSection = document.getElementById('tab-themes');
+  const extraBtnsDiv = document.createElement('div');
+  extraBtnsDiv.style.display = 'flex';
+  extraBtnsDiv.style.gap = '6px';
+  extraBtnsDiv.innerHTML = `
+    <button onclick="startHackPrank()" class="admin-action-btn" style="flex:1; background:#00ff41; color:#000;">💻 PRANK HACK</button>
+    <button onclick="createFriendVIP()" class="admin-action-btn" style="flex:1; background:#00e5ff; color:#000;">🪪 VIP ID CARD</button>
+  `;
+  themeSection.insertBefore(extraBtnsDiv, document.getElementById('activate-stealth-btn'));
+
+  // برمجة مقلب الاختراق الوهمي
+  let hackInterval;
+  window.startHackPrank = function() {
+    const target = prompt("🎯 اكتب اسم صاحبك أو اسم الجهاز اللي عايز تعمل مقلب إنك بتهكره:", "SCHOOL_MAIN_SERVER");
+    if (!target) return;
+    document.getElementById('admin-modal').style.display = 'none';
+    const overlay = document.getElementById('hacker-overlay');
+    const logs = document.getElementById('hacker-logs');
+    const alertBox = document.getElementById('hack-target-alert');
+    overlay.style.display = 'flex';
+    logs.innerHTML = '';
+    alertBox.style.display = 'none';
+    speakCyber(`Initiating cyber breach on target ${target}`);
+
+    const lines = [
+      `[+] Connecting to local node 192.168.1.254...`,
+      `[+] Target locked: ${target.toUpperCase()}`,
+      `[*] Bypassing firewall security protocols...`,
+      `[+] Injected XEMOX_PAYLOAD_v9.bin successfully!`,
+      `[*] Extracting saved passwords and private cache...`,
+      `[+] Downloading WhatsApp & Gallery database... 38%`,
+      `[+] Downloading WhatsApp & Gallery database... 79%`,
+      `[+] Downloading WhatsApp & Gallery database... 100%`,
+      `[!] ROOT ACCESS GRANTED TO COMMANDER KEMO!`
+    ];
+    let i = 0;
+    hackInterval = setInterval(() => {
+      if (i < lines.length) {
+        logs.innerHTML += lines[i] + '\n';
+        i++;
+      } else {
+        clearInterval(hackInterval);
+        alertBox.style.display = 'block';
+        alertBox.innerHTML = `⚠️ SYSTEM COMPROMISED ⚠️<br><span style="font-size:15px; color:#fff;">Target [${target.toUpperCase()}] is now under Commander Kemo's control!</span>`;
+        speakCyber("Target compromised. Access granted.");
+      }
+    }, 550);
+  };
+
+  window.stopHackPrank = function() {
+    clearInterval(hackInterval);
+    document.getElementById('hacker-overlay').style.display = 'none';
+  };
+
+  // برمجة صانع كروت الـ VIP للصحاب
+  window.createFriendVIP = function() {
+    const name = prompt("🪪 اكتب اسم صاحبك عشان تطلعله كارت VIP:", "Ahmed");
+    if (!name) return;
+    const rank = prompt("⭐ اكتب الرتبة بتاعته (مثلاً: VIP MEMBER أو CO-LEADER أو ELITE HACKER):", "VIP CYBER AGENT");
+    document.getElementById('admin-modal').style.display = 'none';
+    document.getElementById('vip-friend-name').innerText = name.toUpperCase();
+    document.getElementById('vip-friend-rank').innerText = (rank || "VIP AGENT").toUpperCase();
+    document.getElementById('vip-friend-id').innerText = "ID: #XMX-" + Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('vip-card-modal').style.display = 'flex';
+    speakCyber(`VIP Identity Card generated for ${name}`);
+  };
+</script>
+<!-- ================== END OF UPGRADES ================== -->
 </body>
 </html>
 
